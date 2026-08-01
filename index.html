@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Fleet OS — Bike Fleet Manager</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Chris's Bike Fleet</p>
+      <h1>Fleet OS</h1>
+      <p class="subtitle">Bikes, wheelsets, spares, compatibility, setups, and service history.</p>
+    </div>
+    <div class="header-actions">
+      <button class="button secondary" id="quickExport">Export backup</button>
+      <button class="button" data-nav="ride">Plan a ride</button>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Primary navigation">
+    <button class="tab active" data-view="dashboard">Dashboard</button>
+    <button class="tab" data-view="bikes">Bikes</button>
+    <button class="tab" data-view="wheels">Wheelsets</button>
+    <button class="tab" data-view="inventory">Parts inventory</button>
+    <button class="tab" data-view="compatibility">Compatibility</button>
+    <button class="tab" data-view="ride">Ride configurator</button>
+    <button class="tab" data-view="maintenance">Maintenance</button>
+    <button class="tab" data-view="data">Data & backup</button>
+  </nav>
+
+  <main>
+    <section class="view active" id="view-dashboard">
+      <div class="metric-grid" id="dashboardMetrics"></div>
+      <div class="two-col">
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Fleet status</p>
+              <h2>Active bikes</h2>
+            </div>
+            <button class="button small" data-nav="bikes">Manage bikes</button>
+          </div>
+          <div id="dashboardBikes" class="card-grid"></div>
+        </section>
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Attention</p>
+              <h2>Maintenance queue</h2>
+            </div>
+            <button class="button small" data-nav="maintenance">Open tracker</button>
+          </div>
+          <div id="dashboardMaintenance"></div>
+        </section>
+      </div>
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Modular setup</p>
+            <h2>Six mountain-bike personalities</h2>
+          </div>
+        </div>
+        <div id="configurationGrid" class="configuration-grid"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-bikes">
+      <div class="section-heading page-heading">
+        <div>
+          <p class="eyebrow">Fleet library</p>
+          <h2>Bikes</h2>
+          <p>Profiles may be complete or stubbed and filled in later.</p>
+        </div>
+        <button class="button" id="addBikeButton">Add bike</button>
+      </div>
+      <div class="filter-row">
+        <label>Category
+          <select id="bikeCategoryFilter">
+            <option value="all">All categories</option>
+          </select>
+        </label>
+        <label>Status
+          <select id="bikeStatusFilter">
+            <option value="all">All statuses</option>
+            <option value="active">Active</option>
+            <option value="retired">Retired</option>
+            <option value="sold">Sold</option>
+          </select>
+        </label>
+        <label>Search
+          <input id="bikeSearch" type="search" placeholder="Brand, model, notes…" />
+        </label>
+      </div>
+      <div id="bikeGrid" class="card-grid"></div>
+    </section>
+
+    <section class="view" id="view-wheels">
+      <div class="section-heading page-heading">
+        <div>
+          <p class="eyebrow">Wheel and tire library</p>
+          <h2>Wheelsets</h2>
+          <p>Track tire combinations, pressures, standards, and bike compatibility.</p>
+        </div>
+        <button class="button" id="addWheelButton">Add wheelset</button>
+      </div>
+      <div id="wheelGrid" class="card-grid"></div>
+    </section>
+
+    <section class="view" id="view-inventory">
+      <div class="section-heading page-heading">
+        <div>
+          <p class="eyebrow">Workshop</p>
+          <h2>Spare parts inventory</h2>
+          <p>Track quantities, condition, storage location, and compatibility.</p>
+        </div>
+        <button class="button" id="addPartButton">Add component</button>
+      </div>
+      <div class="filter-row">
+        <label>Category
+          <select id="partCategoryFilter"><option value="all">All categories</option></select>
+        </label>
+        <label>Location
+          <select id="partLocationFilter"><option value="all">All locations</option></select>
+        </label>
+        <label>Search
+          <input id="partSearch" type="search" placeholder="Cassette, chain, brake pad…" />
+        </label>
+      </div>
+      <div id="inventoryTableWrap"></div>
+    </section>
+
+    <section class="view" id="view-compatibility">
+      <div class="section-heading page-heading">
+        <div>
+          <p class="eyebrow">Compatibility engine</p>
+          <h2>Will this part fit?</h2>
+          <p>Results stay conservative: missing standards return “Unknown” rather than a guess.</p>
+        </div>
+      </div>
+      <div class="panel compatibility-controls">
+        <label>Component
+          <select id="compatPart"></select>
+        </label>
+        <label>Bike
+          <select id="compatBike"></select>
+        </label>
+        <button class="button" id="checkCompatibility">Check compatibility</button>
+      </div>
+      <div id="compatibilityResult" class="compatibility-result" aria-live="polite"></div>
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Manual verification</p>
+            <h2>Save an override</h2>
+            <p>Use this after you physically confirm a fit, adapter, or limitation.</p>
+          </div>
+        </div>
+        <div class="compatibility-controls">
+          <label>Status
+            <select id="overrideStatus">
+              <option value="direct">Direct fit</option>
+              <option value="conditional">Conditional fit</option>
+              <option value="emergency">Emergency use</option>
+              <option value="not">Not compatible</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </label>
+          <label class="grow">Reason / requirements
+            <input id="overrideReason" type="text" placeholder="Example: Requires 20 mm post-mount adapter" />
+          </label>
+          <button class="button secondary" id="saveOverride">Save override</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="view" id="view-ride">
+      <div class="section-heading page-heading">
+        <div>
+          <p class="eyebrow">Ride planning</p>
+          <h2>Ride configurator</h2>
+          <p>Choose the ride, conditions, and priority to get a starting configuration.</p>
+        </div>
+      </div>
+      <div class="panel ride-form-grid">
+        <label>Destination
+          <select id="rideDestination">
+            <option>Local Connecticut</option>
+            <option>Kingdom Trails</option>
+            <option>Green Mountain Trails</option>
+            <option>Sherburne Trails</option>
+            <option>Burke Mountain</option>
+            <option>Killington Bike Park</option>
+            <option>Highland Mountain</option>
+            <option>Thunder Mountain</option>
+          </select>
+        </label>
+        <label>Ride type
+          <select id="rideType">
+            <option value="pedal">Pedal ride</option>
+            <option value="lift">Lift-served</option>
+          </select>
+        </label>
+        <label>Conditions
+          <select id="rideConditions">
+            <option value="dry">Dry</option>
+            <option value="damp">Damp / mixed</option>
+            <option value="wet">Wet roots and rocks</option>
+          </select>
+        </label>
+        <label>Priority
+          <select id="ridePriority">
+            <option value="speed">Speed and efficiency</option>
+            <option value="balanced" selected>Balanced</option>
+            <option value="grip">Maximum grip and confidence</option>
+          </select>
+        </label>
+        <label>Mileage
+          <input id="rideMileage" type="number" min="1" max="100" value="15" />
+        </label>
+        <button class="button" id="buildRide">Build setup</button>
+      </div>
+      <div id="rideResult" class="ride-result" aria-live="polite"></div>
+    </section>
+
+    <section class="view" id="view-maintenance">
+      <div class="section-heading page-heading">
+        <div>
+          <p class="eyebrow">Service history</p>
+          <h2>Maintenance tracker</h2>
+          <p>Track immediate needs, recurring service, and completed work.</p>
+        </div>
+        <button class="button" id="addMaintenanceButton">Add task</button>
+      </div>
+      <div class="filter-row">
+        <label>Bike
+          <select id="maintenanceBikeFilter"><option value="all">All bikes</option></select>
+        </label>
+        <label>Status
+          <select id="maintenanceStatusFilter">
+            <option value="open">Open</option>
+            <option value="all">All</option>
+            <option value="completed">Completed</option>
+          </select>
+        </label>
+      </div>
+      <div id="maintenanceList"></div>
+    </section>
+
+    <section class="view" id="view-data">
+      <div class="section-heading page-heading">
+        <div>
+          <p class="eyebrow">Ownership and portability</p>
+          <h2>Data & backup</h2>
+          <p>Your fleet data remains in your browser unless you export it.</p>
+        </div>
+      </div>
+      <div class="card-grid three">
+        <section class="panel compact">
+          <h3>Export</h3>
+          <p>Download a complete JSON backup of bikes, wheels, parts, compatibility overrides, rides, and maintenance.</p>
+          <button class="button" id="exportData">Download JSON</button>
+        </section>
+        <section class="panel compact">
+          <h3>Import</h3>
+          <p>Restore a previous Fleet OS backup. Existing local data will be replaced.</p>
+          <label class="file-label">Choose JSON file
+            <input id="importData" type="file" accept="application/json" />
+          </label>
+        </section>
+        <section class="panel compact danger-zone">
+          <h3>Reset</h3>
+          <p>Restore the original Version 1.0 sample data.</p>
+          <button class="button danger" id="resetData">Reset local data</button>
+        </section>
+      </div>
+      <section class="panel">
+        <h3>DreamHost deployment notes</h3>
+        <ol>
+          <li>Upload the contents of this folder to your chosen web directory.</li>
+          <li>Keep the relative folder structure intact.</li>
+          <li>Serve over HTTPS so the offline service worker and installable-app features work.</li>
+          <li>Use Export regularly because local browser data does not sync automatically across devices.</li>
+        </ol>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="editorDialog">
+    <form method="dialog" id="editorForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow" id="dialogEyebrow">Edit</p>
+          <h2 id="dialogTitle">Record</h2>
+        </div>
+        <button class="icon-button" value="cancel" aria-label="Close">×</button>
+      </div>
+      <div id="dialogFields" class="dialog-fields"></div>
+      <div class="dialog-actions">
+        <button class="button secondary" value="cancel">Cancel</button>
+        <button class="button" type="submit" value="default">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer>
+    <p>Fleet OS v1.0 · Static, offline-capable, DreamHost-ready.</p>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "Fleet OS",
+  "short_name": "Fleet OS",
+  "description": "Bike fleet, wheelset, spare-parts, compatibility, ride setup, and maintenance manager.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0c1412",
+  "theme_color": "#0f766e",
+  "icons": []
+}
