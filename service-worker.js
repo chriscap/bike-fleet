@@ -1,9 +1,9 @@
-const CACHE_NAME = 'fleet-os-v1.3.0';
+const CACHE_NAME = 'fleet-os-v1.3.1';
 const APP_SHELL = [
   './',
   './index.html',
-  './assets/styles.css',
-  './assets/app.js',
+  './assets/styles.css?v=1.3.1',
+  './assets/app.js?v=1.3.1',
   './manifest.webmanifest',
   './assets/icons/favicon.svg',
   './assets/icons/icon-192.png',
@@ -31,17 +31,14 @@ self.addEventListener('fetch', event => {
     return;
   }
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      const network = fetch(event.request)
-        .then(response => {
-          if (response.ok && new URL(event.request.url).origin === self.location.origin) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      return cached || network;
-    })
+    fetch(event.request)
+      .then(response => {
+        if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });

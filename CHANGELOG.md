@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.1
+
+### Hotfix
+- Added cache-busted JavaScript and CSS asset URLs.
+- Registered the service worker with `updateViaCache: none`.
+- Switched static assets to network-first caching with offline fallback.
+- Added a guarded measurement-guide render so a diagram error cannot block Geometry & Fit navigation.
+
+
 ## 1.3.0
 
 ### Measurement guides

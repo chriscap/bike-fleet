@@ -3,7 +3,7 @@
 const STORAGE_KEY = 'fleet-os-v1-data';
 const BACKUP_META_KEY = 'fleet-os-backup-meta';
 const SETTINGS_KEY = 'fleet-os-settings';
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.3.1';
 
 const ICONS = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/></svg>',
@@ -947,7 +947,7 @@ function renderFitAdvisor(bike) {
 
 function measurementGuideSelectHtml() {
   const groups = {};
-  MEASUREMENT_GUIDES.forEach(item => { (groups[item.group] ||= []).push(item); });
+  MEASUREMENT_GUIDES.forEach(item => { if (!groups[item.group]) groups[item.group] = []; groups[item.group].push(item); });
   return Object.entries(groups).map(([group, items]) => `<optgroup label="${esc(group)} measurements">${items.map(item => `<option value="${item.id}" ${item.id === state.measurementGuideId ? 'selected' : ''}>${esc(item.label)}</option>`).join('')}</optgroup>`).join('');
 }
 function diagramBase({ width = 420, height = 280, frontView = false } = {}) {
@@ -1097,7 +1097,10 @@ function renderGeometry() {
     measurementSelect.value = state.measurementGuideId;
   }
   const measurementContent = document.getElementById('measurementGuideContent');
-  if (measurementContent) measurementContent.innerHTML = renderMeasurementGuide();
+  if (measurementContent) {
+    try { measurementContent.innerHTML = renderMeasurementGuide(); }
+    catch (error) { console.error('Measurement guide failed to render.', error); measurementContent.innerHTML = '<div class="notice warning">The measurement guide could not render, but geometry comparison remains available. Reload the app or update to the latest Fleet OS files.</div>'; }
+  }
   document.getElementById('geometrySources').innerHTML = renderGeometrySources(bikes);
 }
 
@@ -1783,7 +1786,7 @@ function fillRideForm(preset) {
 
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  navigator.serviceWorker.register('service-worker.js').then(registration => {
+  navigator.serviceWorker.register('service-worker.js?v=1.3.1', { updateViaCache: 'none' }).then(registration => {
     registration.addEventListener('updatefound',() => {
       const worker = registration.installing;
       worker?.addEventListener('statechange',() => { if (worker.state === 'installed' && navigator.serviceWorker.controller) document.getElementById('updateBanner').hidden = false; });

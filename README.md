@@ -1,8 +1,14 @@
-# Fleet OS v1.3
+# Fleet OS v1.3.1
 
 Fleet OS is a static, installable bike-fleet manager designed to run from a normal web directory on DreamHost. It uses no build system, database, or server-side code.
 
-## What changed in v1.3
+## What changed in v1.3.1
+
+### Live-site navigation hotfix
+
+- Added versioned asset URLs so Safari and the service worker fetch the current JavaScript and CSS.
+- Changed static-asset requests to network-first with offline cache fallback.
+- Disabled service-worker update caching and added a safe fallback if a measurement diagram cannot render.
 
 ### Measurement guides and visual definitions
 
@@ -43,14 +49,14 @@ Export a JSON backup from the live site before deploying. Data entered on one de
 
 ## Deploy to GitHub — run on your Mac
 
-Download and unzip `fleet-os-v1.3.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
+Download and unzip `fleet-os-v1.3.1.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
 
 ```bash
 cd ~/Downloads/bike-fleet
-cp -R ~/Downloads/fleet-os-v1.3/. .
+cp -R ~/Downloads/fleet-os-v1.3.1/. .
 git status
 git add .
-git commit -m "Add measurement guides and fit visuals"
+git commit -m "Fix Geometry and Fit navigation cache"
 git push origin main
 ```
 
