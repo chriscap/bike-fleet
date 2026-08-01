@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.2
+
+### Measurement guide visuals
+- Refined the geometry and fit illustration set so the side-view and front-view diagrams read much more clearly as a real bicycle.
+- Added more complete frame, fork, cockpit, seatpost, shock, chainring, crank, hub, and spoke details to the SVG diagrams.
+- Improved label placement for the saddle-height and related measurement callouts.
+
 ## 1.3.1
 
 ### Hotfix

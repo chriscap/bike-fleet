@@ -1,8 +1,8 @@
-# Fleet OS v1.3.1
+# Fleet OS v1.3.2
 
 Fleet OS is a static, installable bike-fleet manager designed to run from a normal web directory on DreamHost. It uses no build system, database, or server-side code.
 
-## What changed in v1.3.1
+## What changed in v1.3.2
 
 ### Live-site navigation hotfix
 
@@ -49,11 +49,11 @@ Export a JSON backup from the live site before deploying. Data entered on one de
 
 ## Deploy to GitHub — run on your Mac
 
-Download and unzip `fleet-os-v1.3.1.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
+Download and unzip `fleet-os-v1.3.2.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
 
 ```bash
 cd ~/Downloads/bike-fleet
-cp -R ~/Downloads/fleet-os-v1.3.1/. .
+cp -R ~/Downloads/fleet-os-v1.3.2/. .
 git status
 git add .
 git commit -m "Fix Geometry and Fit navigation cache"

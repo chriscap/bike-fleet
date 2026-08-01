@@ -1,9 +1,9 @@
-const CACHE_NAME = 'fleet-os-v1.3.1';
+const CACHE_NAME = 'fleet-os-v1.3.2';
 const APP_SHELL = [
   './',
   './index.html',
-  './assets/styles.css?v=1.3.1',
-  './assets/app.js?v=1.3.1',
+  './assets/styles.css?v=1.3.2',
+  './assets/app.js?v=1.3.2',
   './manifest.webmanifest',
   './assets/icons/favicon.svg',
   './assets/icons/icon-192.png',
