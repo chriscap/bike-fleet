@@ -1,7 +1,7 @@
 # Fleet OS Engineering Handover
 
-**Latest generated release:** v1.3.3  
-**Production status:** Not reconfirmed after v1.3.3 deployment instructions  
+**Latest generated release:** v1.3.4
+**Production status:** Not reconfirmed for v1.3.4
 **Repository:** `https://github.com/chriscap/bike-fleet`  
 **Live URL:** `https://www.chriscap.com/bike-fleet/`  
 **Hosting:** DreamHost shared server
@@ -14,7 +14,7 @@ Fleet OS is a functioning static progressive web app for managing a personal bik
 
 The current implementation is intentionally lightweight: no framework, no server, and no build process. This made initial delivery fast and DreamHost deployment simple, but the application is now large enough that test coverage, modularization, schema validation, and release automation should precede significant additional features.
 
-The latest generated code is v1.3.3. The most recent work focused on making the measurement-guide bicycle illustration more realistic after the product owner rejected the v1.3.2 illustration. Visual acceptance of the v1.3.3 illustration is still pending.
+The latest generated code is v1.3.4. The product owner accepted the revised generic bicycle direction. The release also corrects the front-center anchor, adds a minimal Playwright harness, and synchronizes application and service-worker release identity.
 
 ---
 
@@ -272,7 +272,7 @@ git pull --ff-only origin main
 
 ```bash
 git status
-git add .
+git add <reviewed-file-paths>
 git commit -m "Describe the release"
 git push origin main
 git log --oneline -1
@@ -363,8 +363,8 @@ A `git` command executed after a broken SSH session may run locally if the shell
 
 ### Critical / release
 
-1. **v1.3.3 illustration acceptance is pending.** Do not assume the latest drawing meets the desired realism standard.
-2. **No automated tests exist.** Every change can regress navigation, persistence, or service-worker behavior.
+1. **v1.3.4 is not yet deployment-verified.** Recheck the release against production before pulling on DreamHost.
+2. **The Playwright harness requires one successful unrestricted run before merge.** The sandboxed Codex CLI could install Chromium but macOS denied the browser process launch.
 3. **Versioning is duplicated.** A partial bump can recreate the stale-cache problem.
 
 ### Data
@@ -408,13 +408,13 @@ A `git` command executed after a broken SSH session may run locally if the shell
 2. Add migration fixtures and no-data-loss tests.
 3. Centralize version bumping in a release script.
 4. Fix stale copy and README/changelog drift.
-5. Verify repository and production are actually on v1.3.3.
+5. Verify repository and production are actually on v1.3.4.
 6. Capture current desktop/mobile screenshots before further UI work.
 
 ## P0 — Resolve active design work
 
-7. Review the v1.3.3 measurement illustration with the owner.
-8. If rejected, move the bike drawing to a standalone SVG or dedicated module and iterate with visual snapshots rather than editing geometry inside `app.js` blindly.
+7. Preserve the owner-approved v1.3.4 bicycle direction.
+8. Move future bike-drawing work to a standalone SVG or dedicated module and iterate with visual snapshots rather than editing geometry inside `app.js` blindly.
 9. Preserve the named measurement anchor points while changing only the artwork.
 
 ## P1 — Data integrity
@@ -469,7 +469,7 @@ The product has already experienced a production-only stale-cache regression. Te
 
 ## 14. Questions for the product owner before major changes
 
-- Has v1.3.3 been deployed, and is its illustration acceptable?
+- Has v1.3.4 been deployed and verified against the accepted illustration?
 - Should the measurement bike be a generic hardtail/trail bike, a generic road bike, or switch by measurement/category?
 - Is preserving the current no-build architecture important, or is a small Vite/TypeScript setup acceptable?
 - Is cross-device synchronization now a priority?

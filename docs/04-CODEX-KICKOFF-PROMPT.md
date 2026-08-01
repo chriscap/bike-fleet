@@ -26,7 +26,7 @@ Then inspect the current source and Git history. Do not assume production is on 
 - Fit guidance is not medical advice.
 - Do not copy road/gravel cockpit coordinates directly to mountain bikes.
 - Keep JSON export available before destructive actions.
-- Treat v1.3.3 measurement illustration acceptance as pending.
+- Preserve the owner-approved v1.3.4 measurement illustration and its named anchors.
 
 ## First assignment
 

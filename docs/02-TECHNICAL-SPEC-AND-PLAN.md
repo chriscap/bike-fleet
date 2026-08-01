@@ -1,6 +1,6 @@
 # Fleet OS Technical Specification and Implementation Plan
 
-**Current source version:** 1.3.3  
+**Current source version:** 1.3.4
 **Architecture:** Static single-page application / progressive web app  
 **Runtime dependencies:** None  
 **Build system:** None  
@@ -26,7 +26,7 @@ flowchart LR
     JS --> JSON[JSON export/import]
 ```
 
-There is no API, database, server-side code, package manager, transpiler, or framework. All application state is loaded from `localStorage`, migrated in memory, rendered to the DOM, and written back after user changes.
+There is no API, database, server-side code, transpiler, or production framework. A small npm/Playwright development toolchain runs automated tests; the deployed application remains static. All application state is loaded from `localStorage`, migrated in memory, rendered to the DOM, and written back after user changes.
 
 ---
 
@@ -611,7 +611,7 @@ Two base illustrations exist:
 
 ### Known design state
 
-The illustration has been iterated several times. Versions 1.3.2 and earlier were rejected as insufficiently realistic. Version 1.3.3 is the latest generated attempt but has not yet been confirmed as visually accepted. Treat this as active design work, not finished polish.
+The illustration was iterated several times after versions 1.3.2 and earlier were rejected as insufficiently realistic. The product owner accepted the v1.3.4 generic bicycle direction. Preserve its named measurement anchors and cover future artwork changes with automated geometry checks and manual desktop/mobile review.
 
 ### Technical recommendation
 
@@ -1024,7 +1024,7 @@ An ES-module browser build can still remain dependency-light. A small Node toolc
 
 **Objective:** Complete the feature that is currently under active design review.
 
-- Review v1.3.3 illustration with the owner.
+- Preserve the accepted v1.3.4 illustration geometry.
 - Decide generic versus category-specific bike diagrams.
 - Store diagram anchors separately from rendered paths.
 - Add measurement history and before/after notes.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.4
+
+### Measurement-guide validation
+- Corrected the front-center diagram to show the center-to-center dimension from the bottom bracket to the front axle.
+- Added Playwright coverage for primary routes, all measurement guides, diagram geometry, mobile overflow, service-worker versioning, and reload persistence.
+- Synchronized the application, asset, service-worker, and cache release identity.
+
 ## 1.3.3
 
 ### Measurement guide illustration refinement

@@ -1,7 +1,7 @@
 # Fleet OS Product Requirements Document
 
 **Product:** Fleet OS  
-**Current prototype version:** 1.3.3  
+**Current prototype version:** 1.3.4
 **Product type:** Personal, local-first progressive web application  
 **Primary user:** A single bike owner managing multiple bikes, wheelsets, parts, setup knowledge, fit data, and maintenance  
 **Status:** Working prototype in active iteration

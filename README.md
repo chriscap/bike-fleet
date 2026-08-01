@@ -1,6 +1,14 @@
-# Fleet OS v1.3.3
+# Fleet OS v1.3.4
 
 Fleet OS is a static, installable bike-fleet manager designed to run from a normal web directory on DreamHost. It uses no build system, database, or server-side code.
+
+## What changed in v1.3.4
+
+### Measurement-guide validation
+
+- Corrected the front-center callout to measure directly from bottom-bracket center to front-axle center.
+- Added Playwright coverage for primary routes, all measurement guides, diagram geometry, mobile overflow, service-worker versioning, and reload persistence.
+- Refined the bicycle line-art and aligned the application and cache release identity.
 
 ## What changed in v1.3.3
 
@@ -49,14 +57,14 @@ Export a JSON backup from the live site before deploying. Data entered on one de
 
 ## Deploy to GitHub — run on your Mac
 
-Download and unzip `fleet-os-v1.3.3.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
+Download and unzip `fleet-os-v1.3.4.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
 
 ```bash
 cd ~/Downloads/bike-fleet
-cp -R ~/Downloads/fleet-os-v1.3.3/. .
+cp -R ~/Downloads/fleet-os-v1.3.4/. .
 git status
-git add .
-git commit -m "Fix Geometry and Fit navigation cache"
+git add .gitignore CHANGELOG.md README.md assets/app.js docs/.DS_Store docs/00-START-HERE.md docs/01-PRD.md docs/02-TECHNICAL-SPEC-AND-PLAN.md docs/03-HANDOVER.md docs/04-CODEX-KICKOFF-PROMPT.md index.html package.json package-lock.json playwright.config.js service-worker.js tests/
+git commit -m "Validate Geometry and Fit measurement guides"
 git push origin main
 ```
 

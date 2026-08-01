@@ -3,7 +3,7 @@
 const STORAGE_KEY = 'fleet-os-v1-data';
 const BACKUP_META_KEY = 'fleet-os-backup-meta';
 const SETTINGS_KEY = 'fleet-os-settings';
-const APP_VERSION = '1.3.3';
+const APP_VERSION = '1.3.4';
 
 const ICONS = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/></svg>',
@@ -1102,7 +1102,7 @@ function measurementGuideDiagram(guide) {
     case 'frameReachStack':
       return bikeGuideBaseSvg(g => `${dim(g.bb[0], g.headTop[1]-18, g.headTop[0], g.headTop[1]-18, 'Frame reach')} ${dim(g.headTop[0]+30, g.bb[1], g.headTop[0]+30, g.headTop[1], 'Frame stack', 'vertical')} <line class="diagram-reference" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.bb[0]}" y2="${g.headTop[1]-6}" /> <line class="diagram-reference" x1="${g.headTop[0]}" y1="${g.bb[1]}" x2="${g.headTop[0]+46}" y2="${g.bb[1]}" /><line class="diagram-reference" x1="${g.headTop[0]}" y1="${g.headTop[1]}" x2="${g.headTop[0]+46}" y2="${g.headTop[1]}" />`);
     case 'wheelbase':
-      return bikeGuideBaseSvg(g => `${dim(g.rearAxle[0], g.floorY-18, g.frontAxle[0], g.floorY-18, 'Wheelbase')} ${dim(g.bb[0], g.floorY-44, g.frontAxle[0], g.floorY-44, 'Front center')} ${dim(g.rearAxle[0], g.rearAxle[1], g.bb[0], g.bb[1], 'Chainstay')} `);
+      return bikeGuideBaseSvg(g => `${dim(g.rearAxle[0], g.floorY-18, g.frontAxle[0], g.floorY-18, 'Wheelbase')} ${dim(g.bb[0], g.bb[1], g.frontAxle[0], g.frontAxle[1], 'Front center')} ${dim(g.bb[0], g.bb[1], g.rearAxle[0], g.rearAxle[1], 'Chainstay')} `);
     default:
       return bikeGuideBaseSvg(() => '');
   }
@@ -1852,7 +1852,7 @@ function fillRideForm(preset) {
 
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  navigator.serviceWorker.register('service-worker.js?v=1.3.3', { updateViaCache: 'none' }).then(registration => {
+  navigator.serviceWorker.register('service-worker.js?v=1.3.4', { updateViaCache: 'none' }).then(registration => {
     registration.addEventListener('updatefound',() => {
       const worker = registration.installing;
       worker?.addEventListener('statechange',() => { if (worker.state === 'installed' && navigator.serviceWorker.controller) document.getElementById('updateBanner').hidden = false; });
