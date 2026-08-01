@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0a221e" />
-  <meta name="description" content="Fleet OS manages bikes, wheelsets, spare parts, compatibility, ride setups, and maintenance." />
+  <meta name="description" content="Fleet OS manages bikes, geometry, fit, wheelsets, spare parts, compatibility, ride setups, and maintenance." />
   <title>Fleet OS — Bike Fleet Manager</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
@@ -95,12 +95,13 @@
 
         <section class="view" id="view-fleet" data-title="Fleet" data-eyebrow="Bikes and wheelsets">
           <div class="page-intro">
-            <div><h2>Your fleet library</h2><p>Open a bike or wheelset to see its setup, compatible spares, service history, and missing details.</p></div>
+            <div><h2>Your fleet library</h2><p>Open a bike or wheelset, compare frame geometry, and translate your Retül baseline into careful setup starting points.</p></div>
             <div class="intro-actions"><button class="button" id="addBikeButton" type="button">Add bike</button><button class="button secondary" id="addWheelButton" type="button">Add wheelset</button></div>
           </div>
           <div class="segmented" role="tablist" aria-label="Fleet sections">
             <button class="segment active" data-fleet-tab="bikes" role="tab" aria-selected="true">Bikes</button>
             <button class="segment" data-fleet-tab="wheels" role="tab" aria-selected="false">Wheelsets</button>
+            <button class="segment" data-fleet-tab="geometry" role="tab" aria-selected="false">Geometry & fit</button>
           </div>
 
           <div class="subview active" id="fleet-bikes">
@@ -114,6 +115,57 @@
 
           <div class="subview" id="fleet-wheels">
             <div id="wheelGrid" class="entity-grid"></div>
+          </div>
+
+          <div class="subview" id="fleet-geometry">
+            <div class="geometry-intro">
+              <div><p class="kicker">Geometry laboratory</p><h2>Compare bikes by the numbers</h2><p class="muted">Select up to three bikes. Fleet OS shows the raw dimensions, deltas from a reference bike, and plain-language handling implications.</p></div>
+              <button class="button secondary" id="editFitBaseline" type="button">Edit Retül baseline</button>
+            </div>
+
+            <section class="panel geometry-controls">
+              <div class="form-grid geometry-select-grid">
+                <label><span>Bike A</span><select id="geometryBikeA"></select></label>
+                <label><span>Bike B</span><select id="geometryBikeB"></select></label>
+                <label><span>Bike C (optional)</span><select id="geometryBikeC"><option value="">None</option></select></label>
+                <label><span>Reference bike</span><select id="geometryReference"></select></label>
+              </div>
+            </section>
+
+            <div id="geometryQuickSummary" class="summary-row geometry-summary"></div>
+
+            <div class="geometry-layout">
+              <section class="panel geometry-chart-panel">
+                <div class="section-heading"><div><p class="kicker">Position map</p><h2>Frame reach vs. stack</h2><p>Each point is the top-center of the head tube relative to the bottom bracket.</p></div></div>
+                <div id="geometryPlot" class="geometry-plot" role="img" aria-label="Reach versus stack comparison"></div>
+              </section>
+              <section class="panel">
+                <div class="section-heading"><div><p class="kicker">Ride interpretation</p><h2>What changes on the trail</h2></div></div>
+                <div id="geometryInsights" class="insight-list"></div>
+              </section>
+            </div>
+
+            <section class="panel geometry-table-panel">
+              <div class="section-heading"><div><p class="kicker">Dimension matrix</p><h2>Geometry comparison</h2><p>Deltas are shown against the selected reference. Unknown values remain blank rather than being inferred.</p></div></div>
+              <div id="geometryTable"></div>
+            </section>
+
+            <section class="fit-lab">
+              <div class="fit-lab-header">
+                <div><p class="kicker">Fit laboratory</p><h2>Retül-informed setup guidance</h2><p class="muted">Use the 2022 Chebacco fit as a measured baseline while respecting the different posture and handling demands of each bike category.</p></div>
+                <label class="fit-bike-select"><span>Evaluate bike</span><select id="fitTargetBike"></select></label>
+              </div>
+              <div class="fit-layout">
+                <section class="panel"><div class="section-heading"><div><p class="kicker">Measured baseline</p><h2>Retül results</h2></div></div><div id="fitBaselineSummary"></div></section>
+                <section class="panel"><div class="section-heading"><div><p class="kicker">Suggested starting point</p><h2>Fit advisor</h2></div></div><div id="fitAdvisorResult" aria-live="polite"></div></section>
+              </div>
+              <div class="notice warning fit-disclaimer">Fit guidance is a starting point, not a diagnosis or substitute for an in-person fitting. Stop and reassess any change that causes pain, numbness, or loss of control.</div>
+            </section>
+
+            <section class="panel geometry-sources-panel">
+              <div class="section-heading"><div><p class="kicker">Traceability</p><h2>Geometry and fit sources</h2><p>Each bike can store a source label and link so future comparisons stay auditable.</p></div></div>
+              <div id="geometrySources"></div>
+            </section>
           </div>
         </section>
 
@@ -236,11 +288,11 @@
 
             <section class="panel danger-zone">
               <div class="section-heading"><div><p class="kicker">Danger zone</p><h2>Reset local data</h2></div></div>
-              <p class="muted">This removes local edits on this device and restores the v1.1 sample database.</p>
+              <p class="muted">This removes local edits on this device and restores the v1.2 sample database.</p>
               <button class="button danger-button" id="resetData" type="button">Reset local data</button>
             </section>
           </div>
-          <footer class="app-footer"><span>Fleet OS v1.1.0</span><span>Designed for the workbench and trailhead.</span></footer>
+          <footer class="app-footer"><span>Fleet OS v1.2.0</span><span>Designed for the workbench and trailhead.</span></footer>
         </section>
       </main>
     </div>

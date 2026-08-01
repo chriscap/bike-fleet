@@ -1,7 +1,7 @@
 {
   "name": "Fleet OS — Bike Fleet Manager",
   "short_name": "Fleet OS",
-  "description": "Manage bikes, wheelsets, spare parts, compatibility, ride setups, and maintenance.",
+  "description": "Manage bikes, compare geometry, translate a Retül fit baseline, track wheelsets, spare parts, ride setups, and maintenance.",
   "start_url": "./#/home",
   "scope": "./",
   "display": "standalone",

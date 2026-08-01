@@ -3,7 +3,7 @@
 const STORAGE_KEY = 'fleet-os-v1-data';
 const BACKUP_META_KEY = 'fleet-os-backup-meta';
 const SETTINGS_KEY = 'fleet-os-settings';
-const APP_VERSION = '1.1.0';
+const APP_VERSION = '1.2.0';
 
 const ICONS = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/></svg>',
@@ -27,10 +27,28 @@ const seedData = {
     heightIn: 65,
     weightLb: 155,
     fitSource: '2022 Retül fit performed on Parlee Chebacco',
+    fitDate: '2022-04-07',
+    fitBikeId: 'chebacco',
+    baselineCrankLengthMm: 170,
     saddleHeightMm: 669,
     saddleSetbackMm: -52,
     saddleAngleDeg: 1,
-    notes: 'Retül fit is a road/gravel baseline, not a direct mountain-bike prescription. The report uses a minus sign to denote nose-down, so +1° is slightly nose-up.'
+    saddleToBarReachMm: 490,
+    handlebarDropMm: 6,
+    gripReachMm: 597,
+    gripDropMm: 23,
+    bbToGripReachMm: 544,
+    handlebarStackMm: 632,
+    handlebarReachMm: 438,
+    gripWidthMm: 405,
+    gripAngleDeg: 29,
+    assessment: [
+      'Limited ankle range of motion, asymmetric on the left.',
+      'Limited hamstring and hip range of motion on both sides.',
+      'Significant limitation in forward spinal flexion.',
+      'History noted: left knee injury with residual strength loss and right hamstring soreness.'
+    ],
+    notes: 'This is a road/gravel fit baseline, not a direct mountain-bike prescription. The report defines a negative saddle angle as nose-down, so +1° is slightly nose-up.'
   },
   bikes: [
     {
@@ -39,6 +57,14 @@ const seedData = {
       drivetrainFamily: 'SRAM Eagle conventional', maxCassetteCog: null, brakes: 'Formula Cura — planned installation', brakeFluid: 'Mineral oil', rotorInterface: 'Unknown',
       fork: 'Fox 34 Step-Cast Performance, 120 mm', shock: 'Fox Float DPS', currentWheelsetId: null, photo: '', weightLb: null,
       purchaseDate: '', serialNumber: '', geometryNotes: '', buildNotes: '',
+      geometry: {
+        reachMm: 412.3, stackMm: 587.4, headAngleDeg: 67.1, effectiveSeatAngleDeg: 75.1, seatTubeLengthMm: 405,
+        topTubeMm: 568.4, chainstayMm: 430.8, wheelbaseMm: 1125.8, bbDropMm: 32.6, bbHeightMm: 339.9,
+        standoverMm: 743.5, headTubeLengthMm: 90, frontCenterMm: 695, forkTravelMm: 120,
+        sourceLabel: 'Santa Cruz Blur 4 MY23 support — Blur TR, size S',
+        sourceUrl: 'https://www.santacruzbicycles.com/en-eu/pages/product-support/blur-4-my23'
+      },
+      fit: { crankLengthMm: null, saddleHeightMm: null, saddleSetbackMm: null, saddleAngleDeg: null, stemMm: null, stemAngleDeg: null, spacerStackMm: null, handlebarStackMm: null, handlebarReachMm: null, saddleToBarReachMm: null, handlebarDropMm: null, gripReachMm: null, gripDropMm: null, gripWidthMm: null, notes: '' },
       notes: 'Primary pedal bike. Current SRAM Level brakes are being replaced with Formula Cura brakes.'
     },
     {
@@ -47,6 +73,14 @@ const seedData = {
       drivetrainFamily: 'SRAM GX Eagle conventional', maxCassetteCog: 52, brakes: 'SRAM G2 R', brakeFluid: 'DOT', rotorInterface: 'Unknown',
       fork: 'Fox 36 Factory FIT4, 150 mm', shock: 'Fox Float DPS Factory, 140 mm rear travel', currentWheelsetId: 'synthesis', photo: 'assets/images/yeti-sb140.jpg', weightLb: null,
       purchaseDate: '', serialNumber: '', geometryNotes: '',
+      geometry: {
+        reachMm: 435, stackMm: 614, headAngleDeg: 65.4, effectiveSeatAngleDeg: 77.5, seatTubeLengthMm: 365,
+        topTubeMm: 571, chainstayMm: 436, wheelbaseMm: 1184, bbDropMm: null, bbHeightMm: 339,
+        standoverMm: 722, headTubeLengthMm: 92, frontCenterMm: 748, forkTravelMm: 150,
+        sourceLabel: 'Yeti SB140/LR 2024 owner’s manual — 150 mm fork, size S',
+        sourceUrl: 'https://yeticycles.com/cms/media/Zq02ukaF0TcGIqQV_2024_OwnersManual_SB140-073124.pdf'
+      },
+      fit: { crankLengthMm: 155, saddleHeightMm: null, saddleSetbackMm: null, saddleAngleDeg: null, stemMm: null, stemAngleDeg: null, spacerStackMm: null, handlebarStackMm: null, handlebarReachMm: null, saddleToBarReachMm: null, handlebarDropMm: null, gripReachMm: null, gripDropMm: null, gripWidthMm: null, notes: '' },
       buildNotes: 'Samox Platinum 155 mm cranks, Absolute Black 32T oval ring, OneUp 150 mm dropper, SRAM GX Eagle mechanical drivetrain.',
       notes: 'Purchased used from Ranch Camp for $3,300. Seller disclosed chain and brake-pad wear that should be addressed before hard riding.'
     },
@@ -56,7 +90,13 @@ const seedData = {
       drivetrainFamily: 'Not documented', maxCassetteCog: null, brakes: 'Not documented', brakeFluid: 'Unknown', rotorInterface: 'Unknown',
       fork: 'Rigid', shock: 'None', currentWheelsetId: null, photo: '', weightLb: null, purchaseDate: '', serialNumber: '',
       geometryNotes: '', buildNotes: '',
-      fit: { saddleHeightMm: 669, saddleSetbackMm: -52, saddleAngleDeg: 1, stemMm: 90, stemAngleDeg: 0, spacerStackMm: 35, crankLengthMm: 170, handlebarStackMm: 632, handlebarReachMm: 438 },
+      geometry: {
+        reachMm: 363, stackMm: 565, headAngleDeg: null, effectiveSeatAngleDeg: null, seatTubeLengthMm: null,
+        topTubeMm: null, chainstayMm: null, wheelbaseMm: null, bbDropMm: null, bbHeightMm: null,
+        standoverMm: null, headTubeLengthMm: null, frontCenterMm: null, forkTravelMm: null,
+        sourceLabel: 'Retül bicycle measurement — 2022 Chebacco, size S', sourceUrl: ''
+      },
+      fit: { saddleHeightMm: 669, saddleSetbackMm: -52, saddleAngleDeg: 1, stemMm: 90, stemAngleDeg: 0, spacerStackMm: 35, crankLengthMm: 170, handlebarStackMm: 632, handlebarReachMm: 438, saddleToBarReachMm: 490, handlebarDropMm: 6, gripReachMm: 597, gripDropMm: 23, gripWidthMm: 405, notes: 'Measured during the April 2022 Retül session.' },
       notes: 'Retül fit baseline documented in April 2022. Component build, axle standards, wheels, tires, gearing, and brakes remain to be documented.'
     },
     {
@@ -64,6 +104,8 @@ const seedData = {
       role: 'Road', wheelSize: '700c', axleFront: 'Unknown', axleRear: 'Unknown', freehub: 'Unknown', drivetrainSpeed: null,
       drivetrainFamily: 'Not documented', maxCassetteCog: null, brakes: 'Not documented', brakeFluid: 'Unknown', rotorInterface: 'Unknown',
       fork: 'Rigid', shock: 'None', currentWheelsetId: null, photo: '', weightLb: null, purchaseDate: '', serialNumber: '', geometryNotes: '', buildNotes: '',
+      geometry: { reachMm:null, stackMm:null, headAngleDeg:null, effectiveSeatAngleDeg:null, seatTubeLengthMm:null, topTubeMm:null, chainstayMm:null, wheelbaseMm:null, bbDropMm:null, bbHeightMm:null, standoverMm:null, headTubeLengthMm:null, frontCenterMm:null, forkTravelMm:null, sourceLabel:'Not documented', sourceUrl:'' },
+      fit: { crankLengthMm:null, saddleHeightMm:null, saddleSetbackMm:null, saddleAngleDeg:null, stemMm:null, stemAngleDeg:null, spacerStackMm:null, handlebarStackMm:null, handlebarReachMm:null, saddleToBarReachMm:null, handlebarDropMm:null, gripReachMm:null, gripDropMm:null, gripWidthMm:null, notes:'' },
       notes: 'Stub profile. Specifications, fit, wheels, and maintenance history remain to be documented.'
     },
     {
@@ -72,6 +114,13 @@ const seedData = {
       drivetrainFamily: 'Shimano Ultegra 6800', maxCassetteCog: 32, brakes: 'Shimano RS785 hydraulic disc', brakeFluid: 'Mineral oil', rotorInterface: '6-bolt',
       fork: 'ENVE tapered CX disc', shock: 'None', currentWheelsetId: null, photo: '', weightLb: null, purchaseDate: '', serialNumber: '',
       geometryNotes: '53 cm effective top tube; 53 cm effective seat tube; 130 mm head tube; 71° head angle; 73.5° seat angle; 430 mm chainstays; 70 mm BB drop; 732 mm standover.',
+      geometry: {
+        reachMm: null, stackMm: null, headAngleDeg: 71, effectiveSeatAngleDeg: 73.5, seatTubeLengthMm: 530,
+        topTubeMm: 530, chainstayMm: 430, wheelbaseMm: null, bbDropMm: 70, bbHeightMm: null,
+        standoverMm: 732, headTubeLengthMm: 130, frontCenterMm: null, forkTravelMm: null,
+        sourceLabel: 'Owner-provided Wraith Paycheck geometry', sourceUrl: 'http://wraithfabrication.com/products/the-paycheck#'
+      },
+      fit: { crankLengthMm:170, saddleHeightMm:null, saddleSetbackMm:null, saddleAngleDeg:null, stemMm:80, stemAngleDeg:10, spacerStackMm:null, handlebarStackMm:null, handlebarReachMm:null, saddleToBarReachMm:null, handlebarDropMm:null, gripReachMm:null, gripDropMm:null, gripWidthMm:420, notes:'' },
       buildNotes: 'Matte-black powder-coated steel frame; Columbus Life main triangle and Zona rear triangle; English threaded BB; White Industries CX11/Pacenti SL25 wheels; GravelKing SS 40 mm tires; Shimano Ultegra 6800 11-speed; 170 mm 50/34 Stages crank; 11–32 cassette; RS685 levers and RS785 calipers; 160 mm six-bolt Ice-Tech rotors; Salsa Cowbell 2 42 cm bar; Thomson 80 mm +10° stem and 27.2 mm post; two titanium King cages.',
       notes: 'Custom drilled for a second water-bottle mount.'
     }
@@ -112,7 +161,7 @@ const seedData = {
   ],
   rideHistory: [],
   activity: [
-    { id: 'a1', at: new Date().toISOString(), text: 'Fleet OS upgraded to v1.1.' },
+    { id: 'a1', at: new Date().toISOString(), text: 'Fleet OS upgraded to v1.2 with geometry and fit tools.' },
     { id: 'a2', at: new Date(Date.now() - 3600000).toISOString(), text: 'Yeti SB140 added to the active fleet.' },
     { id: 'a3', at: new Date(Date.now() - 7200000).toISOString(), text: 'Three mountain-bike wheelsets documented.' }
   ],
@@ -131,6 +180,9 @@ const state = {
   route: 'home',
   fleetTab: 'bikes',
   workshopTab: 'inventory',
+  geometryBikeIds: ['blur','sb140','chebacco'],
+  geometryReferenceId: 'blur',
+  fitTargetId: 'sb140',
   editor: null,
   currentRecommendation: null,
   importCandidate: null,
@@ -174,9 +226,16 @@ function completionBadge(bike) {
 function migrateData(raw) {
   if (!raw || typeof raw !== 'object') return clone(seedData);
   const next = { ...clone(seedData), ...raw };
+  next.rider = { ...clone(seedData.rider), ...(raw.rider || {}) };
+  next.rider.assessment = Array.isArray(raw.rider?.assessment) ? raw.rider.assessment : clone(seedData.rider.assessment);
   next.bikes = Array.isArray(raw.bikes) ? raw.bikes.map(bike => {
     const defaults = seedData.bikes.find(item => item.id === bike.id) || {};
-    const merged = { ...defaults, ...bike };
+    const merged = {
+      ...defaults,
+      ...bike,
+      geometry: { ...(defaults.geometry || {}), ...(bike.geometry || {}) },
+      fit: { ...(defaults.fit || {}), ...(bike.fit || {}) }
+    };
     delete merged.completeness;
     if (bike.id === 'sb140' && !merged.photo) merged.photo = defaults.photo;
     return merged;
@@ -268,7 +327,7 @@ function parseRoute() {
 function renderRoute() {
   const parsed = parseRoute();
   state.route = parsed.route;
-  if (parsed.route === 'fleet' && ['bikes','wheels'].includes(parsed.subview)) state.fleetTab = parsed.subview;
+  if (parsed.route === 'fleet' && ['bikes','wheels','geometry'].includes(parsed.subview)) state.fleetTab = parsed.subview;
   if (parsed.route === 'workshop' && ['inventory','compatibility','maintenance'].includes(parsed.subview)) state.workshopTab = parsed.subview;
 
   document.querySelectorAll('.view').forEach(view => view.classList.toggle('active', view.id === `view-${parsed.route}`));
@@ -292,7 +351,7 @@ function renderRoute() {
   window.scrollTo({ top:0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 }
 function setFleetTab(tab, updateHash = true) {
-  state.fleetTab = ['bikes','wheels'].includes(tab) ? tab : 'bikes';
+  state.fleetTab = ['bikes','wheels','geometry'].includes(tab) ? tab : 'bikes';
   document.querySelectorAll('[data-fleet-tab]').forEach(button => {
     const active = button.dataset.fleetTab === state.fleetTab;
     button.classList.toggle('active', active); button.setAttribute('aria-selected', String(active));
@@ -407,6 +466,247 @@ function renderWheels() {
   document.getElementById('wheelGrid').innerHTML = state.data.wheelsets.length ? state.data.wheelsets.map(wheelCard).join('') : '<div class="empty">No wheelsets have been added.</div>';
 }
 
+const GEOMETRY_METRICS = [
+  { key:'reachMm', label:'Reach', unit:'mm', decimals:1 },
+  { key:'stackMm', label:'Stack', unit:'mm', decimals:1 },
+  { key:'headAngleDeg', label:'Head-tube angle', unit:'°', decimals:1 },
+  { key:'effectiveSeatAngleDeg', label:'Effective seat angle', unit:'°', decimals:1 },
+  { key:'topTubeMm', label:'Effective top tube', unit:'mm', decimals:1 },
+  { key:'wheelbaseMm', label:'Wheelbase', unit:'mm', decimals:1 },
+  { key:'chainstayMm', label:'Chainstay / rear center', unit:'mm', decimals:1 },
+  { key:'frontCenterMm', label:'Front center', unit:'mm', decimals:1 },
+  { key:'bbDropMm', label:'Bottom-bracket drop', unit:'mm', decimals:1 },
+  { key:'bbHeightMm', label:'Bottom-bracket height', unit:'mm', decimals:1 },
+  { key:'standoverMm', label:'Standover', unit:'mm', decimals:1 },
+  { key:'headTubeLengthMm', label:'Head-tube length', unit:'mm', decimals:1 },
+  { key:'seatTubeLengthMm', label:'Seat-tube length', unit:'mm', decimals:1 },
+  { key:'forkTravelMm', label:'Fork travel', unit:'mm', decimals:0 }
+];
+
+function safeUrl(value) {
+  try {
+    const url = new URL(value, location.href);
+    return ['http:','https:'].includes(url.protocol) ? url.href : '';
+  } catch { return ''; }
+}
+function bikeShortName(bike) { return `${bike.brand} ${bike.model}`; }
+function knownNumber(value) { return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)); }
+function formatMetric(value, metric, includeUnit = true) {
+  if (!knownNumber(value)) return '—';
+  const numericValue = Number(value);
+  const text = numericValue.toLocaleString('en-US', { minimumFractionDigits:0, maximumFractionDigits:metric.decimals ?? 1 });
+  return includeUnit ? `${text}${metric.unit === '°' ? '°' : ` ${metric.unit}`}` : text;
+}
+function formatDelta(value, reference, metric) {
+  if (!knownNumber(value) || !knownNumber(reference)) return '';
+  const delta = Number(value) - Number(reference);
+  if (Math.abs(delta) < 0.05) return 'same';
+  const sign = delta > 0 ? '+' : '';
+  const text = delta.toLocaleString('en-US', { minimumFractionDigits:0, maximumFractionDigits:metric.decimals ?? 1 });
+  return `${sign}${text}${metric.unit === '°' ? '°' : ` ${metric.unit}`}`;
+}
+function bikeMode(bike) {
+  const category = String(bike?.category || '').toLowerCase();
+  return /(xc|downcountry|trail|mountain|all-mountain|enduro)/.test(category) ? 'mountain' : 'road';
+}
+function geometryAvailableCount(bike) {
+  return GEOMETRY_METRICS.filter(metric => knownNumber(bike.geometry?.[metric.key])).length;
+}
+function selectedGeometryBikes() {
+  const ids = [...new Set(state.geometryBikeIds.filter(Boolean))];
+  return ids.map(id => state.data.bikes.find(bike => bike.id === id)).filter(Boolean);
+}
+function setSelectOptions(select, options, value, includeNone = false) {
+  if (!select) return;
+  const none = includeNone ? '<option value="">None</option>' : '';
+  select.innerHTML = none + options.map(item => `<option value="${esc(item.id)}">${esc(bikeName(item.id))}</option>`).join('');
+  select.value = options.some(item => item.id === value) || (includeNone && value === '') ? value : (includeNone ? '' : options[0]?.id || '');
+}
+function syncGeometrySelectors() {
+  const bikes = state.data.bikes.filter(bike => bike.status !== 'sold');
+  const ids = bikes.map(bike => bike.id);
+  const fallback = ['blur','sb140','chebacco'].filter(id => ids.includes(id));
+  while (fallback.length < 3 && bikes[fallback.length]) fallback.push(bikes[fallback.length].id);
+  state.geometryBikeIds = [0,1,2].map((index) => ids.includes(state.geometryBikeIds[index]) ? state.geometryBikeIds[index] : (fallback[index] || ''));
+  setSelectOptions(document.getElementById('geometryBikeA'), bikes, state.geometryBikeIds[0]);
+  setSelectOptions(document.getElementById('geometryBikeB'), bikes, state.geometryBikeIds[1]);
+  setSelectOptions(document.getElementById('geometryBikeC'), bikes, state.geometryBikeIds[2], true);
+  const selected = selectedGeometryBikes();
+  if (!selected.some(bike => bike.id === state.geometryReferenceId)) state.geometryReferenceId = selected[0]?.id || '';
+  setSelectOptions(document.getElementById('geometryReference'), selected, state.geometryReferenceId);
+  if (!ids.includes(state.fitTargetId)) state.fitTargetId = ids.includes('sb140') ? 'sb140' : ids[0] || '';
+  setSelectOptions(document.getElementById('fitTargetBike'), bikes, state.fitTargetId);
+}
+function geometrySummaryCard(label, value, detail) {
+  return `<article class="summary-card"><span>${esc(label)}</span><strong>${esc(value)}</strong><small>${esc(detail)}</small></article>`;
+}
+function renderGeometrySummary(bikes, reference) {
+  const target = bikes.find(bike => bike.id !== reference?.id) || bikes[0];
+  if (!reference || !target) return '<div class="empty">Select at least two bikes to see geometry deltas.</div>';
+  const pairs = [
+    ['Reach', 'reachMm', 'Horizontal room at the head tube'],
+    ['Stack', 'stackMm', 'Vertical height at the head tube'],
+    ['Wheelbase', 'wheelbaseMm', 'Overall front-to-rear footprint'],
+    ['Head angle', 'headAngleDeg', 'Steering and descending bias']
+  ];
+  return pairs.map(([label,key,detail]) => {
+    const metric = GEOMETRY_METRICS.find(item => item.key === key);
+    const value = formatDelta(target.geometry?.[key], reference.geometry?.[key], metric);
+    return geometrySummaryCard(`${bikeShortName(target)} vs ${bikeShortName(reference)} · ${label}`, value || 'Unknown', detail);
+  }).join('');
+}
+function renderGeometryPlot(bikes) {
+  const plotted = bikes.filter(bike => knownNumber(bike.geometry?.reachMm) && knownNumber(bike.geometry?.stackMm));
+  if (!plotted.length) return '<div class="empty">Add reach and stack measurements to create the position map.</div>';
+  const width = 680, height = 400, margin = { left:64, right:28, top:30, bottom:58 };
+  const reaches = plotted.map(bike => Number(bike.geometry.reachMm));
+  const stacks = plotted.map(bike => Number(bike.geometry.stackMm));
+  let minX = Math.min(...reaches) - 20, maxX = Math.max(...reaches) + 20;
+  let minY = Math.min(...stacks) - 20, maxY = Math.max(...stacks) + 20;
+  if (maxX - minX < 80) { const mid=(minX+maxX)/2; minX=mid-40; maxX=mid+40; }
+  if (maxY - minY < 80) { const mid=(minY+maxY)/2; minY=mid-40; maxY=mid+40; }
+  const x = value => margin.left + ((value - minX) / (maxX - minX)) * (width - margin.left - margin.right);
+  const y = value => height - margin.bottom - ((value - minY) / (maxY - minY)) * (height - margin.top - margin.bottom);
+  const grid = [];
+  for (let i=0;i<=4;i++) {
+    const gx = margin.left + i * (width-margin.left-margin.right)/4;
+    const gy = margin.top + i * (height-margin.top-margin.bottom)/4;
+    const xValue = minX + i*(maxX-minX)/4;
+    const yValue = maxY - i*(maxY-minY)/4;
+    grid.push(`<line class="geometry-grid-line" x1="${gx}" x2="${gx}" y1="${margin.top}" y2="${height-margin.bottom}"/><text class="geometry-axis-label" x="${gx}" y="${height-margin.bottom+24}" text-anchor="middle">${Math.round(xValue)}</text>`);
+    grid.push(`<line class="geometry-grid-line" x1="${margin.left}" x2="${width-margin.right}" y1="${gy}" y2="${gy}"/><text class="geometry-axis-label" x="${margin.left-10}" y="${gy+4}" text-anchor="end">${Math.round(yValue)}</text>`);
+  }
+  const points = plotted.map((bike,index) => {
+    const cx=x(Number(bike.geometry.reachMm)), cy=y(Number(bike.geometry.stackMm));
+    const labelY = cy < 58 ? cy + 28 : cy - 16;
+    return `<g class="geometry-point-group point-${index}"><circle class="geometry-point" cx="${cx}" cy="${cy}" r="9"/><text class="geometry-point-label" x="${cx}" y="${labelY}" text-anchor="middle">${esc(bikeShortName(bike))}</text><title>${esc(`${bikeShortName(bike)}: ${bike.geometry.reachMm} mm reach, ${bike.geometry.stackMm} mm stack`)}</title></g>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true"><g>${grid.join('')}</g><line class="geometry-axis" x1="${margin.left}" x2="${width-margin.right}" y1="${height-margin.bottom}" y2="${height-margin.bottom}"/><line class="geometry-axis" x1="${margin.left}" x2="${margin.left}" y1="${margin.top}" y2="${height-margin.bottom}"/><text class="geometry-axis-title" x="${(margin.left+width-margin.right)/2}" y="${height-10}" text-anchor="middle">Reach (mm) → longer</text><text class="geometry-axis-title" transform="translate(18 ${(margin.top+height-margin.bottom)/2}) rotate(-90)" text-anchor="middle">Stack (mm) → taller</text>${points}</svg><p class="geometry-chart-alt">${plotted.map(bike => `${bikeShortName(bike)}: ${bike.geometry.reachMm} mm reach and ${bike.geometry.stackMm} mm stack`).join('. ')}.</p>`;
+}
+function insightItem(title, text, tone = '') {
+  return `<article class="insight-item ${tone}"><h3>${esc(title)}</h3><p>${esc(text)}</p></article>`;
+}
+function renderGeometryInsights(bikes, reference) {
+  const target = bikes.find(bike => bike.id !== reference?.id) || bikes[0];
+  if (!reference || !target) return '<div class="empty">Select two bikes for interpretation.</div>';
+  const insights = [];
+  const delta = key => knownNumber(target.geometry?.[key]) && knownNumber(reference.geometry?.[key]) ? Number(target.geometry[key]) - Number(reference.geometry[key]) : null;
+  const reach = delta('reachMm');
+  if (reach !== null) insights.push(insightItem('Cockpit room', Math.abs(reach) < 5 ? 'Frame reach is nearly the same. Bar sweep, stem length, and saddle position will create most of the cockpit difference.' : `${bikeShortName(target)} has ${Math.abs(reach).toFixed(1)} mm ${reach > 0 ? 'more' : 'less'} frame reach, generally creating a ${reach > 0 ? 'roomier, more centered' : 'more compact, agile'} standing position.`));
+  const stack = delta('stackMm');
+  if (stack !== null) insights.push(insightItem('Front-end height', Math.abs(stack) < 5 ? 'Stack is nearly the same before spacers, stem, and bar rise.' : `${bikeShortName(target)} is ${Math.abs(stack).toFixed(1)} mm ${stack > 0 ? 'taller' : 'lower'} at the head tube, before cockpit components are added.`));
+  const head = delta('headAngleDeg');
+  if (head !== null) insights.push(insightItem('Steering character', Math.abs(head) < .4 ? 'Head angles are very similar.' : `${bikeShortName(target)} is ${Math.abs(head).toFixed(1)}° ${head < 0 ? 'slacker, favoring stability on steep terrain' : 'steeper, favoring quicker steering response'}.`));
+  const wheelbase = delta('wheelbaseMm');
+  if (wheelbase !== null) insights.push(insightItem('High-speed stability', Math.abs(wheelbase) < 10 ? 'Wheelbases are close enough that tires, suspension, and cockpit setup may dominate the feel.' : `${bikeShortName(target)} is ${Math.abs(wheelbase).toFixed(0)} mm ${wheelbase > 0 ? 'longer and generally more planted' : 'shorter and generally easier to place quickly'}.`));
+  const seat = delta('effectiveSeatAngleDeg');
+  if (seat !== null) insights.push(insightItem('Climbing position', Math.abs(seat) < .5 ? 'Effective seat angles are similar.' : `${bikeShortName(target)} is ${Math.abs(seat).toFixed(1)}° ${seat > 0 ? 'steeper, moving the seated rider forward for climbing' : 'slacker, placing the seated rider farther behind the bottom bracket'}.`));
+  if (bikeMode(reference) !== bikeMode(target)) insights.unshift(insightItem('Cross-category comparison', 'These bikes use different handlebars, postures, and handling priorities. Geometry explains character, but frame reach and stack are not direct fit targets across road, gravel, and mountain bikes.', 'warning'));
+  return insights.length ? insights.join('') : '<div class="empty">Add more geometry fields to generate ride interpretation.</div>';
+}
+function renderGeometryTable(bikes, reference) {
+  if (!bikes.length) return '<div class="empty">No bikes selected.</div>';
+  const head = bikes.map(bike => `<th scope="col"><strong>${esc(bikeShortName(bike))}</strong><small>${esc(`${bike.year || ''} · ${bike.size || 'size ?'}`)}</small></th>`).join('');
+  const body = GEOMETRY_METRICS.map(metric => `<tr><th scope="row">${esc(metric.label)}</th>${bikes.map(bike => {
+    const value = bike.geometry?.[metric.key];
+    const d = reference && bike.id !== reference.id ? formatDelta(value, reference.geometry?.[metric.key], metric) : '';
+    return `<td><strong>${esc(formatMetric(value,metric))}</strong>${d ? `<small class="geometry-delta">${esc(d)} vs reference</small>` : bike.id === reference?.id ? '<small class="geometry-delta reference">Reference</small>' : ''}</td>`;
+  }).join('')}</tr>`).join('');
+  return `<div class="geometry-table-scroll"><table class="geometry-table"><thead><tr><th>Measurement</th>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function baselineMeasurementList() {
+  const rider = state.data.rider;
+  return definitionList([
+    ['Fit source', rider.fitSource],
+    ['Fit date', formatDate(rider.fitDate)],
+    ['Baseline crank', knownNumber(rider.baselineCrankLengthMm) ? `${rider.baselineCrankLengthMm} mm` : 'Unknown'],
+    ['Saddle height', knownNumber(rider.saddleHeightMm) ? `${rider.saddleHeightMm} mm` : 'Unknown'],
+    ['Saddle setback', knownNumber(rider.saddleSetbackMm) ? `${Math.abs(rider.saddleSetbackMm)} mm behind BB` : 'Unknown'],
+    ['Saddle angle', knownNumber(rider.saddleAngleDeg) ? `${rider.saddleAngleDeg}° per report convention` : 'Unknown'],
+    ['BB-to-bar stack', knownNumber(rider.handlebarStackMm) ? `${rider.handlebarStackMm} mm` : 'Unknown'],
+    ['BB-to-bar reach', knownNumber(rider.handlebarReachMm) ? `${rider.handlebarReachMm} mm` : 'Unknown'],
+    ['Saddle-to-bar reach', knownNumber(rider.saddleToBarReachMm) ? `${rider.saddleToBarReachMm} mm` : 'Unknown'],
+    ['Handlebar drop', knownNumber(rider.handlebarDropMm) ? `${rider.handlebarDropMm} mm per report convention` : 'Unknown']
+  ]) + `<div class="fit-assessment"><h3>Assessment context</h3><ul>${(rider.assessment || []).map(item => `<li>${esc(item)}</li>`).join('')}</ul></div>`;
+}
+function fitStatusCard(label, value, confidence, text, tone = '') {
+  return `<article class="fit-advice-card ${tone}"><div class="fit-advice-head"><span>${esc(label)}</span><span class="badge ${confidence === 'High' ? 'success' : confidence === 'Medium' ? 'warning' : 'unknown'}">${esc(confidence)} confidence</span></div><strong>${esc(value)}</strong><p>${esc(text)}</p></article>`;
+}
+function signedMillimeters(value) {
+  if (!knownNumber(value)) return 'Unknown';
+  const number = Number(value);
+  return `${number > 0 ? '+' : ''}${number.toFixed(0)} mm`;
+}
+function renderFitAdvisor(bike) {
+  if (!bike) return '<div class="empty">Choose a bike to evaluate.</div>';
+  const rider = state.data.rider;
+  const fit = bike.fit || {};
+  const mode = bikeMode(bike);
+  const cards = [];
+  if (knownNumber(rider.saddleHeightMm) && knownNumber(rider.baselineCrankLengthMm) && knownNumber(fit.crankLengthMm)) {
+    const target = Number(rider.saddleHeightMm) + (Number(rider.baselineCrankLengthMm) - Number(fit.crankLengthMm));
+    const actual = knownNumber(fit.saddleHeightMm) ? Number(fit.saddleHeightMm) : null;
+    const difference = actual === null ? null : actual - target;
+    const detail = actual === null
+      ? `This mechanically preserves the same bottom-of-stroke leg extension when moving from ${rider.baselineCrankLengthMm} mm to ${fit.crankLengthMm} mm cranks. Record the actual saddle height before changing anything.`
+      : `Current recorded height is ${actual} mm (${signedMillimeters(difference)} from the estimate). Shoe, pedal, saddle, and riding-category differences can justify a different result.`;
+    cards.push(fitStatusCard('Crank-adjusted saddle estimate', `${Math.round(target)} mm`, 'Medium', detail));
+  } else {
+    cards.push(fitStatusCard('Saddle-height transfer', 'Needs crank length', 'Low', 'Record this bike’s crank length and current BB-to-saddle measurement before calculating a starting point.', 'incomplete'));
+  }
+  if (mode === 'road') {
+    if (knownNumber(fit.handlebarStackMm) && knownNumber(fit.handlebarReachMm)) {
+      const stackDelta = Number(fit.handlebarStackMm) - Number(rider.handlebarStackMm);
+      const reachDelta = Number(fit.handlebarReachMm) - Number(rider.handlebarReachMm);
+      let text = `Compared with the Retül baseline, the bar is ${signedMillimeters(stackDelta)} in stack and ${signedMillimeters(reachDelta)} in reach.`;
+      if (stackDelta < -10) text += ' The lower front end may demand more hip, hamstring, and spinal flexion than the fitted Chebacco position.';
+      if (reachDelta > 10) text += ' The longer position may increase torso extension and hand load.';
+      cards.push(fitStatusCard('Road / gravel cockpit', `${fit.handlebarStackMm} / ${fit.handlebarReachMm} mm`, 'High', text));
+    } else {
+      cards.push(fitStatusCard('Road / gravel cockpit', 'Measure BB-to-bar stack and reach', 'Low', `The Retül target is ${rider.handlebarStackMm} mm stack and ${rider.handlebarReachMm} mm reach at the center of the handlebar.`, 'incomplete'));
+    }
+    if (knownNumber(fit.saddleSetbackMm)) {
+      const delta = Number(fit.saddleSetbackMm) - Number(rider.saddleSetbackMm);
+      cards.push(fitStatusCard('Saddle setback', `${Math.abs(fit.saddleSetbackMm)} mm behind BB`, 'Medium', `This is ${signedMillimeters(delta)} from the fitted Chebacco value. Saddle shape changes the location of the measured front tip, so compare like-for-like.`));
+    } else {
+      cards.push(fitStatusCard('Saddle setback', 'Not recorded', 'Low', `The Retül report measured the saddle’s front tip 52 mm behind the bottom bracket. Record this bike using the same definition before comparing.`,'incomplete'));
+    }
+  } else {
+    const postureText = knownNumber(fit.handlebarStackMm) && knownNumber(fit.handlebarReachMm)
+      ? `Recorded mountain-bike bar position is ${fit.handlebarStackMm} mm stack and ${fit.handlebarReachMm} mm reach. Treat these as this bike’s own baseline; a flat bar and standing position make direct road-fit matching inappropriate.`
+      : 'Record BB-to-grip or BB-to-bar measurements after the bike feels stable and comfortable. Do not force the road handlebar coordinates onto a wide flat-bar cockpit.';
+    cards.push(fitStatusCard('Mountain-bike cockpit transfer', 'Category-specific setup', 'Low', postureText));
+    cards.push(fitStatusCard('Mobility-aware front end', 'Favor comfort before lowering', 'Medium', 'The fit assessment documented limited hip and hamstring motion plus significant limitation in forward spinal flexion. Avoid aggressive reductions in stack; test small changes while preserving control and front-wheel traction.'));
+    if (bike.id === 'sb140') cards.push(fitStatusCard('SB140 starting focus', 'Pedaling extension first', 'Medium', 'With 155 mm cranks, establish saddle height and fore-aft comfort before changing stem length or bar rise. Then tune standing balance on familiar terrain.'));
+    if (bike.id === 'blur') cards.push(fitStatusCard('Blur starting focus', 'Efficient but not overextended', 'Low', 'Use the Blur’s lower, shorter chassis for speed without copying the Chebacco cockpit. Record crank length, saddle height, stem, spacers, bar rise, and grip coordinates to create a repeatable MTB baseline.'));
+  }
+  cards.push(fitStatusCard('Change protocol', 'One variable at a time', 'Medium', 'Use small adjustments, document the before-and-after measurement, and repeat the same short test route. Stop if pain, numbness, or loss of control appears.'));
+  return `<div class="fit-target-header"><div><p class="kicker">${esc(bike.category)}</p><h3>${esc(bikeName(bike.id))}</h3></div><button class="button small secondary edit-fit-bike" data-id="${esc(bike.id)}" type="button">Record measurements</button></div><div class="fit-advice-grid">${cards.join('')}</div>`;
+}
+function renderGeometrySources(bikes) {
+  const sourceBikes = bikes.length ? bikes : state.data.bikes;
+  return `<div class="source-list">${sourceBikes.map(bike => {
+    const label = bike.geometry?.sourceLabel || 'No geometry source recorded';
+    const url = safeUrl(bike.geometry?.sourceUrl || '');
+    return `<div class="source-row"><div><strong>${esc(bikeName(bike.id))}</strong><small>${esc(label)}</small></div>${url ? `<a class="text-button" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open source</a>` : '<span class="badge unknown">No link</span>'}</div>`;
+  }).join('')}</div>`;
+}
+function renderGeometry() {
+  if (!document.getElementById('geometryBikeA')) return;
+  syncGeometrySelectors();
+  const bikes = selectedGeometryBikes();
+  const reference = bikes.find(bike => bike.id === state.geometryReferenceId) || bikes[0];
+  document.getElementById('geometryQuickSummary').innerHTML = renderGeometrySummary(bikes, reference);
+  document.getElementById('geometryPlot').innerHTML = renderGeometryPlot(bikes);
+  document.getElementById('geometryInsights').innerHTML = renderGeometryInsights(bikes, reference);
+  document.getElementById('geometryTable').innerHTML = renderGeometryTable(bikes, reference);
+  document.getElementById('fitBaselineSummary').innerHTML = baselineMeasurementList();
+  const fitBike = state.data.bikes.find(bike => bike.id === state.fitTargetId);
+  document.getElementById('fitAdvisorResult').innerHTML = renderFitAdvisor(fitBike);
+  document.getElementById('geometrySources').innerHTML = renderGeometrySources(bikes);
+}
+
+
 function renderBikeDetail(id) {
   const bike = state.data.bikes.find(item => item.id === id);
   const target = document.getElementById('bikeDetail');
@@ -415,7 +715,9 @@ function renderBikeDetail(id) {
   const photo = bike.photo ? `<img src="${esc(bike.photo)}" alt="${esc(`${bike.brand} ${bike.model}`)}" />` : `<div class="placeholder">${ICONS.bikeLarge}</div>`;
   const currentWheelOptions = '<option value="">Not assigned</option>' + state.data.wheelsets.map(wheel => `<option value="${wheel.id}" ${bike.currentWheelsetId === wheel.id ? 'selected' : ''}>${esc(wheel.name)}</option>`).join('');
   const tasks = state.data.maintenance.filter(task => task.bikeId === bike.id && task.status !== 'completed');
-  const fit = bike.fit;
+  const fit = bike.fit || {};
+  const geometry = bike.geometry || {};
+  const hasFitMeasurements = Object.entries(fit).some(([key,value]) => key !== 'notes' && knownNumber(value));
   target.innerHTML = `
     <button class="text-button detail-back" data-route="fleet" data-subview="bikes" type="button">← Back to fleet</button>
     <section class="detail-hero">
@@ -424,7 +726,7 @@ function renderBikeDetail(id) {
         <div><p class="kicker">${esc(bike.category)}</p><h2>${esc(`${bike.year || ''} ${bike.brand} ${bike.model}`.trim())}</h2><p class="meta">Size ${esc(bike.size || 'Unknown')} · ${esc(bike.status || 'Unknown')}</p></div>
         <p>${esc(bike.role || 'Ride role not documented.')}</p>
         <div>${completionBadge(bike)}<div class="progress" style="margin-top:.55rem"><span style="width:${complete.percent}%"></span></div></div>
-        <div class="detail-actions"><button class="button edit-bike" data-id="${esc(bike.id)}" type="button">Edit profile</button><button class="button secondary plan-bike" data-id="${esc(bike.id)}" type="button">Plan a ride</button></div>
+        <div class="detail-actions"><button class="button edit-bike" data-id="${esc(bike.id)}" type="button">Edit profile</button><button class="button secondary compare-bike" data-id="${esc(bike.id)}" type="button">Compare geometry</button><button class="button secondary plan-bike" data-id="${esc(bike.id)}" type="button">Plan a ride</button></div>
       </div>
     </section>
     <div class="detail-grid">
@@ -432,10 +734,13 @@ function renderBikeDetail(id) {
         ['Wheel size',bike.wheelSize],['Front axle',bike.axleFront],['Rear axle',bike.axleRear],['Freehub',bike.freehub],['Drivetrain',bike.drivetrainFamily],['Speed',bike.drivetrainSpeed ? `${bike.drivetrainSpeed}-speed` : 'Unknown'],['Brakes',bike.brakes],['Brake fluid',bike.brakeFluid],['Rotor interface',bike.rotorInterface],['Fork',bike.fork],['Shock',bike.shock]
       ])}</section>
       <section class="panel"><div class="section-heading"><div><p class="kicker">Modular setup</p><h2>Wheelset assignment</h2></div></div><label><span>Currently installed</span><select id="bikeWheelAssignment" data-bike-id="${esc(bike.id)}">${currentWheelOptions}</select></label><p class="muted" style="margin-top:.75rem">Assignments help Fleet OS show the current build and prevent a wheelset from appearing on two bikes accidentally.</p><button class="button secondary" id="saveWheelAssignment" data-bike-id="${esc(bike.id)}" type="button">Save assignment</button></section>
+      <section class="panel wide"><div class="section-heading"><div><p class="kicker">Frame geometry</p><h2>Key dimensions</h2><p>${esc(geometry.sourceLabel || 'No source recorded')}</p></div><button class="text-button compare-bike" data-id="${esc(bike.id)}" type="button">Open comparison</button></div>${definitionList([
+        ['Reach',knownNumber(geometry.reachMm) ? `${geometry.reachMm} mm` : 'Unknown'],['Stack',knownNumber(geometry.stackMm) ? `${geometry.stackMm} mm` : 'Unknown'],['Head angle',knownNumber(geometry.headAngleDeg) ? `${geometry.headAngleDeg}°` : 'Unknown'],['Effective seat angle',knownNumber(geometry.effectiveSeatAngleDeg) ? `${geometry.effectiveSeatAngleDeg}°` : 'Unknown'],['Wheelbase',knownNumber(geometry.wheelbaseMm) ? `${geometry.wheelbaseMm} mm` : 'Unknown'],['Chainstay',knownNumber(geometry.chainstayMm) ? `${geometry.chainstayMm} mm` : 'Unknown'],['BB drop',knownNumber(geometry.bbDropMm) ? `${geometry.bbDropMm} mm` : 'Unknown'],['Standover',knownNumber(geometry.standoverMm) ? `${geometry.standoverMm} mm` : 'Unknown']
+      ])}</section>
       <section class="panel"><div class="section-heading"><div><p class="kicker">Profile health</p><h2>Missing documentation</h2></div></div>${complete.missing.length ? `<div class="missing-list">${complete.missing.map(item => `<span class="chip warning">${esc(item)}</span>`).join('')}</div>` : '<div class="notice">This profile is fully documented against the current checklist.</div>'}</section>
       <section class="panel"><div class="section-heading"><div><p class="kicker">Workshop</p><h2>Open maintenance</h2></div></div>${tasks.length ? `<div class="maintenance-list">${tasks.slice(0,4).map(maintenanceCard).join('')}</div>` : '<div class="empty">No open tasks for this bike.</div>'}</section>
-      ${fit ? `<section class="panel wide"><div class="section-heading"><div><p class="kicker">Fit baseline</p><h2>Retül measurements</h2><p>These measurements came from the Chebacco fit and should not be treated as direct mountain-bike prescriptions.</p></div></div>${definitionList([
-        ['Saddle height',`${fit.saddleHeightMm} mm`],['Saddle setback',`${Math.abs(fit.saddleSetbackMm)} mm behind BB`],['Saddle angle',`${fit.saddleAngleDeg}° per report convention`],['Stem',`${fit.stemMm} mm · ${fit.stemAngleDeg}°`],['Spacer stack',`${fit.spacerStackMm} mm`],['Crank length',`${fit.crankLengthMm} mm`],['Handlebar stack',`${fit.handlebarStackMm} mm`],['Handlebar reach',`${fit.handlebarReachMm} mm`]
+      ${hasFitMeasurements ? `<section class="panel wide"><div class="section-heading"><div><p class="kicker">Recorded fit</p><h2>Bike-specific measurements</h2><p>Compare these measurements in Geometry & fit. Unknown values are intentionally left blank.</p></div><button class="text-button edit-fit-bike" data-id="${esc(bike.id)}" type="button">Record measurements</button></div>${definitionList([
+        ['Saddle height',knownNumber(fit.saddleHeightMm) ? `${fit.saddleHeightMm} mm` : 'Unknown'],['Saddle setback',knownNumber(fit.saddleSetbackMm) ? `${Math.abs(fit.saddleSetbackMm)} mm behind BB` : 'Unknown'],['Crank length',knownNumber(fit.crankLengthMm) ? `${fit.crankLengthMm} mm` : 'Unknown'],['Stem',knownNumber(fit.stemMm) ? `${fit.stemMm} mm${knownNumber(fit.stemAngleDeg) ? ` · ${fit.stemAngleDeg}°` : ''}` : 'Unknown'],['Spacer stack',knownNumber(fit.spacerStackMm) ? `${fit.spacerStackMm} mm` : 'Unknown'],['Handlebar stack',knownNumber(fit.handlebarStackMm) ? `${fit.handlebarStackMm} mm` : 'Unknown'],['Handlebar reach',knownNumber(fit.handlebarReachMm) ? `${fit.handlebarReachMm} mm` : 'Unknown'],['Bar / grip width',knownNumber(fit.gripWidthMm) ? `${fit.gripWidthMm} mm` : 'Unknown']
       ])}</section>` : ''}
       <section class="panel wide"><div class="section-heading"><div><p class="kicker">Compatible inventory</p><h2>Spares and wheelsets</h2><p>Rule-based results stay conservative until every relevant standard is documented.</p></div></div>${compatibleGroupsForBike(bike.id)}</section>
       <section class="panel wide"><div class="section-heading"><div><p class="kicker">Build notes</p><h2>Details and history</h2></div></div>${bike.geometryNotes ? `<h3>Geometry</h3><p>${esc(bike.geometryNotes)}</p>` : ''}${bike.buildNotes ? `<h3>Build</h3><p>${esc(bike.buildNotes)}</p>` : ''}<h3>Notes</h3><p>${esc(bike.notes || 'No notes recorded.')}</p></section>
@@ -761,12 +1066,55 @@ function optionList(options,value) {
 function field(key,label,type='text',options={},record={}) {
   return { key,label,type,record,...options };
 }
+function flattenBikeForEditor(record = {}) {
+  const geometry = record.geometry || {};
+  const fit = record.fit || {};
+  return {
+    ...record,
+    geometryReachMm: geometry.reachMm ?? '', geometryStackMm: geometry.stackMm ?? '', geometryHeadAngleDeg: geometry.headAngleDeg ?? '', geometrySeatAngleDeg: geometry.effectiveSeatAngleDeg ?? '',
+    geometryTopTubeMm: geometry.topTubeMm ?? '', geometryWheelbaseMm: geometry.wheelbaseMm ?? '', geometryChainstayMm: geometry.chainstayMm ?? '', geometryFrontCenterMm: geometry.frontCenterMm ?? '',
+    geometryBbDropMm: geometry.bbDropMm ?? '', geometryBbHeightMm: geometry.bbHeightMm ?? '', geometryStandoverMm: geometry.standoverMm ?? '', geometryHeadTubeLengthMm: geometry.headTubeLengthMm ?? '',
+    geometrySeatTubeLengthMm: geometry.seatTubeLengthMm ?? '', geometryForkTravelMm: geometry.forkTravelMm ?? '', geometrySourceLabel: geometry.sourceLabel ?? '', geometrySourceUrl: geometry.sourceUrl ?? '',
+    fitCrankLengthMm: fit.crankLengthMm ?? '', fitSaddleHeightMm: fit.saddleHeightMm ?? '', fitSaddleSetbackMm: fit.saddleSetbackMm ?? '', fitSaddleAngleDeg: fit.saddleAngleDeg ?? '',
+    fitStemMm: fit.stemMm ?? '', fitStemAngleDeg: fit.stemAngleDeg ?? '', fitSpacerStackMm: fit.spacerStackMm ?? '', fitHandlebarStackMm: fit.handlebarStackMm ?? '',
+    fitHandlebarReachMm: fit.handlebarReachMm ?? '', fitSaddleToBarReachMm: fit.saddleToBarReachMm ?? '', fitHandlebarDropMm: fit.handlebarDropMm ?? '', fitGripReachMm: fit.gripReachMm ?? '',
+    fitGripDropMm: fit.gripDropMm ?? '', fitGripWidthMm: fit.gripWidthMm ?? '', fitNotes: fit.notes ?? ''
+  };
+}
+function flattenRiderFitForEditor(record = {}) {
+  return { ...record, assessmentText: Array.isArray(record.assessment) ? record.assessment.join('\n') : '' };
+}
 function editorSections(type,record) {
   if (type === 'bike') return [
     { title:'Identity', fields:[field('brand','Brand','text',{ required:true },record),field('model','Model','text',{ required:true },record),field('year','Year','number',{},record),field('category','Category','select',{ options:STANDARD_OPTIONS.categoryBike },record),field('size','Size','text',{},record),field('status','Status','select',{ options:STANDARD_OPTIONS.status },record),field('role','Primary ride role','text',{ full:true },record),field('photo','Photo path or URL','text',{ full:true, help:'Use a relative path such as assets/images/my-bike.jpg for a photo committed to the repository.' },record)] },
-    { title:'Fit and standards', fields:[field('wheelSize','Wheel size','select',{ options:STANDARD_OPTIONS.wheelSize },record),field('axleFront','Front axle','select',{ options:STANDARD_OPTIONS.frontAxle },record),field('axleRear','Rear axle','select',{ options:STANDARD_OPTIONS.rearAxle },record),field('freehub','Freehub','select',{ options:STANDARD_OPTIONS.freehub },record),field('drivetrainSpeed','Drivetrain speed','number',{ unit:'speed' },record),field('drivetrainFamily','Drivetrain family','text',{},record),field('maxCassetteCog','Maximum cassette cog','number',{ unit:'T' },record),field('currentWheelsetId','Installed wheelset','wheel-select',{},record)] },
+    { title:'Standards', fields:[field('wheelSize','Wheel size','select',{ options:STANDARD_OPTIONS.wheelSize },record),field('axleFront','Front axle','select',{ options:STANDARD_OPTIONS.frontAxle },record),field('axleRear','Rear axle','select',{ options:STANDARD_OPTIONS.rearAxle },record),field('freehub','Freehub','select',{ options:STANDARD_OPTIONS.freehub },record),field('drivetrainSpeed','Drivetrain speed','number',{ unit:'speed' },record),field('drivetrainFamily','Drivetrain family','text',{},record),field('maxCassetteCog','Maximum cassette cog','number',{ unit:'T' },record),field('currentWheelsetId','Installed wheelset','wheel-select',{},record)] },
     { title:'Components', fields:[field('brakes','Brakes','text',{ full:true },record),field('brakeFluid','Brake fluid','select',{ options:STANDARD_OPTIONS.fluid },record),field('rotorInterface','Rotor interface','select',{ options:STANDARD_OPTIONS.rotorInterface },record),field('fork','Fork','text',{ full:true },record),field('shock','Shock / rear suspension','text',{ full:true },record),field('weightLb','Weight','number',{ unit:'lb' },record)] },
+    { title:'Frame geometry', fields:[
+      field('geometryReachMm','Reach','number',{ unit:'mm', step:'0.1' },record),field('geometryStackMm','Stack','number',{ unit:'mm', step:'0.1' },record),
+      field('geometryHeadAngleDeg','Head-tube angle','number',{ unit:'°', step:'0.1' },record),field('geometrySeatAngleDeg','Effective seat angle','number',{ unit:'°', step:'0.1' },record),
+      field('geometryTopTubeMm','Effective top tube','number',{ unit:'mm', step:'0.1' },record),field('geometryWheelbaseMm','Wheelbase','number',{ unit:'mm', step:'0.1' },record),
+      field('geometryChainstayMm','Chainstay / rear center','number',{ unit:'mm', step:'0.1' },record),field('geometryFrontCenterMm','Front center','number',{ unit:'mm', step:'0.1' },record),
+      field('geometryBbDropMm','BB drop','number',{ unit:'mm', step:'0.1' },record),field('geometryBbHeightMm','BB height','number',{ unit:'mm', step:'0.1' },record),
+      field('geometryStandoverMm','Standover','number',{ unit:'mm', step:'0.1' },record),field('geometryHeadTubeLengthMm','Head-tube length','number',{ unit:'mm', step:'0.1' },record),
+      field('geometrySeatTubeLengthMm','Seat-tube length','number',{ unit:'mm', step:'0.1' },record),field('geometryForkTravelMm','Fork travel','number',{ unit:'mm' },record),
+      field('geometrySourceLabel','Geometry source','text',{ full:true, help:'Example: manufacturer geometry chart, measured by fitter, or owner-provided.' },record),field('geometrySourceUrl','Source URL','text',{ full:true },record)
+    ] },
+    { title:'Bike-specific fit measurements', fields:[
+      field('fitCrankLengthMm','Crank length','number',{ unit:'mm' },record),field('fitSaddleHeightMm','Saddle height (BB to saddle profile)','number',{ unit:'mm', step:'0.1' },record),
+      field('fitSaddleSetbackMm','Saddle setback (negative = behind BB)','number',{ unit:'mm', step:'0.1' },record),field('fitSaddleAngleDeg','Saddle angle','number',{ unit:'°', step:'0.1' },record),
+      field('fitStemMm','Stem length','number',{ unit:'mm' },record),field('fitStemAngleDeg','Stem angle','number',{ unit:'°', step:'0.1' },record),
+      field('fitSpacerStackMm','Spacer stack','number',{ unit:'mm' },record),field('fitGripWidthMm','Bar / grip width','number',{ unit:'mm' },record),
+      field('fitHandlebarStackMm','BB-to-handlebar stack','number',{ unit:'mm', step:'0.1' },record),field('fitHandlebarReachMm','BB-to-handlebar reach','number',{ unit:'mm', step:'0.1' },record),
+      field('fitSaddleToBarReachMm','Saddle-to-bar reach','number',{ unit:'mm', step:'0.1' },record),field('fitHandlebarDropMm','Handlebar drop (report convention)','number',{ unit:'mm', step:'0.1' },record),
+      field('fitGripReachMm','Saddle-to-grip reach','number',{ unit:'mm', step:'0.1' },record),field('fitGripDropMm','Grip drop (report convention)','number',{ unit:'mm', step:'0.1' },record),
+      field('fitNotes','Fit notes','textarea',{ full:true },record)
+    ] },
     { title:'Ownership and notes', fields:[field('purchaseDate','Purchase date','date',{},record),field('serialNumber','Serial number','text',{},record),field('geometryNotes','Geometry notes','textarea',{ full:true },record),field('buildNotes','Build notes','textarea',{ full:true },record),field('notes','General notes','textarea',{ full:true },record)] }
+  ];
+  if (type === 'riderFit') return [
+    { title:'Fit source', fields:[field('fitSource','Fit source','text',{ full:true },record),field('fitDate','Fit date','date',{},record),field('fitBikeId','Fit bike','bike-select',{},record),field('baselineCrankLengthMm','Baseline crank length','number',{ unit:'mm' },record)] },
+    { title:'Measured saddle and cockpit', fields:[field('saddleHeightMm','Saddle height','number',{ unit:'mm', step:'0.1' },record),field('saddleSetbackMm','Saddle setback','number',{ unit:'mm', step:'0.1' },record),field('saddleAngleDeg','Saddle angle','number',{ unit:'°', step:'0.1' },record),field('handlebarStackMm','BB-to-bar stack','number',{ unit:'mm', step:'0.1' },record),field('handlebarReachMm','BB-to-bar reach','number',{ unit:'mm', step:'0.1' },record),field('saddleToBarReachMm','Saddle-to-bar reach','number',{ unit:'mm', step:'0.1' },record),field('handlebarDropMm','Handlebar drop','number',{ unit:'mm', step:'0.1' },record),field('gripReachMm','Grip reach','number',{ unit:'mm', step:'0.1' },record),field('gripDropMm','Grip drop','number',{ unit:'mm', step:'0.1' },record),field('bbToGripReachMm','BB-to-grip reach','number',{ unit:'mm', step:'0.1' },record),field('gripWidthMm','Grip width','number',{ unit:'mm' },record),field('gripAngleDeg','Grip angle','number',{ unit:'°', step:'0.1' },record)] },
+    { title:'Assessment context', fields:[field('assessmentText','Assessment notes','textarea',{ full:true, help:'Use one item per line. Keep the wording faithful to the fitter’s report.' },record),field('notes','Transfer cautions','textarea',{ full:true },record)] }
   ];
   if (type === 'wheel') return [
     { title:'Identity', fields:[field('name','Wheelset name','text',{ required:true },record),field('category','Category','text',{},record),field('role','Primary role','text',{ full:true },record)] },
@@ -820,10 +1168,11 @@ function renderEditorFields(type,record) {
 }
 function openEditor(type,record = {}) {
   state.editor = { type, id:record.id || null, base:clone(record) };
-  const labels = { bike:'Bike profile', wheel:'Wheelset', part:'Spare component', maintenance:'Maintenance task', preset:'Ride preset', rideLog:'Ride log' };
-  document.getElementById('dialogEyebrow').textContent = record.id ? 'Edit record' : 'New record';
+  const labels = { bike:'Bike profile', riderFit:'Retül fit baseline', wheel:'Wheelset', part:'Spare component', maintenance:'Maintenance task', preset:'Ride preset', rideLog:'Ride log' };
+  document.getElementById('dialogEyebrow').textContent = record.id || type === 'riderFit' ? 'Edit record' : 'New record';
   document.getElementById('dialogTitle').textContent = labels[type] || 'Record';
-  renderEditorFields(type,record);
+  const formRecord = type === 'bike' ? flattenBikeForEditor(record) : type === 'riderFit' ? flattenRiderFitForEditor(record) : record;
+  renderEditorFields(type,formRecord);
   document.getElementById('editorDialog').showModal();
 }
 function upsert(array,record) {
@@ -839,8 +1188,32 @@ function saveEditor(event) {
   const values = collectEditorForm();
   const existing = state.editor.base || {};
   if (type === 'bike') {
-    const record = { ...existing, ...values, id:state.editor.id || uid('bike'), year:numeric(values.year), drivetrainSpeed:numeric(values.drivetrainSpeed), maxCassetteCog:numeric(values.maxCassetteCog), weightLb:numeric(values.weightLb), fit:existing.fit };
+    const geometry = {
+      ...(existing.geometry || {}), reachMm:numeric(values.geometryReachMm), stackMm:numeric(values.geometryStackMm), headAngleDeg:numeric(values.geometryHeadAngleDeg), effectiveSeatAngleDeg:numeric(values.geometrySeatAngleDeg),
+      topTubeMm:numeric(values.geometryTopTubeMm), wheelbaseMm:numeric(values.geometryWheelbaseMm), chainstayMm:numeric(values.geometryChainstayMm), frontCenterMm:numeric(values.geometryFrontCenterMm),
+      bbDropMm:numeric(values.geometryBbDropMm), bbHeightMm:numeric(values.geometryBbHeightMm), standoverMm:numeric(values.geometryStandoverMm), headTubeLengthMm:numeric(values.geometryHeadTubeLengthMm),
+      seatTubeLengthMm:numeric(values.geometrySeatTubeLengthMm), forkTravelMm:numeric(values.geometryForkTravelMm), sourceLabel:values.geometrySourceLabel || '', sourceUrl:values.geometrySourceUrl || ''
+    };
+    const fit = {
+      ...(existing.fit || {}), crankLengthMm:numeric(values.fitCrankLengthMm), saddleHeightMm:numeric(values.fitSaddleHeightMm), saddleSetbackMm:numeric(values.fitSaddleSetbackMm), saddleAngleDeg:numeric(values.fitSaddleAngleDeg),
+      stemMm:numeric(values.fitStemMm), stemAngleDeg:numeric(values.fitStemAngleDeg), spacerStackMm:numeric(values.fitSpacerStackMm), handlebarStackMm:numeric(values.fitHandlebarStackMm),
+      handlebarReachMm:numeric(values.fitHandlebarReachMm), saddleToBarReachMm:numeric(values.fitSaddleToBarReachMm), handlebarDropMm:numeric(values.fitHandlebarDropMm), gripReachMm:numeric(values.fitGripReachMm),
+      gripDropMm:numeric(values.fitGripDropMm), gripWidthMm:numeric(values.fitGripWidthMm), notes:values.fitNotes || ''
+    };
+    const nestedKeys = new Set(Object.keys(values).filter(key => key.startsWith('geometry') || key.startsWith('fit')));
+    const flatValues = Object.fromEntries(Object.entries(values).filter(([key]) => !nestedKeys.has(key)));
+    const record = { ...existing, ...flatValues, id:state.editor.id || uid('bike'), year:numeric(values.year), drivetrainSpeed:numeric(values.drivetrainSpeed), maxCassetteCog:numeric(values.maxCassetteCog), weightLb:numeric(values.weightLb), geometry, fit };
     upsert(state.data.bikes,record); saveData({ toast:'Bike profile saved', activity:`Updated ${record.brand} ${record.model}.` });
+  } else if (type === 'riderFit') {
+    state.data.rider = {
+      ...existing, ...values,
+      baselineCrankLengthMm:numeric(values.baselineCrankLengthMm), saddleHeightMm:numeric(values.saddleHeightMm), saddleSetbackMm:numeric(values.saddleSetbackMm), saddleAngleDeg:numeric(values.saddleAngleDeg),
+      handlebarStackMm:numeric(values.handlebarStackMm), handlebarReachMm:numeric(values.handlebarReachMm), saddleToBarReachMm:numeric(values.saddleToBarReachMm), handlebarDropMm:numeric(values.handlebarDropMm),
+      gripReachMm:numeric(values.gripReachMm), gripDropMm:numeric(values.gripDropMm), bbToGripReachMm:numeric(values.bbToGripReachMm), gripWidthMm:numeric(values.gripWidthMm), gripAngleDeg:numeric(values.gripAngleDeg),
+      assessment:String(values.assessmentText || '').split(/\n+/).map(item => item.trim()).filter(Boolean)
+    };
+    delete state.data.rider.assessmentText;
+    saveData({ toast:'Retül baseline saved', activity:'Updated the Retül fit baseline.' });
   } else if (type === 'wheel') {
     const record = { ...existing, ...values, id:state.editor.id || uid('wheel'), frontRotorMm:numeric(values.frontRotorMm), rearRotorMm:numeric(values.rearRotorMm), pressure:{ trail:values.trailPressure || '', park:values.parkPressure || '' } };
     delete record.trailPressure; delete record.parkPressure; upsert(state.data.wheelsets,record); saveData({ toast:'Wheelset saved', activity:`Updated wheelset ${record.name}.` });
@@ -897,7 +1270,7 @@ function applyImport(mode) {
 }
 
 function renderAll() {
-  renderDashboard(); renderBikes(); renderWheels(); renderInventory(); renderCompatibilitySelectors(); renderMaintenance(); renderRidePresets(); renderRideHistory(); renderDataStatus();
+  renderDashboard(); renderBikes(); renderWheels(); renderGeometry(); renderInventory(); renderCompatibilitySelectors(); renderMaintenance(); renderRidePresets(); renderRideHistory(); renderDataStatus();
   renderCompatibleSpares();
   if (state.route === 'bike-detail') renderBikeDetail(parseRoute().id);
   if (state.route === 'wheel-detail') renderWheelDetail(parseRoute().id);
@@ -914,7 +1287,17 @@ function bindEvents() {
     const workshopTab = event.target.closest('[data-workshop-tab]'); if (workshopTab) setWorkshopTab(workshopTab.dataset.workshopTab);
     const openBike = event.target.closest('.open-bike'); if (openBike) go('bike-detail',{ id:openBike.dataset.id });
     const openWheel = event.target.closest('.open-wheel'); if (openWheel) go('wheel-detail',{ id:openWheel.dataset.id });
+    const compareBike = event.target.closest('.compare-bike'); if (compareBike) {
+      const id = compareBike.dataset.id;
+      const other = state.geometryBikeIds.find(item => item && item !== id) || state.data.bikes.find(item => item.id !== id)?.id || '';
+      state.geometryBikeIds = [id,other,state.geometryBikeIds.find(item => item && ![id,other].includes(item)) || ''];
+      state.geometryReferenceId = id;
+      state.fitTargetId = id;
+      go('fleet',{ subview:'geometry' });
+      setTimeout(renderGeometry,0);
+    }
     const editBike = event.target.closest('.edit-bike'); if (editBike) openEditor('bike',state.data.bikes.find(item => item.id === editBike.dataset.id));
+    const editFitBike = event.target.closest('.edit-fit-bike'); if (editFitBike) openEditor('bike',state.data.bikes.find(item => item.id === editFitBike.dataset.id));
     const editWheel = event.target.closest('.edit-wheel'); if (editWheel) openEditor('wheel',state.data.wheelsets.find(item => item.id === editWheel.dataset.id));
     const editPart = event.target.closest('.edit-part'); if (editPart) openEditor('part',state.data.parts.find(item => item.id === editPart.dataset.id));
     const editMaintenance = event.target.closest('.edit-maintenance'); if (editMaintenance) openEditor('maintenance',state.data.maintenance.find(item => item.id === editMaintenance.dataset.id));
@@ -937,6 +1320,10 @@ function bindEvents() {
   });
 
   document.getElementById('addBikeButton').addEventListener('click',() => openEditor('bike',{ status:'active', category:'Other', wheelSize:'Unknown', axleFront:'Unknown', axleRear:'Unknown', freehub:'Unknown', brakeFluid:'Unknown', rotorInterface:'Unknown' }));
+  document.getElementById('editFitBaseline').addEventListener('click',() => openEditor('riderFit',state.data.rider));
+  ['geometryBikeA','geometryBikeB','geometryBikeC'].forEach((id,index) => document.getElementById(id).addEventListener('change',event => { state.geometryBikeIds[index] = event.target.value; renderGeometry(); }));
+  document.getElementById('geometryReference').addEventListener('change',event => { state.geometryReferenceId = event.target.value; renderGeometry(); });
+  document.getElementById('fitTargetBike').addEventListener('change',event => { state.fitTargetId = event.target.value; renderGeometry(); });
   document.getElementById('addWheelButton').addEventListener('click',() => openEditor('wheel',{ wheelSize:'Unknown', axleFront:'Unknown', axleRear:'Unknown', freehub:'Unknown', rotorInterface:'Unknown' }));
   document.getElementById('addPartButton').addEventListener('click',() => openEditor('part',{ category:'Cassette', quantity:1, condition:'New', location:'Home' }));
   document.getElementById('addMaintenanceButton').addEventListener('click',() => openEditor('maintenance',{ bikeId:state.data.bikes[0]?.id || '', priority:'medium', status:'open', repeatDays:0 }));
@@ -976,7 +1363,7 @@ function bindEvents() {
   document.getElementById('closeImport').addEventListener('click',() => document.getElementById('importDialog').close());
   document.getElementById('mergeImport').addEventListener('click',() => applyImport('merge'));
   document.getElementById('replaceImport').addEventListener('click',() => applyImport('replace'));
-  document.getElementById('resetData').addEventListener('click',() => confirmAction('Reset local data','This will erase edits on this device and restore the Fleet OS v1.1 sample database.',() => { state.data = clone(seedData); localStorage.setItem(STORAGE_KEY,JSON.stringify(state.data)); backupMeta = { lastBackupAt:'', changesSinceBackup:0 }; localStorage.setItem(BACKUP_META_KEY,JSON.stringify(backupMeta)); renderAll(); showToast('Local data reset'); },'Reset data'));
+  document.getElementById('resetData').addEventListener('click',() => confirmAction('Reset local data','This will erase edits on this device and restore the Fleet OS v1.2 sample database.',() => { state.data = clone(seedData); localStorage.setItem(STORAGE_KEY,JSON.stringify(state.data)); backupMeta = { lastBackupAt:'', changesSinceBackup:0 }; localStorage.setItem(BACKUP_META_KEY,JSON.stringify(backupMeta)); renderAll(); showToast('Local data reset'); },'Reset data'));
   document.getElementById('confirmCancel').addEventListener('click',() => { state.confirmAction = null; document.getElementById('confirmDialog').close(); });
   document.getElementById('confirmAction').addEventListener('click',() => { const action = state.confirmAction; state.confirmAction = null; document.getElementById('confirmDialog').close(); if (action) action(); });
   document.addEventListener('change',event => { if (event.target.id === 'bikeWheelAssignment') state.pendingWheelAssignment = event.target.value; });
