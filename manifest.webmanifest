@@ -1,10 +1,15 @@
 {
-  "name": "Fleet OS",
+  "name": "Fleet OS — Bike Fleet Manager",
   "short_name": "Fleet OS",
-  "description": "Bike fleet, wheelset, spare-parts, compatibility, ride setup, and maintenance manager.",
-  "start_url": "./",
+  "description": "Manage bikes, wheelsets, spare parts, compatibility, ride setups, and maintenance.",
+  "start_url": "./#/home",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#0c1412",
-  "theme_color": "#0f766e",
-  "icons": []
+  "background_color": "#091310",
+  "theme_color": "#0a221e",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
 }

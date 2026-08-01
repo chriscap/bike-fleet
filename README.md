@@ -1,53 +1,69 @@
-# Fleet OS v1.0
+# Fleet OS v1.1
 
-A static, DreamHost-ready bike fleet manager.
+Fleet OS is a static, installable bike-fleet manager designed to run from a normal web directory on DreamHost. It uses no build system, database, or server-side code.
 
-## Included
+## What changed in v1.1
 
-- Five bike profiles: Santa Cruz Blur TR, Yeti SB140, Parlee Chebacco XD, Parlee Z5, Wraith Paycheck
-- Three mountain-bike wheelsets and tire configurations
-- Spare-parts inventory
-- Conservative compatibility checker with manual overrides
-- Ride configurator
-- Maintenance tracker
-- JSON import/export backups
-- Offline service worker and web-app manifest
+- Five-area responsive navigation: Home, Fleet, Workshop, Ride, and More
+- Bookmarkable hash routes and browser Back support
+- Action-oriented home dashboard
+- Dedicated bike and wheelset profile pages
+- Automatic profile-completeness scoring
+- Mobile inventory cards and desktop inventory table
+- Category-specific spare-component forms
+- Criterion-by-criterion compatibility checks
+- Bike-specific compatible-spares view
+- Saved ride presets and ride logging
+- Editable, deletable, and recurring maintenance tasks
+- Backup status, safer import preview, merge/replace restore
+- Light, dark, and system themes
+- Toast confirmations and custom confirmation dialogs
+- PWA icons, offline cache, and update notification
+- Automatic migration of existing v1.0 browser data
+
+## Deploy to GitHub
+
+Copy the contents of this folder into the root of your local `bike-fleet` repository. Do not copy the outer `fleet-os-v1.1` folder itself.
+
+```bash
+cd ~/Downloads/bike-fleet
+cp -R ~/Downloads/fleet-os-v1.1/. .
+git add .
+git commit -m "Upgrade Fleet OS to v1.1"
+git push origin main
+```
 
 ## Deploy to DreamHost
 
-1. Unzip the package.
-2. Upload the **contents** of `fleet-os-v1.0` to the desired DreamHost web directory using SFTP or the file manager.
-3. Keep `index.html`, `assets`, `manifest.webmanifest`, and `service-worker.js` in the same relative structure.
-4. Use HTTPS. DreamHost can provide Let's Encrypt certificates.
-5. Open the site in a browser. Data is saved in that browser's local storage.
-
-## Important data note
-
-Version 1.0 stores data locally in the browser. It does not automatically sync across devices. Use **Data & backup → Download JSON** regularly, then import that file on another device if needed.
-
-## Local preview
-
-From the parent folder:
+SSH into DreamHost, open the web directory, and pull the new commit:
 
 ```bash
-python3 -m http.server 8000 --directory fleet-os-v1.0
+cd ~/YOUR_WEB_DIRECTORY
+git pull --ff-only origin main
 ```
 
-Then visit `http://localhost:8000`.
+Then refresh the live site. The service worker may show an update banner; select **Reload**. A hard refresh may also be needed once after deployment.
 
-## Known Version 1.0 limitations
+## Existing local data
 
-- No cloud account or cross-device synchronization
-- No photo upload storage
-- Compatibility rules are intentionally conservative and do not replace manufacturer documentation
-- Some bike and wheel standards remain marked Unknown until verified
-- No server-side authentication
+Version 1.1 keeps the same local-storage key used by v1.0 and migrates the data in place. Export a JSON backup before deploying as a precaution.
 
-## Recommended next release
+Data entered on one device remains on that device. It is not automatically pushed to GitHub or synchronized across browsers.
 
-- Password-protected DreamHost/PHP + MySQL sync
-- Photo and receipt uploads
-- Recurring service intervals based on ride hours
-- Printable ride cards
-- More detailed geometry and fit module
-- CSV import for spare-parts inventory
+## Hosting in a subdirectory
+
+All paths are relative, so the app works at:
+
+- `https://example.com/`
+- `https://example.com/bike-fleet/`
+- a DreamHost subdomain
+
+## Local testing
+
+From this folder:
+
+```bash
+python3 -m http.server 8000
+```
+
+Open `http://localhost:8000` and stop the server with Control+C.

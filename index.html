@@ -1,314 +1,284 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="system">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0f766e" />
+  <meta name="theme-color" content="#0a221e" />
+  <meta name="description" content="Fleet OS manages bikes, wheelsets, spare parts, compatibility, ride setups, and maintenance." />
   <title>Fleet OS — Bike Fleet Manager</title>
   <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div>
-      <p class="eyebrow">Chris's Bike Fleet</p>
-      <h1>Fleet OS</h1>
-      <p class="subtitle">Bikes, wheelsets, spares, compatibility, setups, and service history.</p>
-    </div>
-    <div class="header-actions">
-      <button class="button secondary" id="quickExport">Export backup</button>
-      <button class="button" data-nav="ride">Plan a ride</button>
-    </div>
-  </header>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
 
-  <nav class="tabs" aria-label="Primary navigation">
-    <button class="tab active" data-view="dashboard">Dashboard</button>
-    <button class="tab" data-view="bikes">Bikes</button>
-    <button class="tab" data-view="wheels">Wheelsets</button>
-    <button class="tab" data-view="inventory">Parts inventory</button>
-    <button class="tab" data-view="compatibility">Compatibility</button>
-    <button class="tab" data-view="ride">Ride configurator</button>
-    <button class="tab" data-view="maintenance">Maintenance</button>
-    <button class="tab" data-view="data">Data & backup</button>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="#/home" aria-label="Fleet OS home">
+        <span class="brand-mark" aria-hidden="true">FO</span>
+        <span><strong>Fleet OS</strong><small>Bike fleet manager</small></span>
+      </a>
+
+      <nav class="side-nav">
+        <button class="nav-item" data-route="home" aria-current="page"><span data-icon="home"></span><span>Home</span></button>
+        <button class="nav-item" data-route="fleet"><span data-icon="bike"></span><span>Fleet</span></button>
+        <button class="nav-item" data-route="workshop"><span data-icon="tools"></span><span>Workshop</span></button>
+        <button class="nav-item" data-route="ride"><span data-icon="route"></span><span>Ride</span></button>
+        <button class="nav-item" data-route="more"><span data-icon="more"></span><span>More</span></button>
+      </nav>
+
+      <div class="sidebar-status">
+        <span class="status-dot"></span>
+        <div><strong>Stored on this device</strong><small id="sidebarBackupStatus">No backup yet</small></div>
+      </div>
+    </aside>
+
+    <div class="app-content">
+      <header class="topbar">
+        <div class="topbar-title">
+          <p id="pageEyebrow">Fleet operating system</p>
+          <h1 id="pageTitle">Home</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-button" id="themeCycle" type="button" aria-label="Change appearance" title="Change appearance"><span data-icon="theme"></span></button>
+          <button class="button secondary desktop-only" id="quickExport" type="button">Export backup</button>
+          <button class="button" id="topbarPlanRide" data-route="ride" type="button">Plan a ride</button>
+        </div>
+      </header>
+
+      <main id="mainContent" tabindex="-1">
+        <section class="view active" id="view-home" data-title="Home" data-eyebrow="Fleet operating system">
+          <div class="hero-grid">
+            <article class="hero-panel">
+              <div>
+                <p class="kicker">Ready for the next ride</p>
+                <h2>Choose the right bike, wheels, and setup in one place.</h2>
+                <p class="muted">Fleet OS keeps your workshop inventory, compatibility notes, maintenance, and ride configurations connected.</p>
+              </div>
+              <div class="hero-actions">
+                <button class="button" data-route="ride" type="button">Build today’s setup</button>
+                <button class="button secondary" data-route="workshop" data-subview="maintenance" type="button">Review maintenance</button>
+              </div>
+            </article>
+            <article class="backup-card" id="backupCard"></article>
+          </div>
+
+          <section class="dashboard-section">
+            <div class="section-heading">
+              <div><p class="kicker">Needs attention</p><h2>Workshop queue</h2></div>
+              <button class="text-button" data-route="workshop" data-subview="maintenance" type="button">View all</button>
+            </div>
+            <div id="attentionQueue" class="attention-grid"></div>
+          </section>
+
+          <section class="dashboard-section">
+            <div class="section-heading">
+              <div><p class="kicker">Current fleet</p><h2>Active bikes</h2></div>
+              <button class="text-button" data-route="fleet" data-subview="bikes" type="button">Manage fleet</button>
+            </div>
+            <div id="dashboardBikes" class="bike-strip"></div>
+          </section>
+
+          <div class="two-col dashboard-lower">
+            <section class="panel">
+              <div class="section-heading"><div><p class="kicker">Current configurations</p><h2>Mountain bike modes</h2></div></div>
+              <div id="configurationGrid" class="configuration-list"></div>
+            </section>
+            <section class="panel">
+              <div class="section-heading"><div><p class="kicker">Recent activity</p><h2>Latest changes</h2></div></div>
+              <div id="recentActivity"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-fleet" data-title="Fleet" data-eyebrow="Bikes and wheelsets">
+          <div class="page-intro">
+            <div><h2>Your fleet library</h2><p>Open a bike or wheelset to see its setup, compatible spares, service history, and missing details.</p></div>
+            <div class="intro-actions"><button class="button" id="addBikeButton" type="button">Add bike</button><button class="button secondary" id="addWheelButton" type="button">Add wheelset</button></div>
+          </div>
+          <div class="segmented" role="tablist" aria-label="Fleet sections">
+            <button class="segment active" data-fleet-tab="bikes" role="tab" aria-selected="true">Bikes</button>
+            <button class="segment" data-fleet-tab="wheels" role="tab" aria-selected="false">Wheelsets</button>
+          </div>
+
+          <div class="subview active" id="fleet-bikes">
+            <div class="filter-bar">
+              <label><span>Category</span><select id="bikeCategoryFilter"><option value="all">All categories</option></select></label>
+              <label><span>Status</span><select id="bikeStatusFilter"><option value="all">All statuses</option><option value="active">Active</option><option value="retired">Retired</option><option value="sold">Sold</option></select></label>
+              <label class="search-field"><span>Search</span><input id="bikeSearch" type="search" placeholder="Brand, model, role…" /></label>
+            </div>
+            <div id="bikeGrid" class="entity-grid"></div>
+          </div>
+
+          <div class="subview" id="fleet-wheels">
+            <div id="wheelGrid" class="entity-grid"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-bike-detail" data-title="Bike profile" data-eyebrow="Fleet library">
+          <div id="bikeDetail"></div>
+        </section>
+
+        <section class="view" id="view-wheel-detail" data-title="Wheelset profile" data-eyebrow="Fleet library">
+          <div id="wheelDetail"></div>
+        </section>
+
+        <section class="view" id="view-workshop" data-title="Workshop" data-eyebrow="Inventory and maintenance">
+          <div class="page-intro">
+            <div><h2>Workshop management</h2><p>Track every spare, verify compatibility, and keep service work moving.</p></div>
+            <div class="intro-actions"><button class="button" id="addPartButton" type="button">Add component</button><button class="button secondary" id="addMaintenanceButton" type="button">Add service task</button></div>
+          </div>
+          <div class="segmented workshop-tabs" role="tablist" aria-label="Workshop sections">
+            <button class="segment active" data-workshop-tab="inventory" role="tab" aria-selected="true">Inventory</button>
+            <button class="segment" data-workshop-tab="compatibility" role="tab" aria-selected="false">Compatibility</button>
+            <button class="segment" data-workshop-tab="maintenance" role="tab" aria-selected="false">Maintenance</button>
+          </div>
+
+          <div class="subview active" id="workshop-inventory">
+            <div class="filter-bar inventory-filters">
+              <label><span>Category</span><select id="partCategoryFilter"><option value="all">All categories</option></select></label>
+              <label><span>Location</span><select id="partLocationFilter"><option value="all">All locations</option></select></label>
+              <label><span>Fits bike</span><select id="partBikeFilter"><option value="all">Any bike</option></select></label>
+              <label class="search-field"><span>Search</span><input id="partSearch" type="search" placeholder="Cassette, chain, brake pad…" /></label>
+            </div>
+            <div id="inventorySummary" class="summary-row"></div>
+            <div id="inventoryTableWrap"></div>
+          </div>
+
+          <div class="subview" id="workshop-compatibility">
+            <section class="compat-layout">
+              <div class="panel control-panel">
+                <div class="section-heading"><div><p class="kicker">Compatibility check</p><h2>Will this component fit?</h2><p>Fleet OS evaluates each known standard and explains uncertainty.</p></div></div>
+                <label><span>Component</span><select id="compatPart"></select></label>
+                <label><span>Bike</span><select id="compatBike"></select></label>
+                <button class="button" id="checkCompatibility" type="button">Check compatibility</button>
+              </div>
+              <div id="compatibilityResult" class="compatibility-result" aria-live="polite"></div>
+            </section>
+
+            <section class="panel verification-panel">
+              <div class="section-heading"><div><p class="kicker">Manual verification</p><h2>Record what you confirmed</h2><p>Save the date, method, and requirements so the result remains trustworthy.</p></div></div>
+              <div class="form-grid compact-grid">
+                <label><span>Status</span><select id="overrideStatus"><option value="direct">Direct fit</option><option value="conditional">Conditional fit</option><option value="emergency">Emergency use</option><option value="not">Not compatible</option><option value="unknown">Unknown</option></select></label>
+                <label><span>Verified on</span><span class="date-wrap"><input id="overrideDate" type="date" /></span></label>
+                <label><span>Method</span><select id="overrideMethod"><option>Physical fit check</option><option>Manufacturer documentation</option><option>Mechanic confirmation</option><option>Owner experience</option><option>Other</option></select></label>
+                <label class="full"><span>Reason / requirements</span><textarea id="overrideReason" placeholder="Example: Direct fit with 20 mm post-mount adapter and 180 mm rotor."></textarea></label>
+              </div>
+              <button class="button secondary" id="saveOverride" type="button">Save verification</button>
+            </section>
+
+            <section class="panel">
+              <div class="section-heading"><div><p class="kicker">Bike view</p><h2>Compatible spare inventory</h2></div></div>
+              <label class="inline-select"><span>Show spares for</span><select id="sparesBike"></select></label>
+              <div id="compatibleSpares"></div>
+            </section>
+          </div>
+
+          <div class="subview" id="workshop-maintenance">
+            <div class="filter-bar">
+              <label><span>Bike</span><select id="maintenanceBikeFilter"><option value="all">All bikes</option></select></label>
+              <label><span>Status</span><select id="maintenanceStatusFilter"><option value="all">All statuses</option><option value="open">Open</option><option value="completed">Completed</option></select></label>
+              <label><span>Priority</span><select id="maintenancePriorityFilter"><option value="all">All priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+            </div>
+            <div id="maintenanceList"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-ride" data-title="Ride" data-eyebrow="Plan, save, and learn">
+          <div class="page-intro">
+            <div><h2>Ride configurator</h2><p>Build a starting setup, save it as a preset, then log what actually worked.</p></div>
+          </div>
+          <section class="panel ride-builder">
+            <div class="form-grid ride-form-grid">
+              <label><span>Destination</span><select id="rideDestination"><option>Local Connecticut</option><option>Kingdom Trails</option><option>Green Mountain Trails</option><option>Sherburne Trails</option><option>Burke Mountain</option><option>Killington Bike Park</option><option>Highland Mountain</option><option>Thunder Mountain</option></select></label>
+              <label><span>Ride type</span><select id="rideType"><option value="pedal">Pedal ride</option><option value="lift">Lift-served</option></select></label>
+              <label><span>Conditions</span><select id="rideConditions"><option value="dry">Dry</option><option value="damp">Damp / mixed</option><option value="wet">Wet roots and rocks</option></select></label>
+              <label><span>Priority</span><select id="ridePriority"><option value="speed">Speed and efficiency</option><option value="balanced" selected>Balanced</option><option value="grip">Maximum grip and confidence</option></select></label>
+              <label><span>Mileage</span><div class="unit-input"><input id="rideMileage" type="number" min="1" max="100" value="15" /><span>mi</span></div></label>
+              <label><span>Technical level</span><select id="rideTechnical"><option value="smooth">Smooth / flow</option><option value="mixed" selected>Mixed</option><option value="technical">Technical / rough</option></select></label>
+            </div>
+            <button class="button" id="buildRide" type="button">Build setup</button>
+          </section>
+          <div id="rideResult" class="ride-result" aria-live="polite"></div>
+
+          <div class="two-col ride-lower">
+            <section class="panel">
+              <div class="section-heading"><div><p class="kicker">Reusable configurations</p><h2>Saved presets</h2></div></div>
+              <div id="ridePresets"></div>
+            </section>
+            <section class="panel">
+              <div class="section-heading"><div><p class="kicker">Learning loop</p><h2>Recent rides</h2></div></div>
+              <div id="rideHistory"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-more" data-title="More" data-eyebrow="Data, settings, and app info">
+          <div class="settings-grid">
+            <section class="panel">
+              <div class="section-heading"><div><p class="kicker">Data ownership</p><h2>Backup and restore</h2><p>Your changes live in this browser until you export them.</p></div></div>
+              <div id="dataStatus" class="data-status"></div>
+              <div class="stacked-actions"><button class="button" id="exportData" type="button">Export JSON backup</button><label class="button secondary file-button">Choose backup to import<input id="importData" type="file" accept="application/json" /></label></div>
+            </section>
+
+            <section class="panel">
+              <div class="section-heading"><div><p class="kicker">Appearance</p><h2>Theme</h2></div></div>
+              <label><span>Use appearance</span><select id="themeSelect"><option value="system">System setting</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+              <p class="muted">The preference is stored on this device.</p>
+            </section>
+
+            <section class="panel">
+              <div class="section-heading"><div><p class="kicker">Privacy</p><h2>Public site, local data</h2></div></div>
+              <p>The website code and seeded examples are public on GitHub. Updates you enter in the app remain in your browser and are not pushed to GitHub or DreamHost automatically.</p>
+            </section>
+
+            <section class="panel danger-zone">
+              <div class="section-heading"><div><p class="kicker">Danger zone</p><h2>Reset local data</h2></div></div>
+              <p class="muted">This removes local edits on this device and restores the v1.1 sample database.</p>
+              <button class="button danger-button" id="resetData" type="button">Reset local data</button>
+            </section>
+          </div>
+          <footer class="app-footer"><span>Fleet OS v1.1.0</span><span>Designed for the workbench and trailhead.</span></footer>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Primary navigation">
+    <button class="mobile-nav-item" data-route="home" aria-current="page"><span data-icon="home"></span><span>Home</span></button>
+    <button class="mobile-nav-item" data-route="fleet"><span data-icon="bike"></span><span>Fleet</span></button>
+    <button class="mobile-nav-item" data-route="workshop"><span data-icon="tools"></span><span>Workshop</span></button>
+    <button class="mobile-nav-item" data-route="ride"><span data-icon="route"></span><span>Ride</span></button>
+    <button class="mobile-nav-item" data-route="more"><span data-icon="more"></span><span>More</span></button>
   </nav>
 
-  <main>
-    <section class="view active" id="view-dashboard">
-      <div class="metric-grid" id="dashboardMetrics"></div>
-      <div class="two-col">
-        <section class="panel">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Fleet status</p>
-              <h2>Active bikes</h2>
-            </div>
-            <button class="button small" data-nav="bikes">Manage bikes</button>
-          </div>
-          <div id="dashboardBikes" class="card-grid"></div>
-        </section>
-        <section class="panel">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Attention</p>
-              <h2>Maintenance queue</h2>
-            </div>
-            <button class="button small" data-nav="maintenance">Open tracker</button>
-          </div>
-          <div id="dashboardMaintenance"></div>
-        </section>
-      </div>
-      <section class="panel">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Modular setup</p>
-            <h2>Six mountain-bike personalities</h2>
-          </div>
-        </div>
-        <div id="configurationGrid" class="configuration-grid"></div>
-      </section>
-    </section>
-
-    <section class="view" id="view-bikes">
-      <div class="section-heading page-heading">
-        <div>
-          <p class="eyebrow">Fleet library</p>
-          <h2>Bikes</h2>
-          <p>Profiles may be complete or stubbed and filled in later.</p>
-        </div>
-        <button class="button" id="addBikeButton">Add bike</button>
-      </div>
-      <div class="filter-row">
-        <label>Category
-          <select id="bikeCategoryFilter">
-            <option value="all">All categories</option>
-          </select>
-        </label>
-        <label>Status
-          <select id="bikeStatusFilter">
-            <option value="all">All statuses</option>
-            <option value="active">Active</option>
-            <option value="retired">Retired</option>
-            <option value="sold">Sold</option>
-          </select>
-        </label>
-        <label>Search
-          <input id="bikeSearch" type="search" placeholder="Brand, model, notes…" />
-        </label>
-      </div>
-      <div id="bikeGrid" class="card-grid"></div>
-    </section>
-
-    <section class="view" id="view-wheels">
-      <div class="section-heading page-heading">
-        <div>
-          <p class="eyebrow">Wheel and tire library</p>
-          <h2>Wheelsets</h2>
-          <p>Track tire combinations, pressures, standards, and bike compatibility.</p>
-        </div>
-        <button class="button" id="addWheelButton">Add wheelset</button>
-      </div>
-      <div id="wheelGrid" class="card-grid"></div>
-    </section>
-
-    <section class="view" id="view-inventory">
-      <div class="section-heading page-heading">
-        <div>
-          <p class="eyebrow">Workshop</p>
-          <h2>Spare parts inventory</h2>
-          <p>Track quantities, condition, storage location, and compatibility.</p>
-        </div>
-        <button class="button" id="addPartButton">Add component</button>
-      </div>
-      <div class="filter-row">
-        <label>Category
-          <select id="partCategoryFilter"><option value="all">All categories</option></select>
-        </label>
-        <label>Location
-          <select id="partLocationFilter"><option value="all">All locations</option></select>
-        </label>
-        <label>Search
-          <input id="partSearch" type="search" placeholder="Cassette, chain, brake pad…" />
-        </label>
-      </div>
-      <div id="inventoryTableWrap"></div>
-    </section>
-
-    <section class="view" id="view-compatibility">
-      <div class="section-heading page-heading">
-        <div>
-          <p class="eyebrow">Compatibility engine</p>
-          <h2>Will this part fit?</h2>
-          <p>Results stay conservative: missing standards return “Unknown” rather than a guess.</p>
-        </div>
-      </div>
-      <div class="panel compatibility-controls">
-        <label>Component
-          <select id="compatPart"></select>
-        </label>
-        <label>Bike
-          <select id="compatBike"></select>
-        </label>
-        <button class="button" id="checkCompatibility">Check compatibility</button>
-      </div>
-      <div id="compatibilityResult" class="compatibility-result" aria-live="polite"></div>
-      <section class="panel">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Manual verification</p>
-            <h2>Save an override</h2>
-            <p>Use this after you physically confirm a fit, adapter, or limitation.</p>
-          </div>
-        </div>
-        <div class="compatibility-controls">
-          <label>Status
-            <select id="overrideStatus">
-              <option value="direct">Direct fit</option>
-              <option value="conditional">Conditional fit</option>
-              <option value="emergency">Emergency use</option>
-              <option value="not">Not compatible</option>
-              <option value="unknown">Unknown</option>
-            </select>
-          </label>
-          <label class="grow">Reason / requirements
-            <input id="overrideReason" type="text" placeholder="Example: Requires 20 mm post-mount adapter" />
-          </label>
-          <button class="button secondary" id="saveOverride">Save override</button>
-        </div>
-      </section>
-    </section>
-
-    <section class="view" id="view-ride">
-      <div class="section-heading page-heading">
-        <div>
-          <p class="eyebrow">Ride planning</p>
-          <h2>Ride configurator</h2>
-          <p>Choose the ride, conditions, and priority to get a starting configuration.</p>
-        </div>
-      </div>
-      <div class="panel ride-form-grid">
-        <label>Destination
-          <select id="rideDestination">
-            <option>Local Connecticut</option>
-            <option>Kingdom Trails</option>
-            <option>Green Mountain Trails</option>
-            <option>Sherburne Trails</option>
-            <option>Burke Mountain</option>
-            <option>Killington Bike Park</option>
-            <option>Highland Mountain</option>
-            <option>Thunder Mountain</option>
-          </select>
-        </label>
-        <label>Ride type
-          <select id="rideType">
-            <option value="pedal">Pedal ride</option>
-            <option value="lift">Lift-served</option>
-          </select>
-        </label>
-        <label>Conditions
-          <select id="rideConditions">
-            <option value="dry">Dry</option>
-            <option value="damp">Damp / mixed</option>
-            <option value="wet">Wet roots and rocks</option>
-          </select>
-        </label>
-        <label>Priority
-          <select id="ridePriority">
-            <option value="speed">Speed and efficiency</option>
-            <option value="balanced" selected>Balanced</option>
-            <option value="grip">Maximum grip and confidence</option>
-          </select>
-        </label>
-        <label>Mileage
-          <input id="rideMileage" type="number" min="1" max="100" value="15" />
-        </label>
-        <button class="button" id="buildRide">Build setup</button>
-      </div>
-      <div id="rideResult" class="ride-result" aria-live="polite"></div>
-    </section>
-
-    <section class="view" id="view-maintenance">
-      <div class="section-heading page-heading">
-        <div>
-          <p class="eyebrow">Service history</p>
-          <h2>Maintenance tracker</h2>
-          <p>Track immediate needs, recurring service, and completed work.</p>
-        </div>
-        <button class="button" id="addMaintenanceButton">Add task</button>
-      </div>
-      <div class="filter-row">
-        <label>Bike
-          <select id="maintenanceBikeFilter"><option value="all">All bikes</option></select>
-        </label>
-        <label>Status
-          <select id="maintenanceStatusFilter">
-            <option value="open">Open</option>
-            <option value="all">All</option>
-            <option value="completed">Completed</option>
-          </select>
-        </label>
-      </div>
-      <div id="maintenanceList"></div>
-    </section>
-
-    <section class="view" id="view-data">
-      <div class="section-heading page-heading">
-        <div>
-          <p class="eyebrow">Ownership and portability</p>
-          <h2>Data & backup</h2>
-          <p>Your fleet data remains in your browser unless you export it.</p>
-        </div>
-      </div>
-      <div class="card-grid three">
-        <section class="panel compact">
-          <h3>Export</h3>
-          <p>Download a complete JSON backup of bikes, wheels, parts, compatibility overrides, rides, and maintenance.</p>
-          <button class="button" id="exportData">Download JSON</button>
-        </section>
-        <section class="panel compact">
-          <h3>Import</h3>
-          <p>Restore a previous Fleet OS backup. Existing local data will be replaced.</p>
-          <label class="file-label">Choose JSON file
-            <input id="importData" type="file" accept="application/json" />
-          </label>
-        </section>
-        <section class="panel compact danger-zone">
-          <h3>Reset</h3>
-          <p>Restore the original Version 1.0 sample data.</p>
-          <button class="button danger" id="resetData">Reset local data</button>
-        </section>
-      </div>
-      <section class="panel">
-        <h3>DreamHost deployment notes</h3>
-        <ol>
-          <li>Upload the contents of this folder to your chosen web directory.</li>
-          <li>Keep the relative folder structure intact.</li>
-          <li>Serve over HTTPS so the offline service worker and installable-app features work.</li>
-          <li>Use Export regularly because local browser data does not sync automatically across devices.</li>
-        </ol>
-      </section>
-    </section>
-  </main>
-
-  <dialog id="editorDialog">
+  <dialog id="editorDialog" class="app-dialog">
     <form method="dialog" id="editorForm">
-      <div class="dialog-heading">
-        <div>
-          <p class="eyebrow" id="dialogEyebrow">Edit</p>
-          <h2 id="dialogTitle">Record</h2>
-        </div>
-        <button class="icon-button" value="cancel" aria-label="Close">×</button>
-      </div>
-      <div id="dialogFields" class="dialog-fields"></div>
-      <div class="dialog-actions">
-        <button class="button secondary" value="cancel">Cancel</button>
-        <button class="button" type="submit" value="default">Save</button>
-      </div>
+      <header class="dialog-header">
+        <div><p class="kicker" id="dialogEyebrow">Edit</p><h2 id="dialogTitle">Record</h2></div>
+        <button class="icon-button close-dialog" type="button" aria-label="Close"><span data-icon="close"></span></button>
+      </header>
+      <div id="dialogFields" class="dialog-body"></div>
+      <footer class="dialog-footer"><button class="button secondary close-dialog" type="button">Cancel</button><button class="button" id="saveEditorButton" value="default" type="submit">Save changes</button></footer>
     </form>
   </dialog>
 
-  <footer>
-    <p>Fleet OS v1.0 · Static, offline-capable, DreamHost-ready.</p>
-  </footer>
+  <dialog id="importDialog" class="app-dialog small-dialog">
+    <div class="dialog-header"><div><p class="kicker">Import preview</p><h2>Restore Fleet OS data</h2></div><button class="icon-button" id="closeImport" type="button" aria-label="Close"><span data-icon="close"></span></button></div>
+    <div class="dialog-body"><div id="importPreview"></div><div class="notice warning">Replace overwrites the local database on this device. Merge adds new records and keeps existing records with matching IDs.</div></div>
+    <div class="dialog-footer"><button class="button secondary" id="mergeImport" type="button">Merge</button><button class="button" id="replaceImport" type="button">Replace</button></div>
+  </dialog>
+
+  <dialog id="confirmDialog" class="app-dialog small-dialog">
+    <div class="dialog-header"><div><p class="kicker">Please confirm</p><h2 id="confirmTitle">Confirm action</h2></div></div>
+    <div class="dialog-body"><p id="confirmMessage"></p></div>
+    <div class="dialog-footer"><button class="button secondary" id="confirmCancel" type="button">Cancel</button><button class="button danger-button" id="confirmAction" type="button">Continue</button></div>
+  </dialog>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+  <div class="update-banner" id="updateBanner" hidden><span>A new Fleet OS version is ready.</span><button class="button small" id="reloadApp" type="button">Reload</button></div>
 
   <script src="assets/app.js"></script>
 </body>
