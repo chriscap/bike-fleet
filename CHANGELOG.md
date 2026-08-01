@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0
+
+### Measurement guides
+- Added a dedicated measurement guide section to Geometry & Fit.
+- Added in-app visual diagrams for key fit measurements, including saddle height, setback, angle, cockpit coordinates, grip coordinates, and crank length.
+- Added geometry diagrams for frame reach/stack and wheelbase/front-center/chainstay interpretation.
+- Added definition, measure-from / measure-to, and consistency-tip content for each guide.
+- Added field-level help text to the geometry and fit editor inputs.
+
+### PWA
+- Updated cache version to `fleet-os-v1.3.0`.
+
 ## 1.2.0
 
 ### Geometry comparison

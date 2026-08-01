@@ -589,3 +589,176 @@ tbody tr:hover td { background: color-mix(in srgb, var(--accent-soft) 22%, trans
   .source-row { align-items: flex-start; flex-direction: column; }
   .fit-advice-head { align-items: flex-start; flex-direction: column; }
 }
+
+.measurement-guide-panel {
+  margin-top: 1rem;
+}
+.measurement-guide-select {
+  min-width: min(320px, 100%);
+}
+.measurement-guide-select span {
+  display: block;
+  font-size: .83rem;
+  color: var(--muted);
+  margin-bottom: .35rem;
+  font-weight: 650;
+}
+.measurement-guide-select select {
+  width: 100%;
+}
+.measurement-guide-card {
+  display: grid;
+  gap: 1rem;
+}
+.measurement-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.measurement-hero h3 {
+  margin-top: .35rem;
+  font-size: 1.25rem;
+}
+.measurement-purpose {
+  color: var(--muted);
+  max-width: 60ch;
+  margin-top: .45rem;
+}
+.measurement-meta {
+  display: grid;
+  gap: .7rem;
+  min-width: min(360px, 100%);
+  flex: 1 1 320px;
+}
+.measurement-meta div {
+  padding: .8rem .9rem;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.measurement-meta strong {
+  display: block;
+  font-size: .74rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .2rem;
+}
+.measurement-meta span {
+  display: block;
+}
+.measurement-layout {
+  display: grid;
+  grid-template-columns: minmax(340px, 1.05fr) minmax(280px, .95fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+.measurement-visual-wrap,
+.measurement-copy {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface-2);
+}
+.measurement-visual-wrap {
+  padding: 1rem;
+  display: grid;
+  place-items: center;
+}
+.measurement-copy {
+  padding: 1rem;
+  display: grid;
+  gap: .9rem;
+}
+.measurement-copy-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: .9rem 1rem;
+}
+.measurement-copy-block h4 {
+  margin: 0 0 .45rem;
+  font-size: .92rem;
+}
+.measurement-copy-block ol,
+.measurement-copy-block ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+.measurement-copy-block li + li {
+  margin-top: .35rem;
+}
+.measurement-diagram {
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+  color: var(--accent);
+}
+.diagram-bike {
+  color: color-mix(in srgb, var(--text) 55%, var(--accent));
+}
+.diagram-ground,
+.diagram-reference,
+.diagram-frame,
+.diagram-bar,
+.diagram-saddle,
+.diagram-wheel,
+.diagram-fork,
+.diagram-arc {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.diagram-ground {
+  stroke: color-mix(in srgb, var(--muted) 60%, transparent);
+  stroke-width: 2;
+  stroke-dasharray: 5 6;
+}
+.diagram-frame,
+.diagram-fork {
+  stroke: color-mix(in srgb, var(--text) 68%, transparent);
+  stroke-width: 4;
+}
+.diagram-wheel {
+  stroke: color-mix(in srgb, var(--text) 54%, transparent);
+  stroke-width: 3;
+}
+.diagram-bar,
+.diagram-saddle {
+  stroke: color-mix(in srgb, var(--text) 72%, transparent);
+  stroke-width: 4;
+}
+.diagram-point {
+  fill: var(--accent);
+}
+.diagram-point.secondary {
+  fill: color-mix(in srgb, var(--text) 60%, transparent);
+}
+.diagram-reference {
+  stroke: color-mix(in srgb, var(--muted) 70%, transparent);
+  stroke-width: 2.2;
+  stroke-dasharray: 5 5;
+}
+.diagram-dimension,
+.diagram-arc {
+  stroke: currentColor;
+  stroke-width: 3;
+}
+.diagram-dimension.vertical {
+  stroke: currentColor;
+}
+.diagram-label {
+  fill: var(--text);
+  font-size: 11px;
+  font-weight: 700;
+}
+@media (max-width: 900px) {
+  .measurement-layout {
+    grid-template-columns: 1fr;
+  }
+}

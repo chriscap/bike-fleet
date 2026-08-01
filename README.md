@@ -1,8 +1,15 @@
-# Fleet OS v1.2
+# Fleet OS v1.3
 
 Fleet OS is a static, installable bike-fleet manager designed to run from a normal web directory on DreamHost. It uses no build system, database, or server-side code.
 
-## What changed in v1.2
+## What changed in v1.3
+
+### Measurement guides and visual definitions
+
+- Added an in-app measurement guide under Geometry & Fit.
+- Added visual diagrams for the most important fit and geometry measurements.
+- Added step-by-step instructions for how to measure saddle height, setback, angle, cockpit coordinates, frame reach/stack, and wheelbase-related dimensions.
+- Added field-level help text to geometry and fit inputs so the data-entry workflow references the same definitions as the guide.
 
 ### Geometry comparison
 
@@ -30,20 +37,20 @@ Change one variable at a time, record the original setting, and stop if an adjus
 
 ## Existing data and migration
 
-Version 1.2 preserves the local-storage key used by earlier releases. Existing v1.0 and v1.1 records are merged with the new geometry and fit fields when the app opens.
+Version 1.3 preserves the local-storage key used by earlier releases. Existing v1.0 and v1.1 records are merged with the new geometry and fit fields when the app opens.
 
 Export a JSON backup from the live site before deploying. Data entered on one device remains on that device; it is not automatically pushed to GitHub or synchronized across browsers.
 
 ## Deploy to GitHub — run on your Mac
 
-Download and unzip `fleet-os-v1.2.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
+Download and unzip `fleet-os-v1.3.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
 
 ```bash
 cd ~/Downloads/bike-fleet
-cp -R ~/Downloads/fleet-os-v1.2/. .
+cp -R ~/Downloads/fleet-os-v1.3/. .
 git status
 git add .
-git commit -m "Add geometry and Retül fit tools"
+git commit -m "Add measurement guides and fit visuals"
 git push origin main
 ```
 
