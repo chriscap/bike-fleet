@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.3
+
+### Measurement guide illustration refinement
+- Reworked the bike line-art so the measurement guide reads more clearly as a realistic modern mountain bike.
+- Refined wheel, frame, fork, cockpit, linkage, and drivetrain details in both the side-view and front-view diagrams.
+- Kept all measurement anchors and callouts aligned to the improved drawing.
+
 ## 1.3.2
 
 ### Measurement guide visuals

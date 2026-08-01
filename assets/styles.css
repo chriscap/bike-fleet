@@ -708,6 +708,8 @@ tbody tr:hover td { background: color-mix(in srgb, var(--accent-soft) 22%, trans
 .diagram-bar,
 .diagram-saddle,
 .diagram-wheel,
+.diagram-tire,
+.diagram-rim,
 .diagram-fork,
 .diagram-arc,
 .diagram-seatpost,
@@ -715,6 +717,8 @@ tbody tr:hover td { background: color-mix(in srgb, var(--accent-soft) 22%, trans
 .diagram-shock,
 .diagram-chainring,
 .diagram-crank,
+.diagram-chain,
+.diagram-linkage,
 .diagram-spoke,
 .diagram-hub {
   fill: none;
@@ -741,6 +745,24 @@ tbody tr:hover td { background: color-mix(in srgb, var(--accent-soft) 22%, trans
 .diagram-saddle {
   stroke: color-mix(in srgb, var(--text) 72%, transparent);
   stroke-width: 4;
+}
+
+.diagram-tire {
+  stroke: color-mix(in srgb, var(--text) 44%, transparent);
+  stroke-width: 8;
+}
+.diagram-rim {
+  stroke: color-mix(in srgb, var(--text) 62%, transparent);
+  stroke-width: 2.5;
+}
+.diagram-linkage {
+  stroke: color-mix(in srgb, var(--text) 58%, transparent);
+  stroke-width: 3.2;
+}
+.diagram-chain {
+  stroke: color-mix(in srgb, var(--text) 52%, transparent);
+  stroke-width: 2;
+  stroke-dasharray: 2 3;
 }
 
 .diagram-seatpost,

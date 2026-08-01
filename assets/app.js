@@ -3,7 +3,7 @@
 const STORAGE_KEY = 'fleet-os-v1-data';
 const BACKUP_META_KEY = 'fleet-os-backup-meta';
 const SETTINGS_KEY = 'fleet-os-settings';
-const APP_VERSION = '1.3.2';
+const APP_VERSION = '1.3.3';
 
 const ICONS = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/></svg>',
@@ -954,72 +954,102 @@ function diagramBase({ width = 420, height = 280, frontView = false } = {}) {
   if (frontView) {
     return {
       width, height, viewBox: `0 0 ${width} ${height}`,
-      head:[210,98], leftGrip:[96,74], rightGrip:[324,74], saddle:[210,172], forkLeftTop:[178,112], forkRightTop:[242,112], wheelY:214
+      head:[210,110], leftGrip:[90,82], rightGrip:[330,82], saddle:[210,168],
+      forkLeftTop:[186,120], forkRightTop:[234,120], wheelCenter:[210,208], wheelRadius:44,
+      floorY:258
     };
   }
   return {
     width, height, viewBox: `0 0 ${width} ${height}`,
-    rearAxle:[84,220],
-    frontAxle:[340,220],
-    rearContact:[84,247],
-    frontContact:[340,247],
-    bb:[183,176],
-    pedalAxle:[191,236],
-    seatCluster:[154,133],
-    seatTop:[150,104],
-    saddleMid:[151,96],
-    saddleTip:[179,95],
-    headTop:[275,96],
-    headBottom:[291,133],
-    stem:[287,82],
-    bar:[289,78],
-    grip:[322,78],
-    forkCrown:[292,137],
-    forkArch:[312,181],
-    seatstayJunction:[113,170],
-    dropout:[105,205],
-    shockTop:[232,125],
-    shockBottom:[210,153],
-    chainring:[183,176,17],
-    floorY:248
+    rearAxle:[90,214],
+    frontAxle:[338,214],
+    bb:[184,182],
+    pedalAxle:[195,239],
+    seatCluster:[153,137],
+    seatTop:[150,106],
+    saddleMid:[152,96],
+    saddleTip:[184,95],
+    headTop:[272,103],
+    headBottom:[288,142],
+    barCenter:[293,82],
+    rearGrip:[266,84],
+    grip:[327,81],
+    forkLeftTop:[286,142],
+    forkRightTop:[298,138],
+    forkArchY:177,
+    dropout:[108,199],
+    shockTop:[228,125],
+    shockBottom:[208,152],
+    rocker:[195,128],
+    floorY:250
   };
 }
+
 function bikeGuideBaseSvg(extra, opts = {}) {
   const g = diagramBase(opts);
-  const { rearAxle, frontAxle, bb, pedalAxle, seatCluster, seatTop, saddleMid, saddleTip, headTop, headBottom, stem, bar, grip, forkCrown, forkArch, seatstayJunction, dropout, shockTop, shockBottom, floorY } = g;
-  const wheel = (cx, cy, r) => `<circle class="diagram-wheel" cx="${cx}" cy="${cy}" r="${r}" /><circle class="diagram-hub" cx="${cx}" cy="${cy}" r="4" /><line class="diagram-spoke" x1="${cx-r+12}" y1="${cy}" x2="${cx+r-12}" y2="${cy}" /><line class="diagram-spoke" x1="${cx}" y1="${cy-r+12}" x2="${cx}" y2="${cy+r-12}" />`;
+  const wheel = (cx, cy, r) => {
+    const spokes = [0, 30, 60, 90, 120, 150].map(angle => {
+      const rad = angle * Math.PI / 180;
+      const dx = Math.cos(rad) * (r - 10);
+      const dy = Math.sin(rad) * (r - 10);
+      return `<line class="diagram-spoke" x1="${cx - dx}" y1="${cy - dy}" x2="${cx + dx}" y2="${cy + dy}" />`;
+    }).join('');
+    return `
+      <circle class="diagram-tire" cx="${cx}" cy="${cy}" r="${r}" />
+      <circle class="diagram-rim" cx="${cx}" cy="${cy}" r="${r - 7}" />
+      ${spokes}
+      <circle class="diagram-hub" cx="${cx}" cy="${cy}" r="4.5" />`;
+  };
   return `<svg viewBox="${g.viewBox}" class="measurement-diagram" aria-hidden="true">
     <defs>
       <marker id="arrow-end" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"></path></marker>
     </defs>
     <g class="diagram-bike">
-      <line class="diagram-ground" x1="20" y1="${floorY}" x2="398" y2="${floorY}" />
-      ${wheel(rearAxle[0], rearAxle[1], 54)}
-      ${wheel(frontAxle[0], frontAxle[1], 54)}
-      <path class="diagram-frame" d="M${headBottom[0]} ${headBottom[1]} L${seatCluster[0]} ${seatCluster[1]} L${dropout[0]} ${dropout[1]} L${bb[0]} ${bb[1]} L${headBottom[0]} ${headBottom[1]}" />
-      <path class="diagram-frame" d="M${seatCluster[0]} ${seatCluster[1]} L${bb[0]} ${bb[1]}" />
-      <path class="diagram-frame rear-triangle" d="M${seatCluster[0]} ${seatCluster[1]} L${seatstayJunction[0]} ${seatstayJunction[1]} L${dropout[0]} ${dropout[1]}" />
-      <path class="diagram-fork" d="M${headBottom[0]} ${headBottom[1]} L${frontAxle[0]-9} ${frontAxle[1]-12} M${forkCrown[0]} ${forkCrown[1]-2} L${frontAxle[0]+8} ${frontAxle[1]-12} M${frontAxle[0]-16} ${forkArch[1]} Q${frontAxle[0]} ${forkArch[1]-10} ${frontAxle[0]+16} ${forkArch[1]}" />
-      <line class="diagram-seatpost" x1="${seatCluster[0]}" y1="${seatCluster[1]}" x2="${seatTop[0]}" y2="${seatTop[1]}" />
-      <path class="diagram-saddle" d="M${saddleMid[0]-24} ${saddleMid[1]+1} Q${saddleMid[0]-6} ${saddleMid[1]-4} ${saddleMid[0]+10} ${saddleMid[1]} L${saddleTip[0]} ${saddleTip[1]}" />
-      <line class="diagram-stem" x1="${headTop[0]}" y1="${headTop[1]}" x2="${stem[0]}" y2="${stem[1]}" />
-      <path class="diagram-bar" d="M${bar[0]-34} ${bar[1]+2} Q${bar[0]-12} ${bar[1]-2} ${bar[0]+4} ${bar[1]} Q${bar[0]+18} ${bar[1]+1} ${grip[0]} ${grip[1]+1}" />
-      <line class="diagram-shock" x1="${shockTop[0]}" y1="${shockTop[1]}" x2="${shockBottom[0]}" y2="${shockBottom[1]}" />
-      <circle class="diagram-chainring" cx="${bb[0]}" cy="${bb[1]}" r="17" />
-      <line class="diagram-crank" x1="${bb[0]}" y1="${bb[1]}" x2="${pedalAxle[0]}" y2="${pedalAxle[1]}" />
-      <circle class="diagram-point" cx="${bb[0]}" cy="${bb[1]}" r="4.5" />
-      <circle class="diagram-point" cx="${saddleMid[0]}" cy="${saddleMid[1]}" r="4" />
-      <circle class="diagram-point" cx="${saddleTip[0]}" cy="${saddleTip[1]}" r="4" />
-      <circle class="diagram-point" cx="${bar[0]}" cy="${bar[1]}" r="4" />
-      <circle class="diagram-point" cx="${grip[0]}" cy="${grip[1]+1}" r="4" />
-      <circle class="diagram-point secondary" cx="${headTop[0]}" cy="${headTop[1]}" r="4" />
-      <circle class="diagram-point secondary" cx="${rearAxle[0]}" cy="${rearAxle[1]}" r="4" />
-      <circle class="diagram-point secondary" cx="${frontAxle[0]}" cy="${frontAxle[1]}" r="4" />
-      <circle class="diagram-point secondary" cx="${pedalAxle[0]}" cy="${pedalAxle[1]}" r="4" />
+      <line class="diagram-ground" x1="20" y1="${g.floorY}" x2="400" y2="${g.floorY}" />
+      ${wheel(g.rearAxle[0], g.rearAxle[1], 55)}
+      ${wheel(g.frontAxle[0], g.frontAxle[1], 55)}
+
+      <line class="diagram-frame" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.headTop[0]}" y2="${g.headTop[1]}" />
+      <line class="diagram-frame" x1="${g.headBottom[0]}" y1="${g.headBottom[1]}" x2="${g.bb[0]}" y2="${g.bb[1]}" />
+      <line class="diagram-frame" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.bb[0]}" y2="${g.bb[1]}" />
+      <line class="diagram-frame" x1="${g.headTop[0]}" y1="${g.headTop[1]}" x2="${g.headBottom[0]}" y2="${g.headBottom[1]}" />
+
+      <line class="diagram-frame rear-triangle" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.dropout[0]}" y2="${g.dropout[1]}" />
+      <line class="diagram-frame rear-triangle" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.dropout[0]}" y2="${g.dropout[1]}" />
+      <line class="diagram-frame rear-triangle" x1="${g.dropout[0]}" y1="${g.dropout[1]}" x2="${g.rearAxle[0]}" y2="${g.rearAxle[1]}" />
+
+      <line class="diagram-linkage" x1="${g.seatCluster[0] + 8}" y1="${g.seatCluster[1] - 4}" x2="${g.rocker[0]}" y2="${g.rocker[1]}" />
+      <line class="diagram-linkage" x1="${g.rocker[0]}" y1="${g.rocker[1]}" x2="${g.shockTop[0]}" y2="${g.shockTop[1]}" />
+      <line class="diagram-shock" x1="${g.shockTop[0]}" y1="${g.shockTop[1]}" x2="${g.shockBottom[0]}" y2="${g.shockBottom[1]}" />
+
+      <line class="diagram-seatpost" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.seatTop[0]}" y2="${g.seatTop[1]}" />
+      <path class="diagram-saddle" d="M${g.saddleMid[0] - 27} ${g.saddleMid[1] + 2} Q${g.saddleMid[0] - 7} ${g.saddleMid[1] - 5} ${g.saddleMid[0] + 10} ${g.saddleMid[1] - 1} L${g.saddleTip[0]} ${g.saddleTip[1]}" />
+
+      <line class="diagram-stem" x1="${g.headTop[0]}" y1="${g.headTop[1]}" x2="${g.barCenter[0]}" y2="${g.barCenter[1]}" />
+      <path class="diagram-bar" d="M${g.rearGrip[0]} ${g.rearGrip[1]} Q${g.barCenter[0] - 10} ${g.barCenter[1] - 5} ${g.barCenter[0]} ${g.barCenter[1]} Q${g.barCenter[0] + 14} ${g.barCenter[1] - 1} ${g.grip[0]} ${g.grip[1]}" />
+
+      <line class="diagram-fork" x1="${g.forkLeftTop[0]}" y1="${g.forkLeftTop[1]}" x2="${g.frontAxle[0] - 9}" y2="${g.frontAxle[1] - 12}" />
+      <line class="diagram-fork" x1="${g.forkRightTop[0]}" y1="${g.forkRightTop[1]}" x2="${g.frontAxle[0] + 9}" y2="${g.frontAxle[1] - 12}" />
+      <path class="diagram-fork" d="M${g.frontAxle[0] - 18} ${g.forkArchY} Q${g.frontAxle[0]} ${g.forkArchY - 10} ${g.frontAxle[0] + 18} ${g.forkArchY}" />
+
+      <circle class="diagram-chainring" cx="${g.bb[0]}" cy="${g.bb[1]}" r="16" />
+      <line class="diagram-crank" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.pedalAxle[0]}" y2="${g.pedalAxle[1]}" />
+      <path class="diagram-chain" d="M${g.bb[0] + 16} ${g.bb[1] - 1} L${g.dropout[0] + 5} ${g.dropout[1] - 11}" />
+
+      <circle class="diagram-point" cx="${g.bb[0]}" cy="${g.bb[1]}" r="4.5" />
+      <circle class="diagram-point" cx="${g.saddleMid[0]}" cy="${g.saddleMid[1]}" r="4" />
+      <circle class="diagram-point" cx="${g.saddleTip[0]}" cy="${g.saddleTip[1]}" r="4" />
+      <circle class="diagram-point" cx="${g.barCenter[0]}" cy="${g.barCenter[1]}" r="4" />
+      <circle class="diagram-point" cx="${g.grip[0]}" cy="${g.grip[1]}" r="4" />
+      <circle class="diagram-point secondary" cx="${g.headTop[0]}" cy="${g.headTop[1]}" r="4" />
+      <circle class="diagram-point secondary" cx="${g.rearAxle[0]}" cy="${g.rearAxle[1]}" r="4" />
+      <circle class="diagram-point secondary" cx="${g.frontAxle[0]}" cy="${g.frontAxle[1]}" r="4" />
+      <circle class="diagram-point secondary" cx="${g.pedalAxle[0]}" cy="${g.pedalAxle[1]}" r="4" />
     </g>
     ${extra(g)}
   </svg>`;
 }
+
 function frontGripDiagram(extra) {
   const g = diagramBase({ frontView: true });
   return `<svg viewBox="${g.viewBox}" class="measurement-diagram" aria-hidden="true">
@@ -1027,15 +1057,20 @@ function frontGripDiagram(extra) {
       <marker id="arrow-end" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"></path></marker>
     </defs>
     <g class="diagram-bike front-view">
-      <line class="diagram-ground" x1="70" y1="${g.wheelY+18}" x2="350" y2="${g.wheelY+18}" />
-      <path class="diagram-bar" d="M${g.leftGrip[0]} ${g.leftGrip[1]} Q${g.head[0]} ${g.leftGrip[1]-6} ${g.rightGrip[0]} ${g.rightGrip[1]}" />
-      <line class="diagram-stem" x1="${g.head[0]}" y1="${g.head[1]}" x2="${g.head[0]}" y2="${g.leftGrip[1]+8}" />
-      <path class="diagram-fork" d="M${g.forkLeftTop[0]} ${g.forkLeftTop[1]} L156 ${g.wheelY} M${g.forkRightTop[0]} ${g.forkRightTop[1]} L264 ${g.wheelY} M156 ${g.wheelY} Q210 ${g.wheelY-12} 264 ${g.wheelY}" />
-      <line class="diagram-frame" x1="${g.head[0]}" y1="${g.head[1]}" x2="${g.saddle[0]}" y2="${g.saddle[1]-14}" />
-      <line class="diagram-seatpost" x1="${g.saddle[0]}" y1="${g.saddle[1]-14}" x2="${g.saddle[0]}" y2="${g.saddle[1]}" />
-      <path class="diagram-saddle" d="M${g.saddle[0]-22} ${g.saddle[1]} Q${g.saddle[0]-4} ${g.saddle[1]-6} ${g.saddle[0]+22} ${g.saddle[1]}" />
-      <circle class="diagram-wheel" cx="156" cy="${g.wheelY+2}" r="23" />
-      <circle class="diagram-wheel" cx="264" cy="${g.wheelY+2}" r="23" />
+      <line class="diagram-ground" x1="70" y1="${g.floorY}" x2="350" y2="${g.floorY}" />
+      <circle class="diagram-tire" cx="${g.wheelCenter[0]}" cy="${g.wheelCenter[1]}" r="${g.wheelRadius}" />
+      <circle class="diagram-rim" cx="${g.wheelCenter[0]}" cy="${g.wheelCenter[1]}" r="${g.wheelRadius - 6}" />
+      <line class="diagram-frame" x1="${g.head[0]}" y1="${g.head[1]}" x2="${g.saddle[0]}" y2="${g.saddle[1] - 18}" />
+      <line class="diagram-seatpost" x1="${g.saddle[0]}" y1="${g.saddle[1] - 18}" x2="${g.saddle[0]}" y2="${g.saddle[1]}" />
+      <path class="diagram-saddle" d="M${g.saddle[0] - 24} ${g.saddle[1]} Q${g.saddle[0]} ${g.saddle[1] - 8} ${g.saddle[0] + 24} ${g.saddle[1]}" />
+      <line class="diagram-stem" x1="${g.head[0]}" y1="${g.head[1]}" x2="${g.head[0]}" y2="${g.leftGrip[1] + 8}" />
+      <path class="diagram-bar" d="M${g.leftGrip[0]} ${g.leftGrip[1]} Q${g.head[0]} ${g.leftGrip[1] - 8} ${g.rightGrip[0]} ${g.rightGrip[1]}" />
+      <line class="diagram-fork" x1="${g.forkLeftTop[0]}" y1="${g.forkLeftTop[1]}" x2="${g.wheelCenter[0] - 16}" y2="${g.wheelCenter[1] - 14}" />
+      <line class="diagram-fork" x1="${g.forkRightTop[0]}" y1="${g.forkRightTop[1]}" x2="${g.wheelCenter[0] + 16}" y2="${g.wheelCenter[1] - 14}" />
+      <path class="diagram-fork" d="M${g.wheelCenter[0] - 24} ${g.wheelCenter[1] - 12} Q${g.wheelCenter[0]} ${g.wheelCenter[1] - 22} ${g.wheelCenter[0] + 24} ${g.wheelCenter[1] - 12}" />
+      <circle class="diagram-hub" cx="${g.wheelCenter[0]}" cy="${g.wheelCenter[1]}" r="5" />
+      <line class="diagram-spoke" x1="${g.wheelCenter[0] - 30}" y1="${g.wheelCenter[1]}" x2="${g.wheelCenter[0] + 30}" y2="${g.wheelCenter[1]}" />
+      <line class="diagram-spoke" x1="${g.wheelCenter[0]}" y1="${g.wheelCenter[1] - 30}" x2="${g.wheelCenter[0]}" y2="${g.wheelCenter[1] + 30}" />
       <circle class="diagram-point" cx="${g.leftGrip[0]}" cy="${g.leftGrip[1]}" r="4" />
       <circle class="diagram-point" cx="${g.rightGrip[0]}" cy="${g.rightGrip[1]}" r="4" />
       <circle class="diagram-point secondary" cx="${g.saddle[0]}" cy="${g.saddle[1]}" r="4" />
@@ -1043,6 +1078,7 @@ function frontGripDiagram(extra) {
     ${extra(g)}
   </svg>`;
 }
+
 function measurementGuideDiagram(guide) {
   const label = (text, x, y, align='start') => `<text class="diagram-label" x="${x}" y="${y}" text-anchor="${align}">${esc(text)}</text>`;
   const dim = (x1, y1, x2, y2, text, klass='') => `<line class="diagram-dimension ${klass}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-start="url(#arrow-end)" marker-end="url(#arrow-end)" />${label(text, (x1+x2)/2, (y1+y2)/2 - 8, 'middle')}`;
@@ -1056,13 +1092,13 @@ function measurementGuideDiagram(guide) {
     case 'crankLength':
       return bikeGuideBaseSvg(g => `${dim(g.bb[0], g.bb[1], g.pedalAxle[0], g.pedalAxle[1], 'Crank length')}<circle class="diagram-point" cx="${g.pedalAxle[0]}" cy="${g.pedalAxle[1]}" r="4" />${label('Pedal axle center', g.pedalAxle[0]+18, g.pedalAxle[1]+12)}`);
     case 'handlebarStack':
-      return bikeGuideBaseSvg(g => `${dim(g.bar[0]+38, g.bb[1], g.bar[0]+38, g.bar[1], 'Bar stack', 'vertical')}<line class="diagram-reference" x1="${g.bar[0]}" y1="${g.bb[1]}" x2="${g.bar[0]+56}" y2="${g.bb[1]}" /><line class="diagram-reference" x1="${g.bar[0]}" y1="${g.bar[1]}" x2="${g.bar[0]+56}" y2="${g.bar[1]}" />`);
+      return bikeGuideBaseSvg(g => `${dim(g.barCenter[0]+38, g.bb[1], g.barCenter[0]+38, g.barCenter[1], 'Bar stack', 'vertical')}<line class="diagram-reference" x1="${g.barCenter[0]}" y1="${g.bb[1]}" x2="${g.barCenter[0]+56}" y2="${g.bb[1]}" /><line class="diagram-reference" x1="${g.barCenter[0]}" y1="${g.barCenter[1]}" x2="${g.barCenter[0]+56}" y2="${g.barCenter[1]}" />`);
     case 'handlebarReach':
-      return bikeGuideBaseSvg(g => `${dim(g.bb[0], g.bar[1]-22, g.bar[0], g.bar[1]-22, 'Bar reach')}<line class="diagram-reference" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.bb[0]}" y2="${g.bar[1]-8}" /><line class="diagram-reference" x1="${g.bar[0]}" y1="${g.bar[1]}" x2="${g.bar[0]}" y2="${g.bar[1]-8}" />`);
+      return bikeGuideBaseSvg(g => `${dim(g.bb[0], g.barCenter[1]-22, g.barCenter[0], g.barCenter[1]-22, 'Bar reach')}<line class="diagram-reference" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.bb[0]}" y2="${g.barCenter[1]-8}" /><line class="diagram-reference" x1="${g.barCenter[0]}" y1="${g.barCenter[1]}" x2="${g.barCenter[0]}" y2="${g.barCenter[1]-8}" />`);
     case 'saddleToBarReach':
-      return bikeGuideBaseSvg(g => `${dim(g.saddleTip[0], g.bar[1]-26, g.bar[0], g.bar[1]-26, 'Saddle-to-bar reach')}<line class="diagram-reference" x1="${g.saddleTip[0]}" y1="${g.saddleTip[1]}" x2="${g.saddleTip[0]}" y2="${g.bar[1]-10}" /><line class="diagram-reference" x1="${g.bar[0]}" y1="${g.bar[1]}" x2="${g.bar[0]}" y2="${g.bar[1]-10}" />`);
+      return bikeGuideBaseSvg(g => `${dim(g.saddleTip[0], g.barCenter[1]-26, g.barCenter[0], g.barCenter[1]-26, 'Saddle-to-bar reach')}<line class="diagram-reference" x1="${g.saddleTip[0]}" y1="${g.saddleTip[1]}" x2="${g.saddleTip[0]}" y2="${g.barCenter[1]-10}" /><line class="diagram-reference" x1="${g.barCenter[0]}" y1="${g.barCenter[1]}" x2="${g.barCenter[0]}" y2="${g.barCenter[1]-10}" />`);
     case 'handlebarDrop':
-      return bikeGuideBaseSvg(g => `${dim(g.bar[0]+38, g.saddleMid[1], g.bar[0]+38, g.bar[1], 'Bar drop', 'vertical')}<line class="diagram-reference" x1="${g.saddleMid[0]}" y1="${g.saddleMid[1]}" x2="${g.bar[0]+54}" y2="${g.saddleMid[1]}" />`);
+      return bikeGuideBaseSvg(g => `${dim(g.barCenter[0]+38, g.saddleMid[1], g.barCenter[0]+38, g.barCenter[1], 'Bar drop', 'vertical')}<line class="diagram-reference" x1="${g.saddleMid[0]}" y1="${g.saddleMid[1]}" x2="${g.barCenter[0]+54}" y2="${g.saddleMid[1]}" />`);
     case 'gripReach':
       return bikeGuideBaseSvg(g => `${dim(g.saddleTip[0], g.grip[1]-24, g.grip[0], g.grip[1]-24, 'Grip reach')}<line class="diagram-reference" x1="${g.saddleTip[0]}" y1="${g.saddleTip[1]}" x2="${g.saddleTip[0]}" y2="${g.grip[1]-10}" /><line class="diagram-reference" x1="${g.grip[0]}" y1="${g.grip[1]+1}" x2="${g.grip[0]}" y2="${g.grip[1]-10}" />`);
     case 'gripDrop':
@@ -1822,7 +1858,7 @@ function fillRideForm(preset) {
 
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  navigator.serviceWorker.register('service-worker.js?v=1.3.2', { updateViaCache: 'none' }).then(registration => {
+  navigator.serviceWorker.register('service-worker.js?v=1.3.3', { updateViaCache: 'none' }).then(registration => {
     registration.addEventListener('updatefound',() => {
       const worker = registration.installing;
       worker?.addEventListener('statechange',() => { if (worker.state === 'installed' && navigator.serviceWorker.controller) document.getElementById('updateBanner').hidden = false; });
