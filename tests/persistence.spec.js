@@ -96,5 +96,5 @@ test('sanitized v1.0 data migrates without losing records or unknown fields', as
     model: 'Keeper',
     ownerDefinedBikeField: 'preserve bike unknown fields'
   });
-  await expect(page.getByText('Fixture Keeper')).toBeVisible();
+  await expect(page.getByRole('heading', { name: '2020 Fixture Keeper', exact: true })).toBeVisible();
 });
