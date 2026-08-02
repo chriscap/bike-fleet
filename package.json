@@ -1,0 +1,25 @@
+{
+  "name": "fleet-os",
+  "version": "1.3.5",
+  "description": "Fleet OS is a static, installable bike-fleet manager designed to run from a normal web directory on DreamHost. It uses no build system, database, or server-side code.",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report",
+    "release": "node scripts/release-version.mjs",
+    "release:check": "node scripts/check-release-version.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chriscap/bike-fleet.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/chriscap/bike-fleet/issues"
+  },
+  "homepage": "https://github.com/chriscap/bike-fleet#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}

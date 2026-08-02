@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.3.5
+
+### Fit-definition and release safety
+- Aligned road-fit anchors and sign conventions with the owner’s April 2022 Retül report.
+- Distinguished grip width from nominal bar width and road grip troughs from MTB grip-contour midpoints.
+- Preserved manufacturer-defined rear-center and front-center conventions.
+- Added deterministic release-version checks, a scoped version-bump command, GitHub Actions, and broader persistence/offline test coverage.
+
+## 1.3.4
+
+### Measurement-guide validation
+- Corrected the front-center diagram to show the center-to-center dimension from the bottom bracket to the front axle.
+- Added Playwright coverage for primary routes, all measurement guides, diagram geometry, mobile overflow, service-worker versioning, and reload persistence.
+- Synchronized the application, asset, service-worker, and cache release identity.
+
 ## 1.3.3
 
 ### Measurement guide illustration refinement

@@ -3,7 +3,7 @@
 const STORAGE_KEY = 'fleet-os-v1-data';
 const BACKUP_META_KEY = 'fleet-os-backup-meta';
 const SETTINGS_KEY = 'fleet-os-settings';
-const APP_VERSION = '1.3.3';
+const APP_VERSION = '1.3.5';
 
 const ICONS = {
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/></svg>',
@@ -48,7 +48,7 @@ const seedData = {
       'Significant limitation in forward spinal flexion.',
       'History noted: left knee injury with residual strength loss and right hamstring soreness.'
     ],
-    notes: 'This is a road/gravel fit baseline, not a direct mountain-bike prescription. The report defines a negative saddle angle as nose-down, so +1° is slightly nose-up.'
+    notes: 'This is a road/gravel fit baseline, not a direct mountain-bike prescription. The Retül road report uses the grip trough, bar top, and saddle-profile center as documented reference points. Negative drop values mean the bar or grip is below the saddle; negative saddle angle means nose-down.'
   },
   bikes: [
     {
@@ -197,8 +197,8 @@ const MEASUREMENT_GUIDES = [
     group: 'Fit',
     fieldLabel: 'Saddle height (BB to saddle profile)',
     diagram: 'saddleHeight',
-    purpose: 'Primary pedaling-extension reference. This is the most important transfer measurement when moving between bikes.',
-    definition: 'Distance from the center of the bottom bracket to the midpoint of the saddle’s usable top profile.',
+    purpose: 'Primary pedaling-extension coordinate and a useful starting reference when moving between bikes.',
+    definition: 'Straight-line distance from the center of the bottom bracket to the horizontal midpoint of the documented saddle profile.',
     measureFrom: 'Center of the bottom bracket spindle.',
     measureTo: 'Midpoint of the saddle profile on the rider’s main sitting surface.',
     howTo: [
@@ -210,7 +210,7 @@ const MEASUREMENT_GUIDES = [
     tips: [
       'Use the same saddle reference point every time.',
       'Record the saddle model in notes because saddle shape changes the result.',
-      'For MTB, note whether the bike was measured fully extended or at ride sag.'
+      'For MTB with a dropper post, measure with the post fully extended and record that state.'
     ]
   },
   {
@@ -219,7 +219,7 @@ const MEASUREMENT_GUIDES = [
     group: 'Fit',
     fieldLabel: 'Saddle setback',
     diagram: 'saddleSetback',
-    purpose: 'Fore-aft reference for seated balance and knee-over-pedal relationship.',
+    purpose: 'Fore-aft coordinate for repeating a documented saddle position and seated balance.',
     definition: 'Horizontal distance from a plumb line through the bottom bracket to the front tip of the saddle.',
     measureFrom: 'Vertical line passing through the bottom-bracket center.',
     measureTo: 'Front tip of the saddle.',
@@ -321,16 +321,16 @@ const MEASUREMENT_GUIDES = [
     fieldLabel: 'Saddle-to-bar reach',
     diagram: 'saddleToBarReach',
     purpose: 'Matches the Retül report language and is especially helpful for road/gravel comparison.',
-    definition: 'Horizontal distance from the front tip of the saddle to the center of the handlebar.',
+    definition: 'Horizontal distance from the front tip of the saddle to the documented handlebar reference. The April 2022 Retül road report uses the top of the handlebar.',
     measureFrom: 'Front tip of the saddle.',
-    measureTo: 'Center of the handlebar.',
+    measureTo: 'Top of the handlebar for the Retül road baseline.',
     howTo: [
       'Use a level or horizontal alignment between the two points.',
-      'Measure from the saddle tip to the bar center in a horizontal plane.'
+      'Measure from the saddle tip to the documented bar-top reference in a horizontal plane.'
     ],
     tips: [
       'This value is sensitive to saddle choice and setback.',
-      'Use it together with BB-to-bar reach instead of in isolation.'
+      'Do not confuse this with BB-to-handlebar reach, which uses the center of the bar.'
     ]
   },
   {
@@ -340,17 +340,17 @@ const MEASUREMENT_GUIDES = [
     fieldLabel: 'Handlebar drop',
     diagram: 'handlebarDrop',
     purpose: 'Shows how far the handlebar sits above or below the saddle.',
-    definition: 'Vertical distance from the saddle profile reference point to the top / center of the handlebar per the report convention.',
+    definition: 'Vertical distance from the center of the saddle profile to the top of the handlebar. Negative means the handlebar is below the saddle.',
     measureFrom: 'Midpoint of the saddle profile.',
-    measureTo: 'Top or center of the handlebar using one consistent convention.',
+    measureTo: 'Top of the handlebar.',
     howTo: [
       'Measure the saddle reference height above the floor.',
       'Measure the bar reference height above the floor.',
-      'Subtract one from the other and record the sign convention clearly.'
+      'Subtract saddle-profile height from bar-top height: the result is negative when the bar is below the saddle.'
     ],
     tips: [
-      'The Retül PDF states that negative means the bar is below the saddle. Fleet OS keeps the report wording in the label.',
-      'Be consistent about whether you use bar top, bar center, or grip trough.'
+      'The April 2022 Retül report records +6 mm, meaning the bar is 6 mm above the saddle profile.',
+      'Use bar top here; BB-to-handlebar stack and reach use bar center.'
     ]
   },
   {
@@ -359,17 +359,17 @@ const MEASUREMENT_GUIDES = [
     group: 'Fit',
     fieldLabel: 'Saddle-to-grip reach',
     diagram: 'gripReach',
-    purpose: 'Especially useful on mountain bikes where the rider’s hands live at the grips rather than a bar center reference.',
-    definition: 'Horizontal distance from the front tip of the saddle to the main hand position on the grip.',
+    purpose: 'Documents hand-position reach using the category-specific grip reference defined by the source report.',
+    definition: 'Horizontal distance from the front tip of the saddle to the grip trough for this Retül road report. Retül mountain-bike reports use the midpoint of the grip contour.',
     measureFrom: 'Front tip of the saddle.',
-    measureTo: 'Trough or midpoint of the grip where the hand rests.',
+    measureTo: 'Grip trough for the road baseline; grip-contour midpoint for an MTB report.',
     howTo: [
-      'Pick one exact grip reference point and use it every time.',
+      'Identify the source convention before measuring: road trough or MTB grip-contour midpoint.',
       'Measure horizontally from the saddle tip to that point.'
     ],
     tips: [
-      'If your grips have a pronounced taper or sweep, note the exact grip point used.',
-      'This is often more repeatable for flat bars than saddle-to-bar reach.'
+      'The April 2022 road baseline uses the grip trough and records 597 mm.',
+      'Never compare road-trough and MTB-midpoint values without labeling the different anchors.'
     ]
   },
   {
@@ -379,16 +379,16 @@ const MEASUREMENT_GUIDES = [
     fieldLabel: 'Grip drop',
     diagram: 'gripDrop',
     purpose: 'Shows how high or low the hands sit relative to the saddle.',
-    definition: 'Vertical distance from the saddle profile reference point to the chosen grip reference point.',
+    definition: 'Vertical distance from the center of the saddle profile to the grip trough for this Retül road report. Negative means the grip is below the saddle.',
     measureFrom: 'Midpoint of the saddle profile.',
-    measureTo: 'Trough or midpoint of the grip.',
+    measureTo: 'Grip trough for the road baseline; grip-contour midpoint for an MTB report.',
     howTo: [
-      'Measure saddle and grip heights above the floor.',
-      'Subtract them to get the relative drop.'
+      'Measure the saddle-profile center and the documented grip point above the floor.',
+      'Apply the report sign: negative when the grip is below the saddle.'
     ],
     tips: [
-      'Wide bars, backsweep, and roll can all change this number. Record bar and grip setup in notes.',
-      'For MTB, this can be more meaningful than bar-center drop.'
+      'The April 2022 road baseline records +23 mm, meaning the grip trough is above the saddle.',
+      'Wide bars, backsweep, roll, and category-specific grip anchors can all change this number.'
     ]
   },
   {
@@ -397,17 +397,17 @@ const MEASUREMENT_GUIDES = [
     group: 'Fit',
     fieldLabel: 'Grip width',
     diagram: 'gripWidth',
-    purpose: 'Documents the effective hand spacing at the bars.',
-    definition: 'Center-to-center or equivalent repeatable distance between the left and right hand positions.',
-    measureFrom: 'Center of the left grip hand position.',
-    measureTo: 'Center of the right grip hand position.',
+    purpose: 'Documents grip spacing without conflating it with nominal outside-to-outside bar width.',
+    definition: 'Three-dimensional distance between the midpoints of the left and right grip contours, following the Retül definition.',
+    measureFrom: 'Midpoint of the left grip contour.',
+    measureTo: 'Midpoint of the right grip contour.',
     howTo: [
-      'Mark the hand position on each grip.',
-      'Measure the distance between those two points.'
+      'Identify the midpoint of each documented grip contour.',
+      'Measure the three-dimensional distance between those two points.'
     ],
     tips: [
-      'If you record bar width rather than grip width, note that clearly in Fit notes.',
-      'For drop bars, use the same hood or grip reference each time.'
+      'The April 2022 Retül road baseline records 405 mm grip width.',
+      'Bar width is a separate measurement and must not be stored in this field.'
     ]
   },
   {
@@ -431,21 +431,21 @@ const MEASUREMENT_GUIDES = [
   },
   {
     id: 'wheelbase',
-    label: 'Wheelbase, chainstay, and front center',
+    label: 'Wheelbase, rear center, and front center',
     group: 'Geometry',
-    fieldLabel: 'Wheelbase / chainstay / front center',
+    fieldLabel: 'Wheelbase / rear center / front center',
     diagram: 'wheelbase',
     purpose: 'Helps explain stability, weight distribution, and maneuverability.',
-    definition: 'Wheelbase is axle-to-axle distance; chainstay is BB to rear axle; front center is BB to front axle.',
-    measureFrom: 'Axle or bottom-bracket centers.',
-    measureTo: 'The corresponding axle centers.',
+    definition: 'Record wheelbase, rear center, and front center exactly as the manufacturer chart defines them. Do not silently substitute a direct distance for a horizontal projection or derive one value from the others.',
+    measureFrom: 'Published manufacturer geometry chart.',
+    measureTo: 'The chart’s documented axle and bottom-bracket reference lines.',
     howTo: [
       'Use the geometry chart if available.',
-      'If measuring directly, keep the bike upright and measure center-to-center between the indicated points.'
+      'If a manual value is unavoidable, label whether it is a direct distance or horizontal projection and record suspension state.'
     ],
     tips: [
       'Manufacturers usually publish these values more accurately than home measurement can.',
-      'Use all three together when interpreting stability vs agility.'
+      'Use all three together when interpreting stability vs agility, but preserve the source definitions. The diagram illustrates horizontal projections only.'
     ]
   }
 ];
@@ -514,7 +514,6 @@ function migrateData(raw) {
   next.version = APP_VERSION;
   if (next.rider?.fitSource === seedData.rider.fitSource && next.rider.saddleAngleDeg === -1 && String(raw.version || '').startsWith('1.0')) {
     next.rider.saddleAngleDeg = 1;
-    next.rider.notes = seedData.rider.notes;
   }
   return next;
 }
@@ -734,7 +733,7 @@ const GEOMETRY_METRICS = [
   { key:'effectiveSeatAngleDeg', label:'Effective seat angle', unit:'°', decimals:1 },
   { key:'topTubeMm', label:'Effective top tube', unit:'mm', decimals:1 },
   { key:'wheelbaseMm', label:'Wheelbase', unit:'mm', decimals:1 },
-  { key:'chainstayMm', label:'Chainstay / rear center', unit:'mm', decimals:1 },
+  { key:'chainstayMm', label:'Rear center / chainstay (source-defined)', unit:'mm', decimals:1 },
   { key:'frontCenterMm', label:'Front center', unit:'mm', decimals:1 },
   { key:'bbDropMm', label:'Bottom-bracket drop', unit:'mm', decimals:1 },
   { key:'bbHeightMm', label:'Bottom-bracket height', unit:'mm', decimals:1 },
@@ -886,8 +885,13 @@ function baselineMeasurementList() {
     ['Saddle angle', knownNumber(rider.saddleAngleDeg) ? `${rider.saddleAngleDeg}° per report convention` : 'Unknown'],
     ['BB-to-bar stack', knownNumber(rider.handlebarStackMm) ? `${rider.handlebarStackMm} mm` : 'Unknown'],
     ['BB-to-bar reach', knownNumber(rider.handlebarReachMm) ? `${rider.handlebarReachMm} mm` : 'Unknown'],
-    ['Saddle-to-bar reach', knownNumber(rider.saddleToBarReachMm) ? `${rider.saddleToBarReachMm} mm` : 'Unknown'],
-    ['Handlebar drop', knownNumber(rider.handlebarDropMm) ? `${rider.handlebarDropMm} mm per report convention` : 'Unknown']
+    ['Saddle-to-bar reach', knownNumber(rider.saddleToBarReachMm) ? `${rider.saddleToBarReachMm} mm to bar top` : 'Unknown'],
+    ['Handlebar drop', knownNumber(rider.handlebarDropMm) ? `${Math.abs(rider.handlebarDropMm)} mm ${rider.handlebarDropMm < 0 ? 'below' : 'above'} saddle` : 'Unknown'],
+    ['Grip reach', knownNumber(rider.gripReachMm) ? `${rider.gripReachMm} mm to road grip trough` : 'Unknown'],
+    ['Grip drop', knownNumber(rider.gripDropMm) ? `${Math.abs(rider.gripDropMm)} mm ${rider.gripDropMm < 0 ? 'below' : 'above'} saddle` : 'Unknown'],
+    ['BB-to-grip reach', knownNumber(rider.bbToGripReachMm) ? `${rider.bbToGripReachMm} mm to road grip trough` : 'Unknown'],
+    ['Grip width', knownNumber(rider.gripWidthMm) ? `${rider.gripWidthMm} mm contour midpoint-to-midpoint` : 'Unknown'],
+    ['Grip angle', knownNumber(rider.gripAngleDeg) ? `${rider.gripAngleDeg}° front end up` : 'Unknown']
   ]) + `<div class="fit-assessment"><h3>Assessment context</h3><ul>${(rider.assessment || []).map(item => `<li>${esc(item)}</li>`).join('')}</ul></div>`;
 }
 function fitStatusCard(label, value, confidence, text, tone = '') {
@@ -909,7 +913,7 @@ function renderFitAdvisor(bike) {
     const actual = knownNumber(fit.saddleHeightMm) ? Number(fit.saddleHeightMm) : null;
     const difference = actual === null ? null : actual - target;
     const detail = actual === null
-      ? `This mechanically preserves the same bottom-of-stroke leg extension when moving from ${rider.baselineCrankLengthMm} mm to ${fit.crankLengthMm} mm cranks. Record the actual saddle height before changing anything.`
+      ? `This is a first-pass arithmetic estimate for moving from ${rider.baselineCrankLengthMm} mm to ${fit.crankLengthMm} mm cranks. Shoe, pedal, cleat, saddle, and bike differences can change the appropriate result; record the original setup before adjusting.`
       : `Current recorded height is ${actual} mm (${signedMillimeters(difference)} from the estimate). Shoe, pedal, saddle, and riding-category differences can justify a different result.`;
     cards.push(fitStatusCard('Crank-adjusted saddle estimate', `${Math.round(target)} mm`, 'Medium', detail));
   } else {
@@ -919,10 +923,10 @@ function renderFitAdvisor(bike) {
     if (knownNumber(fit.handlebarStackMm) && knownNumber(fit.handlebarReachMm)) {
       const stackDelta = Number(fit.handlebarStackMm) - Number(rider.handlebarStackMm);
       const reachDelta = Number(fit.handlebarReachMm) - Number(rider.handlebarReachMm);
-      let text = `Compared with the Retül baseline, the bar is ${signedMillimeters(stackDelta)} in stack and ${signedMillimeters(reachDelta)} in reach.`;
+      let text = `Compared with the Retül baseline, the bar is ${signedMillimeters(stackDelta)} in stack and ${signedMillimeters(reachDelta)} in reach. The 10 mm cues below are general comparison flags, not fitter-prescribed limits.`;
       if (stackDelta < -10) text += ' The lower front end may demand more hip, hamstring, and spinal flexion than the fitted Chebacco position.';
       if (reachDelta > 10) text += ' The longer position may increase torso extension and hand load.';
-      cards.push(fitStatusCard('Road / gravel cockpit', `${fit.handlebarStackMm} / ${fit.handlebarReachMm} mm`, 'High', text));
+      cards.push(fitStatusCard('Road / gravel cockpit', `${fit.handlebarStackMm} / ${fit.handlebarReachMm} mm`, 'Medium', text));
     } else {
       cards.push(fitStatusCard('Road / gravel cockpit', 'Measure BB-to-bar stack and reach', 'Low', `The Retül target is ${rider.handlebarStackMm} mm stack and ${rider.handlebarReachMm} mm reach at the center of the handlebar.`, 'incomplete'));
     }
@@ -937,7 +941,7 @@ function renderFitAdvisor(bike) {
       ? `Recorded mountain-bike bar position is ${fit.handlebarStackMm} mm stack and ${fit.handlebarReachMm} mm reach. Treat these as this bike’s own baseline; a flat bar and standing position make direct road-fit matching inappropriate.`
       : 'Record BB-to-grip or BB-to-bar measurements after the bike feels stable and comfortable. Do not force the road handlebar coordinates onto a wide flat-bar cockpit.';
     cards.push(fitStatusCard('Mountain-bike cockpit transfer', 'Category-specific setup', 'Low', postureText));
-    cards.push(fitStatusCard('Mobility-aware front end', 'Favor comfort before lowering', 'Medium', 'The fit assessment documented limited hip and hamstring motion plus significant limitation in forward spinal flexion. Avoid aggressive reductions in stack; test small changes while preserving control and front-wheel traction.'));
+    cards.push(fitStatusCard('Mobility-aware front end', 'Evaluate changes cautiously', 'Low', 'The fit assessment documents limited hip and hamstring motion plus significant limitation in forward spinal flexion. It does not prescribe an MTB stack target; test small changes and stop if comfort or control worsens.'));
     if (bike.id === 'sb140') cards.push(fitStatusCard('SB140 starting focus', 'Pedaling extension first', 'Medium', 'With 155 mm cranks, establish saddle height and fore-aft comfort before changing stem length or bar rise. Then tune standing balance on familiar terrain.'));
     if (bike.id === 'blur') cards.push(fitStatusCard('Blur starting focus', 'Efficient but not overextended', 'Low', 'Use the Blur’s lower, shorter chassis for speed without copying the Chebacco cockpit. Record crank length, saddle height, stem, spacers, bar rise, and grip coordinates to create a repeatable MTB baseline.'));
   }
@@ -961,27 +965,23 @@ function diagramBase({ width = 420, height = 280, frontView = false } = {}) {
   }
   return {
     width, height, viewBox: `0 0 ${width} ${height}`,
-    rearAxle:[90,214],
-    frontAxle:[338,214],
-    bb:[184,182],
-    pedalAxle:[195,239],
-    seatCluster:[153,137],
-    seatTop:[150,106],
-    saddleMid:[152,96],
-    saddleTip:[184,95],
-    headTop:[272,103],
-    headBottom:[288,142],
-    barCenter:[293,82],
-    rearGrip:[266,84],
-    grip:[327,81],
-    forkLeftTop:[286,142],
-    forkRightTop:[298,138],
-    forkArchY:177,
-    dropout:[108,199],
-    shockTop:[228,125],
-    shockBottom:[208,152],
-    rocker:[195,128],
-    floorY:250
+    rearAxle:[88,201],
+    frontAxle:[326,201],
+    wheelRadius:74,
+    bb:[174,187],
+    pedalAxle:[191,217],
+    seatCluster:[154,111],
+    seatTop:[139,55],
+    saddleMid:[141,47],
+    saddleTip:[164,48],
+    headTop:[257,61],
+    headBottom:[268,85],
+    barCenter:[269,55],
+    rearGrip:[263,54],
+    grip:[300,56],
+    forkCrown:[276,99],
+    forkArchY:140,
+    floorY:275
   };
 }
 
@@ -1005,36 +1005,34 @@ function bikeGuideBaseSvg(extra, opts = {}) {
       <marker id="arrow-end" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="currentColor"></path></marker>
     </defs>
     <g class="diagram-bike">
-      <line class="diagram-ground" x1="20" y1="${g.floorY}" x2="400" y2="${g.floorY}" />
-      ${wheel(g.rearAxle[0], g.rearAxle[1], 55)}
-      ${wheel(g.frontAxle[0], g.frontAxle[1], 55)}
+      <line class="diagram-ground" x1="8" y1="${g.floorY}" x2="412" y2="${g.floorY}" />
+      ${wheel(g.rearAxle[0], g.rearAxle[1], g.wheelRadius)}
+      ${wheel(g.frontAxle[0], g.frontAxle[1], g.wheelRadius)}
+      <circle class="diagram-rim" cx="${g.rearAxle[0]}" cy="${g.rearAxle[1]}" r="12" />
+      <circle class="diagram-rim" cx="${g.frontAxle[0]}" cy="${g.frontAxle[1]}" r="12" />
 
       <line class="diagram-frame" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.headTop[0]}" y2="${g.headTop[1]}" />
       <line class="diagram-frame" x1="${g.headBottom[0]}" y1="${g.headBottom[1]}" x2="${g.bb[0]}" y2="${g.bb[1]}" />
       <line class="diagram-frame" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.bb[0]}" y2="${g.bb[1]}" />
       <line class="diagram-frame" x1="${g.headTop[0]}" y1="${g.headTop[1]}" x2="${g.headBottom[0]}" y2="${g.headBottom[1]}" />
 
-      <line class="diagram-frame rear-triangle" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.dropout[0]}" y2="${g.dropout[1]}" />
-      <line class="diagram-frame rear-triangle" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.dropout[0]}" y2="${g.dropout[1]}" />
-      <line class="diagram-frame rear-triangle" x1="${g.dropout[0]}" y1="${g.dropout[1]}" x2="${g.rearAxle[0]}" y2="${g.rearAxle[1]}" />
-
-      <line class="diagram-linkage" x1="${g.seatCluster[0] + 8}" y1="${g.seatCluster[1] - 4}" x2="${g.rocker[0]}" y2="${g.rocker[1]}" />
-      <line class="diagram-linkage" x1="${g.rocker[0]}" y1="${g.rocker[1]}" x2="${g.shockTop[0]}" y2="${g.shockTop[1]}" />
-      <line class="diagram-shock" x1="${g.shockTop[0]}" y1="${g.shockTop[1]}" x2="${g.shockBottom[0]}" y2="${g.shockBottom[1]}" />
+      <line class="diagram-frame rear-triangle" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.rearAxle[0]}" y2="${g.rearAxle[1]}" />
+      <line class="diagram-frame rear-triangle" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.rearAxle[0]}" y2="${g.rearAxle[1]}" />
 
       <line class="diagram-seatpost" x1="${g.seatCluster[0]}" y1="${g.seatCluster[1]}" x2="${g.seatTop[0]}" y2="${g.seatTop[1]}" />
-      <path class="diagram-saddle" d="M${g.saddleMid[0] - 27} ${g.saddleMid[1] + 2} Q${g.saddleMid[0] - 7} ${g.saddleMid[1] - 5} ${g.saddleMid[0] + 10} ${g.saddleMid[1] - 1} L${g.saddleTip[0]} ${g.saddleTip[1]}" />
+      <path class="diagram-saddle" d="M${g.saddleMid[0] - 28} ${g.saddleMid[1] + 4} Q${g.saddleMid[0] - 10} ${g.saddleMid[1] - 4} ${g.saddleMid[0] + 8} ${g.saddleMid[1] - 1} L${g.saddleTip[0]} ${g.saddleTip[1]}" />
 
       <line class="diagram-stem" x1="${g.headTop[0]}" y1="${g.headTop[1]}" x2="${g.barCenter[0]}" y2="${g.barCenter[1]}" />
-      <path class="diagram-bar" d="M${g.rearGrip[0]} ${g.rearGrip[1]} Q${g.barCenter[0] - 10} ${g.barCenter[1] - 5} ${g.barCenter[0]} ${g.barCenter[1]} Q${g.barCenter[0] + 14} ${g.barCenter[1] - 1} ${g.grip[0]} ${g.grip[1]}" />
+      <path class="diagram-bar" d="M${g.rearGrip[0]} ${g.rearGrip[1]} Q${g.barCenter[0]} ${g.barCenter[1] - 2} ${g.barCenter[0]} ${g.barCenter[1]} Q${g.barCenter[0] + 15} ${g.barCenter[1] + 2} ${g.grip[0]} ${g.grip[1]}" />
 
-      <line class="diagram-fork" x1="${g.forkLeftTop[0]}" y1="${g.forkLeftTop[1]}" x2="${g.frontAxle[0] - 9}" y2="${g.frontAxle[1] - 12}" />
-      <line class="diagram-fork" x1="${g.forkRightTop[0]}" y1="${g.forkRightTop[1]}" x2="${g.frontAxle[0] + 9}" y2="${g.frontAxle[1] - 12}" />
+      <line class="diagram-fork" x1="${g.headBottom[0]}" y1="${g.headBottom[1]}" x2="${g.forkCrown[0]}" y2="${g.forkCrown[1]}" />
+      <path class="diagram-fork" d="M${g.forkCrown[0] - 4} ${g.forkCrown[1]} Q${g.forkCrown[0] + 10} ${g.forkArchY} ${g.frontAxle[0] - 5} ${g.frontAxle[1]}" />
+      <path class="diagram-fork" d="M${g.forkCrown[0] + 4} ${g.forkCrown[1] - 2} Q${g.forkCrown[0] + 20} ${g.forkArchY} ${g.frontAxle[0] + 5} ${g.frontAxle[1]}" />
       <path class="diagram-fork" d="M${g.frontAxle[0] - 18} ${g.forkArchY} Q${g.frontAxle[0]} ${g.forkArchY - 10} ${g.frontAxle[0] + 18} ${g.forkArchY}" />
 
       <circle class="diagram-chainring" cx="${g.bb[0]}" cy="${g.bb[1]}" r="16" />
       <line class="diagram-crank" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.pedalAxle[0]}" y2="${g.pedalAxle[1]}" />
-      <path class="diagram-chain" d="M${g.bb[0] + 16} ${g.bb[1] - 1} L${g.dropout[0] + 5} ${g.dropout[1] - 11}" />
+      <path class="diagram-chain" d="M${g.bb[0] + 15} ${g.bb[1] - 4} L${g.rearAxle[0] + 6} ${g.rearAxle[1] - 8} M${g.bb[0] + 14} ${g.bb[1] + 5} L${g.rearAxle[0] + 5} ${g.rearAxle[1] + 6}" />
 
       <circle class="diagram-point" cx="${g.bb[0]}" cy="${g.bb[1]}" r="4.5" />
       <circle class="diagram-point" cx="${g.saddleMid[0]}" cy="${g.saddleMid[1]}" r="4" />
@@ -1081,10 +1079,10 @@ function frontGripDiagram(extra) {
 
 function measurementGuideDiagram(guide) {
   const label = (text, x, y, align='start') => `<text class="diagram-label" x="${x}" y="${y}" text-anchor="${align}">${esc(text)}</text>`;
-  const dim = (x1, y1, x2, y2, text, klass='') => `<line class="diagram-dimension ${klass}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-start="url(#arrow-end)" marker-end="url(#arrow-end)" />${label(text, (x1+x2)/2, (y1+y2)/2 - 8, 'middle')}`;
+  const dim = (x1, y1, x2, y2, text, klass='') => `<line class="diagram-dimension ${klass}" data-measurement="${esc(text)}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-start="url(#arrow-end)" marker-end="url(#arrow-end)" />${label(text, (x1+x2)/2, (y1+y2)/2 - 8, 'middle')}`;
   switch (guide.diagram) {
     case 'saddleHeight':
-      return bikeGuideBaseSvg(g => `${dim(g.bb[0], g.bb[1], g.saddleMid[0], g.saddleMid[1], 'Saddle height')} ${label('BB center', g.bb[0]-10, g.bb[1]+26, 'end')} ${label('Saddle profile midpoint', g.saddleMid[0]-22, g.saddleMid[1]-16, 'end')}`);
+      return bikeGuideBaseSvg(g => `${dim(g.bb[0], g.bb[1], g.saddleMid[0], g.saddleMid[1], 'Saddle height')} ${label('BB center', g.bb[0]-10, g.bb[1]+26, 'end')} ${label('Saddle profile midpoint', g.saddleTip[0], g.saddleMid[1]-15, 'end')}`);
     case 'saddleSetback':
       return bikeGuideBaseSvg(g => `<line class="diagram-reference" x1="${g.bb[0]}" y1="40" x2="${g.bb[0]}" y2="236" />${dim(g.bb[0], g.saddleTip[1]+24, g.saddleTip[0], g.saddleTip[1]+24, 'Setback')} ${label('Plumb line through BB', g.bb[0]+10, 54)} ${label('Saddle tip', g.saddleTip[0]+8, g.saddleTip[1]-12)}`);
     case 'saddleAngle':
@@ -1108,7 +1106,7 @@ function measurementGuideDiagram(guide) {
     case 'frameReachStack':
       return bikeGuideBaseSvg(g => `${dim(g.bb[0], g.headTop[1]-18, g.headTop[0], g.headTop[1]-18, 'Frame reach')} ${dim(g.headTop[0]+30, g.bb[1], g.headTop[0]+30, g.headTop[1], 'Frame stack', 'vertical')} <line class="diagram-reference" x1="${g.bb[0]}" y1="${g.bb[1]}" x2="${g.bb[0]}" y2="${g.headTop[1]-6}" /> <line class="diagram-reference" x1="${g.headTop[0]}" y1="${g.bb[1]}" x2="${g.headTop[0]+46}" y2="${g.bb[1]}" /><line class="diagram-reference" x1="${g.headTop[0]}" y1="${g.headTop[1]}" x2="${g.headTop[0]+46}" y2="${g.headTop[1]}" />`);
     case 'wheelbase':
-      return bikeGuideBaseSvg(g => `${dim(g.rearAxle[0], g.floorY-18, g.frontAxle[0], g.floorY-18, 'Wheelbase')} ${dim(g.bb[0], g.floorY-44, g.frontAxle[0], g.floorY-44, 'Front center')} ${dim(g.rearAxle[0], g.floorY-70, g.bb[0], g.floorY-70, 'Chainstay')} `);
+      return bikeGuideBaseSvg(g => `${dim(g.rearAxle[0], g.floorY-18, g.frontAxle[0], g.floorY-18, 'Wheelbase')} ${dim(g.bb[0], g.floorY-44, g.frontAxle[0], g.floorY-44, 'Front center (projection)')} ${dim(g.rearAxle[0], g.floorY-70, g.bb[0], g.floorY-70, 'Rear center (projection)')} `);
     default:
       return bikeGuideBaseSvg(() => '');
   }
@@ -1210,7 +1208,7 @@ function renderBikeDetail(id) {
       <section class="panel"><div class="section-heading"><div><p class="kicker">Profile health</p><h2>Missing documentation</h2></div></div>${complete.missing.length ? `<div class="missing-list">${complete.missing.map(item => `<span class="chip warning">${esc(item)}</span>`).join('')}</div>` : '<div class="notice">This profile is fully documented against the current checklist.</div>'}</section>
       <section class="panel"><div class="section-heading"><div><p class="kicker">Workshop</p><h2>Open maintenance</h2></div></div>${tasks.length ? `<div class="maintenance-list">${tasks.slice(0,4).map(maintenanceCard).join('')}</div>` : '<div class="empty">No open tasks for this bike.</div>'}</section>
       ${hasFitMeasurements ? `<section class="panel wide"><div class="section-heading"><div><p class="kicker">Recorded fit</p><h2>Bike-specific measurements</h2><p>Compare these measurements in Geometry & fit. Unknown values are intentionally left blank.</p></div><button class="text-button edit-fit-bike" data-id="${esc(bike.id)}" type="button">Record measurements</button></div>${definitionList([
-        ['Saddle height',knownNumber(fit.saddleHeightMm) ? `${fit.saddleHeightMm} mm` : 'Unknown'],['Saddle setback',knownNumber(fit.saddleSetbackMm) ? `${Math.abs(fit.saddleSetbackMm)} mm behind BB` : 'Unknown'],['Crank length',knownNumber(fit.crankLengthMm) ? `${fit.crankLengthMm} mm` : 'Unknown'],['Stem',knownNumber(fit.stemMm) ? `${fit.stemMm} mm${knownNumber(fit.stemAngleDeg) ? ` · ${fit.stemAngleDeg}°` : ''}` : 'Unknown'],['Spacer stack',knownNumber(fit.spacerStackMm) ? `${fit.spacerStackMm} mm` : 'Unknown'],['Handlebar stack',knownNumber(fit.handlebarStackMm) ? `${fit.handlebarStackMm} mm` : 'Unknown'],['Handlebar reach',knownNumber(fit.handlebarReachMm) ? `${fit.handlebarReachMm} mm` : 'Unknown'],['Bar / grip width',knownNumber(fit.gripWidthMm) ? `${fit.gripWidthMm} mm` : 'Unknown']
+        ['Saddle height',knownNumber(fit.saddleHeightMm) ? `${fit.saddleHeightMm} mm` : 'Unknown'],['Saddle setback',knownNumber(fit.saddleSetbackMm) ? `${Math.abs(fit.saddleSetbackMm)} mm behind BB` : 'Unknown'],['Crank length',knownNumber(fit.crankLengthMm) ? `${fit.crankLengthMm} mm` : 'Unknown'],['Stem',knownNumber(fit.stemMm) ? `${fit.stemMm} mm${knownNumber(fit.stemAngleDeg) ? ` · ${fit.stemAngleDeg}°` : ''}` : 'Unknown'],['Spacer stack',knownNumber(fit.spacerStackMm) ? `${fit.spacerStackMm} mm` : 'Unknown'],['Handlebar stack',knownNumber(fit.handlebarStackMm) ? `${fit.handlebarStackMm} mm` : 'Unknown'],['Handlebar reach',knownNumber(fit.handlebarReachMm) ? `${fit.handlebarReachMm} mm` : 'Unknown'],['Grip width',knownNumber(fit.gripWidthMm) ? `${fit.gripWidthMm} mm` : 'Unknown']
       ])}</section>` : ''}
       <section class="panel wide"><div class="section-heading"><div><p class="kicker">Compatible inventory</p><h2>Spares and wheelsets</h2><p>Rule-based results stay conservative until every relevant standard is documented.</p></div></div>${compatibleGroupsForBike(bike.id)}</section>
       <section class="panel wide"><div class="section-heading"><div><p class="kicker">Build notes</p><h2>Details and history</h2></div></div>${bike.geometryNotes ? `<h3>Geometry</h3><p>${esc(bike.geometryNotes)}</p>` : ''}${bike.buildNotes ? `<h3>Build</h3><p>${esc(bike.buildNotes)}</p>` : ''}<h3>Notes</h3><p>${esc(bike.notes || 'No notes recorded.')}</p></section>
@@ -1563,7 +1561,7 @@ function editorSections(type,record) {
       field('geometryReachMm','Reach','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from BB center to the top-center of the head tube. See Geometry & Fit → Measurement guide.' },record),field('geometryStackMm','Stack','number',{ unit:'mm', step:'0.1', help:'Vertical distance from BB center to the top-center of the head tube.' },record),
       field('geometryHeadAngleDeg','Head-tube angle','number',{ unit:'°', step:'0.1' },record),field('geometrySeatAngleDeg','Effective seat angle','number',{ unit:'°', step:'0.1' },record),
       field('geometryTopTubeMm','Effective top tube','number',{ unit:'mm', step:'0.1' },record),field('geometryWheelbaseMm','Wheelbase','number',{ unit:'mm', step:'0.1', help:'Axle-to-axle distance. Use the published geometry chart when possible.' },record),
-      field('geometryChainstayMm','Chainstay / rear center','number',{ unit:'mm', step:'0.1', help:'Center of BB to rear axle.' },record),field('geometryFrontCenterMm','Front center','number',{ unit:'mm', step:'0.1', help:'Center of BB to front axle.' },record),
+      field('geometryChainstayMm','Rear center / chainstay (source-defined)','number',{ unit:'mm', step:'0.1', help:'Copy the manufacturer chart value and preserve whether it represents rear center, chainstay length, or another documented convention.' },record),field('geometryFrontCenterMm','Front center (source-defined)','number',{ unit:'mm', step:'0.1', help:'Copy the manufacturer chart value; do not substitute a direct distance for a published horizontal projection.' },record),
       field('geometryBbDropMm','BB drop','number',{ unit:'mm', step:'0.1' },record),field('geometryBbHeightMm','BB height','number',{ unit:'mm', step:'0.1' },record),
       field('geometryStandoverMm','Standover','number',{ unit:'mm', step:'0.1' },record),field('geometryHeadTubeLengthMm','Head-tube length','number',{ unit:'mm', step:'0.1' },record),
       field('geometrySeatTubeLengthMm','Seat-tube length','number',{ unit:'mm', step:'0.1' },record),field('geometryForkTravelMm','Fork travel','number',{ unit:'mm' },record),
@@ -1573,17 +1571,17 @@ function editorSections(type,record) {
       field('fitCrankLengthMm','Crank length','number',{ unit:'mm', help:'Record the actual installed crank. This powers the saddle-height transfer estimate.' },record),field('fitSaddleHeightMm','Saddle height (BB to saddle profile)','number',{ unit:'mm', step:'0.1', help:'Center of BB to midpoint of the saddle profile.' },record),
       field('fitSaddleSetbackMm','Saddle setback (negative = behind BB)','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from the BB plumb line to the saddle tip.' },record),field('fitSaddleAngleDeg','Saddle angle','number',{ unit:'°', step:'0.1', help:'Measure on the usable saddle surface. Keep the sign convention consistent.' },record),
       field('fitStemMm','Stem length','number',{ unit:'mm' },record),field('fitStemAngleDeg','Stem angle','number',{ unit:'°', step:'0.1' },record),
-      field('fitSpacerStackMm','Spacer stack','number',{ unit:'mm', help:'Total spacer height below the stem.' },record),field('fitGripWidthMm','Bar / grip width','number',{ unit:'mm', help:'Use the effective hand position width that you want to repeat.' },record),
+      field('fitSpacerStackMm','Spacer stack','number',{ unit:'mm', help:'Total spacer height below the stem.' },record),field('fitGripWidthMm','Grip width','number',{ unit:'mm', help:'Retül grip-contour midpoint-to-midpoint distance. Do not enter nominal bar width.' },record),
       field('fitHandlebarStackMm','BB-to-handlebar stack','number',{ unit:'mm', step:'0.1', help:'Vertical distance from BB center to the bar center.' },record),field('fitHandlebarReachMm','BB-to-handlebar reach','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from BB center to the bar center.' },record),
-      field('fitSaddleToBarReachMm','Saddle-to-bar reach','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from the saddle tip to the bar center.' },record),field('fitHandlebarDropMm','Handlebar drop (report convention)','number',{ unit:'mm', step:'0.1', help:'Vertical distance between the saddle reference point and the handlebar reference point.' },record),
-      field('fitGripReachMm','Saddle-to-grip reach','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from the saddle tip to the chosen grip reference point.' },record),field('fitGripDropMm','Grip drop (report convention)','number',{ unit:'mm', step:'0.1', help:'Vertical distance from the saddle reference point to the grip reference point.' },record),
+      field('fitSaddleToBarReachMm','Saddle-to-bar reach','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from saddle tip to the documented bar reference. The Retül road baseline uses bar top.' },record),field('fitHandlebarDropMm','Handlebar drop','number',{ unit:'mm', step:'0.1', help:'Saddle-profile center to bar top. Negative means the bar is below the saddle.' },record),
+      field('fitGripReachMm','Saddle-to-grip reach','number',{ unit:'mm', step:'0.1', help:'Road Retül: saddle tip to grip trough. MTB Retül: saddle tip to grip-contour midpoint.' },record),field('fitGripDropMm','Grip drop','number',{ unit:'mm', step:'0.1', help:'Saddle-profile center to the category-specific grip point. Negative means the grip is below the saddle.' },record),
       field('fitNotes','Fit notes','textarea',{ full:true, help:'Capture saddle model, suspension state, bar rise, and any special measurement conventions.' },record)
     ] },
     { title:'Ownership and notes', fields:[field('purchaseDate','Purchase date','date',{},record),field('serialNumber','Serial number','text',{},record),field('geometryNotes','Geometry notes','textarea',{ full:true },record),field('buildNotes','Build notes','textarea',{ full:true },record),field('notes','General notes','textarea',{ full:true },record)] }
   ];
   if (type === 'riderFit') return [
     { title:'Fit source', fields:[field('fitSource','Fit source','text',{ full:true },record),field('fitDate','Fit date','date',{},record),field('fitBikeId','Fit bike','bike-select',{},record),field('baselineCrankLengthMm','Baseline crank length','number',{ unit:'mm', help:'The crank length used when the fit was performed.' },record)] },
-    { title:'Measured saddle and cockpit', fields:[field('saddleHeightMm','Saddle height','number',{ unit:'mm', step:'0.1', help:'BB center to saddle profile midpoint.' },record),field('saddleSetbackMm','Saddle setback','number',{ unit:'mm', step:'0.1', help:'BB plumb line to saddle tip.' },record),field('saddleAngleDeg','Saddle angle','number',{ unit:'°', step:'0.1', help:'Use the same convention as the original fit report.' },record),field('handlebarStackMm','BB-to-bar stack','number',{ unit:'mm', step:'0.1', help:'Vertical distance from the bottom bracket to the bar center.' },record),field('handlebarReachMm','BB-to-bar reach','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from the bottom bracket to the bar center.' },record),field('saddleToBarReachMm','Saddle-to-bar reach','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from the saddle tip to the bar center.' },record),field('handlebarDropMm','Handlebar drop','number',{ unit:'mm', step:'0.1', help:'Relative vertical distance between the saddle reference and handlebar reference.' },record),field('gripReachMm','Grip reach','number',{ unit:'mm', step:'0.1', help:'Use the same grip reference point consistently.' },record),field('gripDropMm','Grip drop','number',{ unit:'mm', step:'0.1' },record),field('bbToGripReachMm','BB-to-grip reach','number',{ unit:'mm', step:'0.1' },record),field('gripWidthMm','Grip width','number',{ unit:'mm', help:'Distance between the left and right hand positions.' },record),field('gripAngleDeg','Grip angle','number',{ unit:'°', step:'0.1' },record)] },
+    { title:'Measured saddle and cockpit', fields:[field('saddleHeightMm','Saddle height','number',{ unit:'mm', step:'0.1', help:'BB center to horizontal midpoint of the saddle profile.' },record),field('saddleSetbackMm','Saddle setback','number',{ unit:'mm', step:'0.1', help:'Saddle tip to BB center horizontally; negative means behind BB.' },record),field('saddleAngleDeg','Saddle angle','number',{ unit:'°', step:'0.1', help:'Negative means nose-down under the Retül convention.' },record),field('handlebarStackMm','BB-to-bar stack','number',{ unit:'mm', step:'0.1', help:'Vertical distance from BB center to bar center.' },record),field('handlebarReachMm','BB-to-bar reach','number',{ unit:'mm', step:'0.1', help:'Horizontal distance from BB center to bar center.' },record),field('saddleToBarReachMm','Saddle-to-bar reach','number',{ unit:'mm', step:'0.1', help:'The April 2022 road report measures saddle tip to bar top.' },record),field('handlebarDropMm','Handlebar drop','number',{ unit:'mm', step:'0.1', help:'Saddle-profile center to bar top; negative means below the saddle.' },record),field('gripReachMm','Grip reach','number',{ unit:'mm', step:'0.1', help:'The April 2022 road report measures saddle tip to grip trough.' },record),field('gripDropMm','Grip drop','number',{ unit:'mm', step:'0.1', help:'Saddle-profile center to grip trough; negative means below the saddle.' },record),field('bbToGripReachMm','BB-to-grip reach','number',{ unit:'mm', step:'0.1', help:'BB center to grip trough for the April 2022 road report.' },record),field('gripWidthMm','Grip width','number',{ unit:'mm', help:'3D distance between grip-contour midpoints; not nominal bar width.' },record),field('gripAngleDeg','Grip angle','number',{ unit:'°', step:'0.1', help:'Positive means the front of the grip is higher.' },record)] },
     { title:'Assessment context', fields:[field('assessmentText','Assessment notes','textarea',{ full:true, help:'Use one item per line. Keep the wording faithful to the fitter’s report.' },record),field('notes','Transfer cautions','textarea',{ full:true, help:'Document what should or should not be copied to other bikes.' },record)] }
   ];
   if (type === 'wheel') return [
@@ -1858,7 +1856,7 @@ function fillRideForm(preset) {
 
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
-  navigator.serviceWorker.register('service-worker.js?v=1.3.3', { updateViaCache: 'none' }).then(registration => {
+  navigator.serviceWorker.register('service-worker.js?v=1.3.5', { updateViaCache: 'none' }).then(registration => {
     registration.addEventListener('updatefound',() => {
       const worker = registration.installing;
       worker?.addEventListener('statechange',() => { if (worker.state === 'installed' && navigator.serviceWorker.controller) document.getElementById('updateBanner').hidden = false; });

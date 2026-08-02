@@ -1,6 +1,22 @@
-# Fleet OS v1.3.3
+# Fleet OS v1.3.5
 
 Fleet OS is a static, installable bike-fleet manager designed to run from a normal web directory on DreamHost. It uses no build system, database, or server-side code.
+
+## What changed in v1.3.5
+
+### Fit-definition and release safety
+
+- Aligned Retül road-fit labels, grip troughs, bar-top references, drop signs, and grip-width semantics with the owner’s April 2022 report.
+- Preserved manufacturer-defined rear-center and front-center conventions instead of silently converting them to direct distances.
+- Added deterministic release-version checks, a scoped version-bump command, CI enforcement, and broader browser persistence/offline coverage.
+
+## What changed in v1.3.4
+
+### Measurement-guide validation
+
+- Corrected the front-center callout to measure directly from bottom-bracket center to front-axle center.
+- Added Playwright coverage for primary routes, all measurement guides, diagram geometry, mobile overflow, service-worker versioning, and reload persistence.
+- Refined the bicycle line-art and aligned the application and cache release identity.
 
 ## What changed in v1.3.3
 
@@ -49,14 +65,14 @@ Export a JSON backup from the live site before deploying. Data entered on one de
 
 ## Deploy to GitHub — run on your Mac
 
-Download and unzip `fleet-os-v1.3.3.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
+Download and unzip `fleet-os-v1.3.5.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
 
 ```bash
 cd ~/Downloads/bike-fleet
-cp -R ~/Downloads/fleet-os-v1.3.3/. .
+cp -R ~/Downloads/fleet-os-v1.3.5/. .
 git status
-git add .
-git commit -m "Fix Geometry and Fit navigation cache"
+git add .github/workflows/test.yml .gitignore CHANGELOG.md README.md assets/app.js docs/ index.html package.json package-lock.json playwright.config.js scripts/ service-worker.js tests/
+git commit -m "Harden fit definitions and release checks"
 git push origin main
 ```
 
