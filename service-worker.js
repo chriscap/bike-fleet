@@ -1,9 +1,9 @@
-const CACHE_NAME = 'fleet-os-v1.3.4';
+const CACHE_NAME = 'fleet-os-v1.3.5';
 const APP_SHELL = [
   './',
   './index.html',
-  './assets/styles.css?v=1.3.4',
-  './assets/app.js?v=1.3.4',
+  './assets/styles.css?v=1.3.5',
+  './assets/app.js?v=1.3.5',
   './manifest.webmanifest',
   './assets/icons/favicon.svg',
   './assets/icons/icon-192.png',
@@ -19,7 +19,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
+      .then(keys => Promise.all(keys.filter(key => key.startsWith('fleet-os-') && key !== CACHE_NAME).map(key => caches.delete(key))))
       .then(() => self.clients.claim())
   );
 });

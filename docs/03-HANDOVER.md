@@ -1,7 +1,7 @@
 # Fleet OS Engineering Handover
 
-**Latest generated release:** v1.3.4
-**Production status:** Not reconfirmed for v1.3.4
+**Latest generated release:** v1.3.5
+**Production status:** Not reconfirmed for v1.3.5
 **Repository:** `https://github.com/chriscap/bike-fleet`  
 **Live URL:** `https://www.chriscap.com/bike-fleet/`  
 **Hosting:** DreamHost shared server
@@ -14,7 +14,7 @@ Fleet OS is a functioning static progressive web app for managing a personal bik
 
 The current implementation is intentionally lightweight: no framework, no server, and no build process. This made initial delivery fast and DreamHost deployment simple, but the application is now large enough that test coverage, modularization, schema validation, and release automation should precede significant additional features.
 
-The latest generated code is v1.3.4. The product owner accepted the revised generic bicycle direction. The release also corrects the front-center anchor, adds a minimal Playwright harness, and synchronizes application and service-worker release identity.
+The latest generated code is v1.3.5. It preserves the accepted generic bicycle direction while aligning fit terminology with the owner’s April 2022 Retül road report, preserving manufacturer-defined geometry conventions, and adding automated release checks plus CI enforcement.
 
 ---
 
@@ -363,9 +363,9 @@ A `git` command executed after a broken SSH session may run locally if the shell
 
 ### Critical / release
 
-1. **v1.3.4 is not yet deployment-verified.** Recheck the release against production before pulling on DreamHost.
-2. **The Playwright harness requires one successful unrestricted run before merge.** The sandboxed Codex CLI could install Chromium but macOS denied the browser process launch.
-3. **Versioning is duplicated.** A partial bump can recreate the stale-cache problem.
+1. **v1.3.5 is not yet deployment-verified.** Recheck the release against production before pulling on DreamHost.
+2. **The new GitHub Actions workflow has not yet run on the remote branch.** Require a green release check and Playwright job before merge.
+3. **The version-bump command inserts pending release-note placeholders.** Replace them before committing a future release.
 
 ### Data
 
@@ -404,11 +404,11 @@ A `git` command executed after a broken SSH session may run locally if the shell
 
 ## P0 — Establish safety
 
-1. Add Playwright smoke tests covering every route and primary flow.
+1. Keep Playwright route, persistence, Geometry & Fit, and offline tests green.
 2. Add migration fixtures and no-data-loss tests.
-3. Centralize version bumping in a release script.
-4. Fix stale copy and README/changelog drift.
-5. Verify repository and production are actually on v1.3.4.
+3. Use `npm run release -- <version>` and `npm run release:check` for version changes.
+4. Keep README, changelog, and current-version documentation synchronized.
+5. Verify repository and production are actually on v1.3.5.
 6. Capture current desktop/mobile screenshots before further UI work.
 
 ## P0 — Resolve active design work
@@ -469,7 +469,7 @@ The product has already experienced a production-only stale-cache regression. Te
 
 ## 14. Questions for the product owner before major changes
 
-- Has v1.3.4 been deployed and verified against the accepted illustration?
+- Has v1.3.5 been deployed and verified against the accepted illustration and Retül conventions?
 - Should the measurement bike be a generic hardtail/trail bike, a generic road bike, or switch by measurement/category?
 - Is preserving the current no-build architecture important, or is a small Vite/TypeScript setup acceptable?
 - Is cross-device synchronization now a priority?

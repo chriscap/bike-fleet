@@ -1,0 +1,28 @@
+{
+  "version": "1.0.9",
+  "owner": "Fixture Owner",
+  "privateLegacyNote": "preserve top-level unknown fields",
+  "rider": {
+    "fitSource": "2022 Retül fit performed on Parlee Chebacco",
+    "saddleAngleDeg": -1,
+    "notes": "preserve owner-authored fit notes",
+    "ownerDefinedRiderField": "preserve rider unknown fields"
+  },
+  "bikes": [
+    {
+      "id": "legacy-bike",
+      "brand": "Fixture",
+      "model": "Keeper",
+      "year": 2020,
+      "category": "Road",
+      "role": "Preserve this bike",
+      "ownerDefinedBikeField": "preserve bike unknown fields"
+    }
+  ],
+  "wheelsets": [],
+  "parts": [],
+  "maintenance": [],
+  "presets": [],
+  "rideHistory": [],
+  "activity": []
+}

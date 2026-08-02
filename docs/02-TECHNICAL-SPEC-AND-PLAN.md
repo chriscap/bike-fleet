@@ -1,6 +1,6 @@
 # Fleet OS Technical Specification and Implementation Plan
 
-**Current source version:** 1.3.4
+**Current source version:** 1.3.5
 **Architecture:** Static single-page application / progressive web app  
 **Runtime dependencies:** None  
 **Build system:** None  

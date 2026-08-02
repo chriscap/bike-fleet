@@ -14,19 +14,19 @@ const destinations = [
 ];
 
 const measurementGuides = [
-  { id: 'saddle-height', title: 'Saddle height' },
-  { id: 'saddle-setback', title: 'Saddle setback' },
-  { id: 'saddle-angle', title: 'Saddle angle' },
-  { id: 'crank-length', title: 'Crank length' },
-  { id: 'handlebar-stack', title: 'BB-to-handlebar stack' },
-  { id: 'handlebar-reach', title: 'BB-to-handlebar reach' },
-  { id: 'saddle-to-bar-reach', title: 'Saddle-to-bar reach' },
-  { id: 'handlebar-drop', title: 'Handlebar drop' },
-  { id: 'grip-reach', title: 'Saddle-to-grip reach' },
-  { id: 'grip-drop', title: 'Grip drop' },
-  { id: 'grip-width', title: 'Grip width' },
-  { id: 'frame-reach-stack', title: 'Frame reach and stack' },
-  { id: 'wheelbase', title: 'Wheelbase, chainstay, and front center' }
+  { id: 'saddle-height', title: 'Saddle height', dimensions: ['Saddle height'] },
+  { id: 'saddle-setback', title: 'Saddle setback', dimensions: ['Setback'] },
+  { id: 'saddle-angle', title: 'Saddle angle', dimensions: [] },
+  { id: 'crank-length', title: 'Crank length', dimensions: ['Crank length'] },
+  { id: 'handlebar-stack', title: 'BB-to-handlebar stack', dimensions: ['Bar stack'] },
+  { id: 'handlebar-reach', title: 'BB-to-handlebar reach', dimensions: ['Bar reach'] },
+  { id: 'saddle-to-bar-reach', title: 'Saddle-to-bar reach', dimensions: ['Saddle-to-bar reach'] },
+  { id: 'handlebar-drop', title: 'Handlebar drop', dimensions: ['Bar drop'] },
+  { id: 'grip-reach', title: 'Saddle-to-grip reach', dimensions: ['Grip reach'] },
+  { id: 'grip-drop', title: 'Grip drop', dimensions: ['Grip drop'] },
+  { id: 'grip-width', title: 'Grip width', dimensions: ['Grip width'] },
+  { id: 'frame-reach-stack', title: 'Frame reach and stack', dimensions: ['Frame reach', 'Frame stack'] },
+  { id: 'wheelbase', title: 'Wheelbase, rear center, and front center', dimensions: ['Wheelbase', 'Front center (projection)', 'Rear center (projection)'] }
 ];
 
 function collectBrowserFailures(page) {
@@ -75,6 +75,9 @@ test('every measurement guide renders its diagram and instructions', async ({ pa
     await expect(page.locator('#measurementGuideContent').getByRole('heading', { name: guide.title, exact: true })).toBeVisible();
     await expect(page.locator('#measurementGuideContent').getByRole('heading', { name: 'Definition' })).toBeVisible();
     await expect(page.locator('#measurementGuideContent').getByRole('heading', { name: 'How to measure it' })).toBeVisible();
+    await expect(page.locator('#measurementGuideContent').getByRole('heading', { name: 'Consistency tips' })).toBeVisible();
+    const dimensions = await page.locator('#measurementGuideContent [data-measurement]').evaluateAll(lines => lines.map(line => line.dataset.measurement));
+    expect(dimensions).toEqual(guide.dimensions);
     await expect(page.locator('#measurementGuideContent')).not.toContainText('could not render');
   }
 
@@ -99,17 +102,14 @@ test('side-view wheels share axle height and meet the ground line', async ({ pag
   for (const tire of geometry.tires) expect(tire.centerY + tire.radius).toBe(geometry.groundY);
 });
 
-test('wheelbase guide uses center-to-center dimensions', async ({ page }) => {
+test('wheelbase guide preserves source-defined projected references', async ({ page }) => {
   await page.goto('/#/fleet/geometry');
   await page.locator('#measurementGuideSelect').selectOption('wheelbase');
 
   const geometry = await page.locator('#measurementGuideContent').evaluate(container => {
     const values = {};
-    for (const label of container.querySelectorAll('.diagram-label')) {
-      if (['Wheelbase', 'Front center', 'Chainstay'].includes(label.textContent)) {
-        const line = label.previousElementSibling;
-        values[label.textContent] = ['x1', 'y1', 'x2', 'y2'].map(attribute => Number(line.getAttribute(attribute)));
-      }
+    for (const line of container.querySelectorAll('[data-measurement]')) {
+      values[line.dataset.measurement] = ['x1', 'y1', 'x2', 'y2'].map(attribute => Number(line.getAttribute(attribute)));
     }
     const hubs = [...container.querySelectorAll('.diagram-hub')].map(hub => [Number(hub.getAttribute('cx')), Number(hub.getAttribute('cy'))]);
     const chainring = container.querySelector('.diagram-chainring');
@@ -121,22 +121,44 @@ test('wheelbase guide uses center-to-center dimensions', async ({ page }) => {
     };
   });
 
-  expect(Object.keys(geometry.dimensions).sort()).toEqual(['Chainstay', 'Front center', 'Wheelbase'].sort());
+  expect(Object.keys(geometry.dimensions).sort()).toEqual(['Rear center (projection)', 'Front center (projection)', 'Wheelbase'].sort());
   expect([geometry.dimensions.Wheelbase[0], geometry.dimensions.Wheelbase[2]]).toEqual([geometry.rearAxle[0], geometry.frontAxle[0]]);
   expect(geometry.dimensions.Wheelbase[1]).toBe(geometry.dimensions.Wheelbase[3]);
-  expect(geometry.dimensions['Front center']).toEqual([...geometry.bottomBracket, ...geometry.frontAxle]);
-  expect(geometry.dimensions.Chainstay).toEqual([...geometry.bottomBracket, ...geometry.rearAxle]);
+  expect([geometry.dimensions['Front center (projection)'][0], geometry.dimensions['Front center (projection)'][2]]).toEqual([geometry.bottomBracket[0], geometry.frontAxle[0]]);
+  expect(geometry.dimensions['Front center (projection)'][1]).toBe(geometry.dimensions['Front center (projection)'][3]);
+  expect([geometry.dimensions['Rear center (projection)'][0], geometry.dimensions['Rear center (projection)'][2]]).toEqual([geometry.rearAxle[0], geometry.bottomBracket[0]]);
+  expect(geometry.dimensions['Rear center (projection)'][1]).toBe(geometry.dimensions['Rear center (projection)'][3]);
 });
 
-test('measurement guide fits a mobile viewport without horizontal overflow', async ({ page }) => {
+test('every measurement guide fits a mobile viewport without horizontal overflow', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/#/fleet/geometry');
 
-  const overflow = await page.locator('#fleet-geometry').evaluate(element => ({
-    clientWidth: element.clientWidth,
-    scrollWidth: element.scrollWidth
-  }));
-  expect(overflow.scrollWidth).toBeLessThanOrEqual(overflow.clientWidth);
+  for (const guide of measurementGuides) {
+    await page.locator('#measurementGuideSelect').selectOption(guide.id);
+    const overflow = await page.locator('#fleet-geometry').evaluate(element => ({
+      clientWidth: element.clientWidth,
+      scrollWidth: element.scrollWidth
+    }));
+    expect(overflow.scrollWidth, guide.id).toBeLessThanOrEqual(overflow.clientWidth);
+  }
+});
+
+test('Retül road conventions remain explicit', async ({ page }) => {
+  await page.goto('/#/fleet/geometry');
+  const guideSelect = page.locator('#measurementGuideSelect');
+
+  await guideSelect.selectOption('saddle-to-bar-reach');
+  await expect(page.locator('#measurementGuideContent')).toContainText('uses the top of the handlebar');
+
+  await guideSelect.selectOption('handlebar-drop');
+  await expect(page.locator('#measurementGuideContent')).toContainText('Negative means the handlebar is below the saddle');
+
+  await guideSelect.selectOption('grip-reach');
+  await expect(page.locator('#measurementGuideContent')).toContainText('grip trough for this Retül road report');
+
+  await guideSelect.selectOption('grip-width');
+  await expect(page.locator('#measurementGuideContent')).toContainText('must not be stored in this field');
 });
 
 test('registers the release-versioned service worker', async ({ page }) => {
@@ -146,4 +168,32 @@ test('registers the release-versioned service worker', async ({ page }) => {
     const registration = await navigator.serviceWorker.getRegistration();
     return registration?.active?.scriptURL || registration?.installing?.scriptURL || '';
   })).toMatch(new RegExp(`service-worker\\.js\\?v=${version.replaceAll('.', '\\.')}$`));
+});
+
+test('app shell reloads offline after initial service-worker installation', async ({ context, page }) => {
+  await page.goto('/#/home');
+  await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+
+  await context.setOffline(true);
+  await page.reload();
+
+  await expect(page.getByRole('heading', { name: 'Choose the right bike, wheels, and setup in one place.' })).toBeVisible();
+});
+
+test('service-worker activation removes stale Fleet OS caches', async ({ page }) => {
+  const staleCache = 'fleet-os-stale-test-cache';
+  const unrelatedCache = 'unrelated-app-cache';
+  await page.goto('/#/home');
+  await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+
+  await page.evaluate(async ({ staleCacheName, unrelatedCacheName }) => {
+    await Promise.all([caches.open(staleCacheName), caches.open(unrelatedCacheName)]);
+    const registration = await navigator.serviceWorker.getRegistration();
+    await registration.unregister();
+    await navigator.serviceWorker.register(`service-worker.js?cache-test=${Date.now()}`, { updateViaCache: 'none' });
+  }, { staleCacheName: staleCache, unrelatedCacheName: unrelatedCache });
+
+  await expect.poll(() => page.evaluate(async cacheName => (await caches.keys()).includes(cacheName), staleCache)).toBe(false);
+  await expect.poll(() => page.evaluate(async cacheName => (await caches.keys()).includes(cacheName), unrelatedCache)).toBe(true);
+  await page.evaluate(cacheName => caches.delete(cacheName), unrelatedCache);
 });

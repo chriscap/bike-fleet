@@ -1,6 +1,14 @@
-# Fleet OS v1.3.4
+# Fleet OS v1.3.5
 
 Fleet OS is a static, installable bike-fleet manager designed to run from a normal web directory on DreamHost. It uses no build system, database, or server-side code.
+
+## What changed in v1.3.5
+
+### Fit-definition and release safety
+
+- Aligned Retül road-fit labels, grip troughs, bar-top references, drop signs, and grip-width semantics with the owner’s April 2022 report.
+- Preserved manufacturer-defined rear-center and front-center conventions instead of silently converting them to direct distances.
+- Added deterministic release-version checks, a scoped version-bump command, CI enforcement, and broader browser persistence/offline coverage.
 
 ## What changed in v1.3.4
 
@@ -57,14 +65,14 @@ Export a JSON backup from the live site before deploying. Data entered on one de
 
 ## Deploy to GitHub — run on your Mac
 
-Download and unzip `fleet-os-v1.3.4.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
+Download and unzip `fleet-os-v1.3.5.zip`. Copy the **contents** of the unzipped folder into the root of your local `bike-fleet` repository:
 
 ```bash
 cd ~/Downloads/bike-fleet
-cp -R ~/Downloads/fleet-os-v1.3.4/. .
+cp -R ~/Downloads/fleet-os-v1.3.5/. .
 git status
-git add .gitignore CHANGELOG.md README.md assets/app.js docs/.DS_Store docs/00-START-HERE.md docs/01-PRD.md docs/02-TECHNICAL-SPEC-AND-PLAN.md docs/03-HANDOVER.md docs/04-CODEX-KICKOFF-PROMPT.md index.html package.json package-lock.json playwright.config.js service-worker.js tests/
-git commit -m "Validate Geometry and Fit measurement guides"
+git add .github/workflows/test.yml .gitignore CHANGELOG.md README.md assets/app.js docs/ index.html package.json package-lock.json playwright.config.js scripts/ service-worker.js tests/
+git commit -m "Harden fit definitions and release checks"
 git push origin main
 ```
 

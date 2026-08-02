@@ -1,6 +1,6 @@
 # Fleet OS — Codex Start Here
 
-**Handover package:** v1.3.4
+**Handover package:** v1.3.5
 **Prepared:** 2026-08-01  
 **Audience:** Codex or another engineer taking over implementation  
 **Primary repository:** `https://github.com/chriscap/bike-fleet`
@@ -22,12 +22,13 @@ A copy of the latest generated source is included in [`source-snapshot/`](source
 
 ## Current-state caveat
 
-The latest generated source package is **Fleet OS v1.3.4**. The production deployment status has not been reconfirmed for v1.3.4. Treat the repository and live site as potentially one release behind until verified with:
+The latest generated source package is **Fleet OS v1.3.5**. The production deployment status has not been reconfirmed for v1.3.5. Treat the repository and live site as potentially one release behind until verified with:
 
 ```bash
 git log --oneline -1
-grep "Fleet OS v1.3.4" index.html
-grep "fleet-os-v1.3.4" service-worker.js
+npm run release:check
+grep "Fleet OS v1.3.5" index.html
+grep "fleet-os-v1.3.5" service-worker.js
 ```
 
 ## Non-negotiable product rules
@@ -47,5 +48,5 @@ grep "fleet-os-v1.3.4" service-worker.js
 2. Run the source locally with a static server.
 3. Export a JSON backup from the live site before testing migrations or reset behavior.
 4. Run the Playwright smoke-test suite before changing functionality.
-5. Centralize the remaining duplicated release-version handling.
+5. Run the release-consistency check before and after any version change.
 6. Preserve the owner-approved v1.3.4 measurement illustration while adding visual regression coverage.
